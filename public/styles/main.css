@@ -1,0 +1,18 @@
+:root {
+    /* colors */
+    --neutraal-0: #FFFFFF;
+    --neutraal-10: #E8E8E8;
+    --neutraal-20: #d1d1d1;
+    --neutraal-60: #767676;
+    --neutraal-100: #202020;
+
+    --red-60: #ec0000;
+    --red-80: #b70000;
+
+    --blue-60: #004699;
+    --blue-80: #003677;
+}
+
+body {
+    background: var(--neutraal-10);
+}
