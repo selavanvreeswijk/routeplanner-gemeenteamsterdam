@@ -1,10 +1,10 @@
 :root {
     /* colors */
-    --neutraal-0: #FFFFFF;
-    --neutraal-10: #E8E8E8;
-    --neutraal-20: #d1d1d1;
-    --neutraal-60: #767676;
-    --neutraal-100: #202020;
+    --neutral-0: #FFFFFF;
+    --neutral-10: #E8E8E8;
+    --neutral-20: #d1d1d1;
+    --neutral-60: #767676;
+    --neutral-100: #202020;
 
     --red-60: #ec0000;
     --red-80: #b70000;
@@ -14,5 +14,9 @@
 }
 
 body {
-    background: var(--neutraal-10);
+    background: var(--neutral-10);
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
+
