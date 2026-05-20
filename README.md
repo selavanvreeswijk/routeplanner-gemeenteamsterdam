@@ -37,7 +37,16 @@ Het eindproduct is een online tool waarmee gebruikers live een route kunnen plan
 
 Tijdens de meeting hebben we het oorspronkelijke doel van het project. Verder is besproken welke rollen de teamleden op zich zullen nemen en hoe de komende weken eruit zien qua planning. Tot slot is afgesproken om in Git per feature te werken.
 
-### voor victor elke week
+**Rolverdeling:**
+
+| Naam | Rol |
+|------|-----|
+| Louise | Version Control Engineer |
+| Luna Jay | Backend Developer|
+| Sela | Scrum Master |
+| Xavannah | UI/UX Designer |
+
+**Voorbereiden voor volgende gesprekken:**
 
 - Wat hebben we gemaakt?
 - Hoe is het verlopen?
