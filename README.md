@@ -51,6 +51,7 @@ Tijdens de meeting hebben we het oorspronkelijke doel van het project. Verder is
 - Wat hebben we gemaakt?
 - Hoe is het verlopen?
 - Hoe werken we samen?
+-
 
 ## Bronnen 
 
