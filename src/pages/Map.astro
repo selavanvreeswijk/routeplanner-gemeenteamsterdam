@@ -1,0 +1,95 @@
+---
+
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+    
+	<body>
+        <main>
+            <!-- Hier moet nog wel alle data uit de API gehaald worden!! -->
+            <header>
+                <!-- Navigatie -->
+                <nav>
+                    <a href="">&#8592;</a>
+                    
+                    <div>
+                        <p>Stap 3 van 4 | Live route</p> 
+                        <p>naar Stedelijk Museum</p> 
+                    </div>
+
+                    <!-- Hamburger -->
+                    <a href="">Hamburgermenu uitklap</a>
+                </nav>
+
+                <!-- Blokken hoe snel er komen -->
+                <div class="how-quick">
+                    <div>
+                        <p>Snelste</p>
+                        <p>24 min</p>
+                    </div>
+
+                    <div>
+                        <p>Minst lopen</p>
+                        <p>24 min</p>
+                    </div>
+
+                    <div>
+                        <p>Alleen lopen</p>
+                        <p>52 min</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Kaart -->
+            <section>
+                <!-- Moet uit de API komen -->
+            </section>
+
+            
+        </main>
+	
+	</body>
+</html>
+
+<style>
+    /* main{
+        color: white;
+    }
+     */
+    
+    header{
+        background: red;
+        color: white;
+    }
+
+    nav{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .how-quick{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .how-quick div{
+        background-color: rgb(250, 68, 68);
+        width: 20vw;
+    }
+
+    .how-quick div:nth-of-type(1){
+        background-color: white;
+        color: black;
+    }
+
+</style>
