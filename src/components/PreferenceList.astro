@@ -1,0 +1,61 @@
+<fieldset>
+    <legend>Voorkeuren</legend>
+    <label><input type="checkbox" name="route" value="rolstoel" checked/>Geen trappen</label>
+    <label><input type="checkbox" name="route" value="mindervalide" checked/>Brede paden (≥ 1,20 m)</label>
+    <label><input type="checkbox" name="route" value="tijdelijke-beperking"/>Tijdelijke beperking</label>
+    <label><input type="checkbox" name="route" value="visuele-beperking"/>Visuele beperking</label>
+</fieldset>
+
+
+<style>
+    fieldset {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 1rem;
+        border: none;
+    }
+
+    legend {
+        font-weight: bold;
+        color: var(--neutral-60);
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    label {
+        padding: 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        background-color: var(--neutral-0);
+        border: 1px solid var(--neutral-20);
+    }
+
+    input[type="checkbox"] {
+        appearance: none;
+        margin: 0 0.5rem 0 0;
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--neutral-20);
+        border-radius: 4px;
+        background-color: var(--neutral-0);
+        cursor: pointer;
+    }
+
+    input[type="checkbox"]:checked {
+        background-color: var(--red-60);
+        border-color: var(--red-60);
+    }
+
+    input[type="checkbox"]:checked::after {
+        content: '';
+        display: block;
+        width: 4px;
+        height: 8px;
+        border: 2px solid white;
+        border-top: none;
+        border-left: none;
+        transform: rotate(45deg) translate(3px, -2px);
+    }
+
+</style>
