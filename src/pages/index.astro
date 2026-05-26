@@ -1,5 +1,10 @@
 ---
 import Header from "../components/Header.astro";
+import Filter from "../components/Filter.astro";
+import Display from "../components/Display.astro";
+import StatusDot from "../components/StatusDot.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import LocationCard from "../components/LocationCard.astro";
 ---
 
 <html lang="en">
@@ -12,8 +17,12 @@ import Header from "../components/Header.astro";
     <link rel="stylesheet" href="styles/header.css" />
     <title>Astro</title>
   </head>
-
   <body>
     <Header />
+    <Filter />
+    <Display />
+    <!-- <StatusDot />
+    <StatusBadge /> -->
+    <LocationCard />
   </body>
 </html>
