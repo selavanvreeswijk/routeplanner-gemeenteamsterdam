@@ -1,0 +1,129 @@
+body {
+  font-family: "Inter", sans-serif;
+}
+
+header {
+  background-color: red;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header h2 {
+  font-size: 16px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+header ul {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  position: relative;
+}
+
+header ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  background-color: rgba(255, 255, 255, 0.15);
+  flex: 1;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+header ul li:has(input:checked) {
+  color: black;
+}
+
+header ul li h3 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: none;
+}
+
+header ul li p {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+header ul li input[type="radio"] {
+  display: none;
+}
+
+header ul li label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+header ul li:has(input:checked) {
+  background-color: white;
+  color: black;
+}
+
+main .maps img {
+  width: 100vw;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.maps {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.route-card {
+  padding: 8px;
+  background-color: #e9f4ff;
+  margin: 0px 16px;
+}
+.route-card li {
+  display: flex;
+  align-items: center;
+}
+
+.route-card li div {
+  display: flex;
+  align-items: center;
+}
+
+.route-card li div div:first-of-type {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.route-card li .text-steps {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.route-card ul li:first-child {
+  display: flex;
+  justify-content: space-between;
+}
+
+.route-card ul li:first-child > div {
+  gap: 1em;
+}
