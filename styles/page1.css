@@ -1,0 +1,135 @@
+/* hier komt de gehele stijling van pagina 1 */
+
+/* ── Filters ── */
+
+.filters {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 14px 16px;
+  scrollbar-width: none;
+}
+
+.filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-btn input[type="checkbox"] {
+  display: none;
+}
+
+.filter-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1.5px solid #d1d1d6;
+  background: #fff;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  color: #1c1c1e;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+
+.filter-btn:has(input:checked) {
+  background-color: #e3000f;
+  color: #fff;
+  border-color: #e3000f;
+}
+
+/* ── Display opties (List / Map) ── */
+
+.display-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.display-options p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #8e8e93;
+}
+
+.display {
+  display: flex;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+  border: #99b5d9 0.5px solid;
+}
+
+.display [type="radio"] {
+  display: none;
+}
+
+.display label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+
+  color: #3a3a3c;
+  transition: all 0.18s ease;
+}
+
+.display [type="radio"]:checked + label {
+  background-color: #e5edf5;
+  color: #1c1c1e;
+}
+
+/* ── Location List ── */
+
+.location-list {
+  margin: 16px;
+}
+
+.location-list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.location-list li {
+  border: solid 0.5px #b2c8e2;
+  padding: 12px 16px;
+}
+a {
+  text-decoration: none;
+  color: black;
+  display: flex;
+  gap: 1em;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.adres h2 {
+  font-size: 16px;
+}
+
+.adres {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.location-list li {
+  list-style: none;
+}
+
+.adres p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  gap: 2px;
+}
+
+.adres .badge {
+  margin-top: 6px;
+}
