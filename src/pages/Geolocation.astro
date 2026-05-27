@@ -1,0 +1,115 @@
+---
+
+---
+
+<!-- Routeplanner Amsterdam — Geolocation pagina -->
+
+<html lang="nl">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
+
+        <!-- Leaflet CSS (styling kaart) -->
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""
+        />
+
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Routeplanner Amsterdam</title>
+    </head>
+
+    <body>
+        <main>
+            <div id="map"></div>
+            <!-- Foutmelding als geolocation mislukt of geweigerd wordt -->
+            <p id="foutmelding"></p>
+        </main>
+    </body>
+
+    <!-- Leaflet JavaScript bibliotheek -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
+
+    <script>
+        // @ts-nocheck
+
+        // KAART OPSTARTEN -------------------------------------------------------
+        // Fallback startlocatie: centrum van Amsterdam
+        var kaart = L.map('map').setView([52.3676, 4.9041], 13);
+
+        // OpenStreetMap tegels toevoegen aan de kaart
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(kaart);
+
+        // GEOLOCATION API -------------------------------------------------------
+        // Bepaal de locatie van de gebruiker zodra de pagina laadt
+        // Bron MDN: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
+        // Bron W3Schools: https://www.w3schools.com/html/html5_geolocation.asp
+        // -------------------------------------------------------
+        const foutmelding = document.getElementById('foutmelding');
+
+        if (navigator.geolocation) {
+            // Browser ondersteunt geolocation: vraag locatie op
+            navigator.geolocation.getCurrentPosition(succes, fout);
+        } else {
+            // Browser biedt geen ondersteuning voor de Geolocation API
+            foutmelding.textContent = 'Geolocation wordt niet ondersteund door deze browser.';
+        }
+
+        // Wordt aangeroepen als de locatie succesvol is opgehaald
+        function succes(positie) {
+            const lat = positie.coords.latitude;   // breedtegraad
+            const lng = positie.coords.longitude;  // lengtegraad
+
+            // Kaart centreren op de gevonden locatie van de gebruiker
+            kaart.setView([lat, lng], 16);
+
+            // Marker plaatsen op de locatie van de gebruiker
+            // Bron Leaflet markers: https://leafletjs.com/reference.html#marker
+            L.marker([lat, lng])
+                .addTo(kaart)
+                .bindPopup('Jouw huidige locatie')
+                .openPopup();
+        }
+
+        // Wordt aangeroepen als de locatie niet bepaald kan worden
+        // Bron foutcodes: https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError/code
+        function fout(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    foutmelding.textContent = 'Locatietoegang geweigerd. Sta locatie toe in je browserinstellingen.';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    foutmelding.textContent = 'Locatiegegevens zijn momenteel niet beschikbaar.';
+                    break;
+                case error.TIMEOUT:
+                    foutmelding.textContent = 'Het opvragen van je locatie duurde te lang.';
+                    break;
+                default:
+                    foutmelding.textContent = 'Er is een onbekende fout opgetreden bij het ophalen van je locatie.';
+            }
+        }
+    </script>
+</html>
+
+<style>
+    #map {
+        height: 100vh;
+    }
+
+    /* Foutmelding */
+    #foutmelding {
+        color: red;
+        padding: 1rem;
+        font-family: sans-serif;
+    }
+</style>
