@@ -4,7 +4,10 @@ import Inputfield from "./Inputfield.astro";
 
 <link rel="stylesheet" href="styles/global.css" />
 <header>
-  <img src="public/assets/logo amsterdam.webp" alt="" />
+  <div>
+    <img src="public/assets/logo amsterdam.png" alt="" />
+    <h1>Mattie</h1>
+  </div>
   <Inputfield />
 </header>
 
@@ -17,8 +20,16 @@ header {
     flex-direction: column;
 }
 
-header img {
-    width: 90px;
-}
+  header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h1 {
+    color: var(--ams-color-white);
+  }
 
+  header img {
+    width: 90px;
+  }
 </style>

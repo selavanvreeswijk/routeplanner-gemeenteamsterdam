@@ -4,9 +4,9 @@
        ================================ */
 
   /* Rood (primaire merkkleur) */
-  --ams-color-red: #ec0000;
-  --ams-color-red-dark: #b70000;
-  --ams-color-red-light: #f9cccc;
+  --ams-color-primair-red: #ec0000;
+  --ams-color-primair-red-dark: #c20000;
+  --ams-color-primair-red-light: #f9cccc;
 
   /* Zwart & Grijs */
   --ams-color-grey-5: #202020;
@@ -27,13 +27,13 @@
 
   /* Oranje (medium severity) */
   --ams-color-orange: #ff9100;
-  --ams-color-orange-dark: #cc7400;
+  --ams-color-orange-dark: #7e4802;
   --ams-color-orange-light: #ffe5b2;
 
   /* red  */
-  --ams-color-orange: #ff0000;
-  --ams-color-orange-dark: #670000;
-  --ams-color-orange-light: #ffd3d3;
+  --ams-color-red: #ff0000;
+  --ams-color-red-dark: #670000;
+  --ams-color-red-light: #ffd3d3;
 
   /* ================================
        TYPOGRAFIE MARK: Typografie
@@ -41,8 +41,14 @@
 
   --ams-font-family: "Amsterdam Sans", system-ui, -apple-system, sans-serif;
 
-  --p-small: clamp(0.875rem, 0.75vw + 0.25rem, 1rem); /* 14px → 16px */
+  --ams-font-weight-light: 200;
+  --ams-font-weight-regular: 400;
+  --ams-font-weight-semibold: 600;
+  --ams-font-weight-bold: 800;
 
+  --ams-font-size-body: 1rem; /* 16px */
+  --ams-font-size-body-small: 0.875rem; /* 14px */
+  --ams-font-size-body-extra-small: 0.75rem; /* 12px */
 }
 
 * {
