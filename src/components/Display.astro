@@ -2,9 +2,7 @@
 
 ---
 
-<link rel="stylesheet" href="styles/page1.css" />
 <link rel="stylesheet" href="styles/global.css" />
-<link rel="stylesheet" href="styles/components.css" />
 
 <section class="display-options">
   <p>5 gebouwen gevonden</p>
@@ -52,3 +50,48 @@
     </div>
   </div>
 </section>
+
+<style>
+  .display-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+  }
+
+  .display-options p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #8e8e93;
+  }
+
+  .display {
+    display: flex;
+    border-radius: 10px;
+    padding: 3px;
+    gap: 2px;
+    border: #99b5d9 0.5px solid;
+  }
+
+  .display [type="radio"] {
+    display: none;
+  }
+
+  .display label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+
+    color: #3a3a3c;
+    transition: all 0.18s ease;
+  }
+
+  .display [type="radio"]:checked + label {
+    background-color: #e5edf5;
+    color: #1c1c1e;
+  }
+</style>
