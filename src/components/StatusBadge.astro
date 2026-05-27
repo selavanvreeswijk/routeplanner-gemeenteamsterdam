@@ -1,12 +1,27 @@
 ---
-// const { accessibility } = Astro.props
+//@ts-nocheck
+const { counts } = Astro.props
+console.log("counts:", counts)
+
+
+const ja = Object.values(counts).reduce((total, category) => total + category.Ja, 0) //beginwaarde van reduce is 0
+const total = Object.values(counts).reduce((total, category) => total + category.Ja + category.Nee + category.Onbekend, 0)
+const percentage = total === 0 ? 0 : Math.round(ja / total * 100)
+
+let status = "status-badge-accessible"
+
+if (percentage < 40) {
+  status = "status-badge-inaccessible"
+} else if (percentage < 75) {
+  status = "status-badge-partial"
+}
 ---
 
 <link rel="stylesheet" href="styles/global.css" />
 
-<div class="status-badge-inaccessible">
-  <!-- <p>{accessibility}</p> -->
-  <p>Accessibility</p>
+<div class={status}>
+  <p>{percentage}% toegankelijk</p>
+  <!-- <p>Accessibility</p> -->
 </div>
 
 <style>
