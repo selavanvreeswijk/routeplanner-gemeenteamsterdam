@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "naam": "Apotheek Ferdinand Bol",
+    "categorie": "Zorg en gezondheid",
+    "subcategorie": "Apotheken",
+    "adres": "Ferdinand Bolstraat 103",
+    "postcode": "1072 LE",
+    "plaats": "Amsterdam",
+    "telefoon": "020 6621256",
+    "website": "https://www.ferdinandbolapotheek.nl",
+    "coordinates": [4.891112, 52.353052],
+    "toegankelijkheid": {
+      "toegankelijk_gebouw": "Onbekend",
+      "drempelloos": "Ja",
+      "lift": "Nee",
+      "rolstoeltoilet": "Onbekend",
+      "assistentiehond": "Ja",
+      "gehandicaptenparkeerplaats": "Nee",
+      "ringleiding": "Nee",
+      "geleidelijnen": "Nee"
+    },
+    "status": "partial"
+  }
+]
