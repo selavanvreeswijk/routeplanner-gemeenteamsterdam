@@ -2,7 +2,7 @@
 
 ---
 
-<link rel="stylesheet" href="styles/page1.css" />
+<link rel="stylesheet" href="styles/global.css" />
 
 <nav class="filters">
   <label class="filter-btn">
@@ -26,3 +26,42 @@
     Krukken
   </label>
 </nav>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 14px 16px;
+    scrollbar-width: none;
+  }
+
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn input[type="checkbox"] {
+    display: none;
+  }
+
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1.5px solid #d1d1d6;
+    background: #fff;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    color: #1c1c1e;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.18s ease;
+  }
+
+  .filter-btn:has(input:checked) {
+    background-color: #e3000f;
+    color: #fff;
+    border-color: #e3000f;
+  }
+</style>
