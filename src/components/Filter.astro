@@ -28,40 +28,40 @@
 </nav>
 
 <style>
-  .filters {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 8px;
-    padding: 14px 16px;
-    scrollbar-width: none;
-  }
+.filters {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 14px 16px;
+  scrollbar-width: none;
+}
 
-  .filters::-webkit-scrollbar {
-    display: none;
-  }
+.filters::-webkit-scrollbar {
+  display: none;
+}
 
-  .filter-btn input[type="checkbox"] {
-    display: none;
-  }
+.filter-btn input[type="checkbox"] {
+  display: none;
+}
 
-  .filter-btn {
-    padding: 7px 16px;
-    border-radius: 20px;
-    border: 1.5px solid #d1d1d6;
-    background: #fff;
-    font-family: inherit;
-    font-weight: 500;
-    font-size: 14px;
-    color: #1c1c1e;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.18s ease;
-  }
+.filter-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--ams-color-grey-3);
+  background: var(--ams-color-grey-1);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: var(--p-small);
+  color: var(--ams-color-grey-5);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
 
-  .filter-btn:has(input:checked) {
-    background-color: #e3000f;
-    color: #fff;
-    border-color: #e3000f;
-  }
+.filter-btn:has(input:checked) {
+  background-color: var(--ams-color-red);
+  color: var(--ams-color-grey-1);
+  border-color: var(--ams-color-red);
+}
 </style>
