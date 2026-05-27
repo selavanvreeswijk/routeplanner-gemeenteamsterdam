@@ -31,20 +31,19 @@
       <input id="radio-2" type="radio" name="option" value="map" />
       <label for="radio-2">
         <svg
-          width="16px"
-          height="16px"
-          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M3 8.70938C3 7.23584 3 6.49907 3.39264 6.06935C3.53204 5.91678 3.70147 5.79466 3.89029 5.71066C4.42213 5.47406 5.12109 5.70705 6.51901 6.17302C7.58626 6.52877 8.11989 6.70665 8.6591 6.68823C8.85714 6.68147 9.05401 6.65511 9.24685 6.60952C9.77191 6.48541 10.2399 6.1734 11.176 5.54937L12.5583 4.62778C13.7574 3.82843 14.3569 3.42876 15.0451 3.3366C15.7333 3.24444 16.4168 3.47229 17.7839 3.92799L18.9487 4.31624C19.9387 4.64625 20.4337 4.81126 20.7169 5.20409C21 5.59692 21 6.11871 21 7.16229V15.2907C21 16.7642 21 17.501 20.6074 17.9307C20.468 18.0833 20.2985 18.2054 20.1097 18.2894C19.5779 18.526 18.8789 18.293 17.481 17.827C16.4137 17.4713 15.8801 17.2934 15.3409 17.3118C15.1429 17.3186 14.946 17.3449 14.7532 17.3905C14.2281 17.5146 13.7601 17.8266 12.824 18.4507L11.4417 19.3722C10.2426 20.1716 9.64311 20.5713 8.95493 20.6634C8.26674 20.7556 7.58319 20.5277 6.21609 20.072L5.05132 19.6838C4.06129 19.3538 3.56627 19.1888 3.28314 18.7959C3 18.4031 3 17.8813 3 16.8377V8.70938Z"
-            stroke="currentColor"
-            stroke-width="1.5"></path>
-          <path d="M9 6.63867V20.5" stroke="currentColor" stroke-width="1.5"
-          ></path>
-          <path d="M15 3V17" stroke="currentColor" stroke-width="1.5"></path>
+            d="M2.49976 7.25794C2.49976 6.02999 2.49976 5.41601 2.82696 5.05791C2.94312 4.93077 3.08431 4.829 3.24166 4.759C3.68486 4.56184 4.26733 4.75599 5.43226 5.1443C6.32164 5.44076 6.76633 5.58899 7.21567 5.57364C7.38071 5.56801 7.54476 5.54604 7.70546 5.50805C8.14301 5.40463 8.533 5.14462 9.31309 4.62459L10.465 3.8566C11.4643 3.19048 11.9638 2.85742 12.5373 2.78062C13.1108 2.70382 13.6804 2.89369 14.8197 3.27344L15.7903 3.59699C16.6153 3.87199 17.0278 4.0095 17.2638 4.33686C17.4998 4.66422 17.4998 5.09904 17.4998 5.96869V12.7424C17.4998 13.9703 17.4998 14.5843 17.1726 14.9424C17.0564 15.0695 16.9152 15.1713 16.7578 15.2413C16.3147 15.4385 15.7322 15.2443 14.5673 14.856C13.6778 14.5595 13.2332 14.4113 12.7838 14.4266C12.6188 14.4323 12.4548 14.4542 12.2941 14.4922C11.8565 14.5956 11.4665 14.8556 10.6864 15.3757L9.53451 16.1436C8.53526 16.8098 8.03568 17.1429 7.4622 17.2196C6.88871 17.2965 6.31908 17.1065 5.17983 16.7268L4.20919 16.4033C3.38416 16.1283 2.97165 15.9908 2.73571 15.6634C2.49976 15.336 2.49976 14.9012 2.49976 14.0315V7.25794Z"
+            stroke="black"></path>
+          <path d="M7.49988 5.53235V17.0835" stroke="black"></path>
+          <path d="M12.4998 2.50012V14.1668" stroke="black"></path>
         </svg>
+
         Map
       </label>
     </div>
@@ -52,46 +51,46 @@
 </section>
 
 <style>
-.display-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-}
+  .display-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+  }
 
-.display-options p {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ams-color-grey-4);
-}
+  .display-options p {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ams-color-grey-4);
+  }
 
-.display {
-  display: flex;
-  border-radius: 10px;
-  padding: 3px;
-  gap: 2px;
-  border: var(--ams-color-grey-3) 0.5px solid;
-}
+  .display {
+    display: flex;
+    border-radius: 10px;
+    padding: 3px;
+    gap: 2px;
+    border: var(--ams-color-grey-3) 0.5px solid;
+  }
 
-.display [type="radio"] {
-  display: none;
-}
+  .display [type="radio"] {
+    display: none;
+  }
 
-.display label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
+  .display label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
 
-  color: var(--ams-color-grey-5);
-  transition: all 0.18s ease;
-}
+    color: var(--ams-color-grey-5);
+    transition: all 0.18s ease;
+  }
 
-.display [type="radio"]:checked + label {
-  background-color: var(--ams-color-grey-2);
-  color: var(--ams-color-grey-5);
-}
+  .display [type="radio"]:checked + label {
+    background-color: var(--ams-color-grey-2);
+    color: var(--ams-color-grey-5);
+  }
 </style>
