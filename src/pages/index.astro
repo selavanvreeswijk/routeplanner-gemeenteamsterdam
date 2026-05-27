@@ -1,28 +1,39 @@
 ---
+import data from "../cbadataset.json" with { type: "json" };
+import { filterGroups } from "../../scripts/filtergroups.js";
+import { countFilter } from "../../scripts/filtering.js";
+
 import Header from "../components/Header.astro";
 import Filter from "../components/Filter.astro";
 import Display from "../components/Display.astro";
 import StatusDot from "../components/StatusDot.astro";
 import StatusBadge from "../components/StatusBadge.astro";
 import LocationCard from "../components/LocationCard.astro";
+
+const locations = data.features.map(feature => ({
+  name: feature.properties.Naam_locatie,
+  address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
+  counts: countFilter(feature, filterGroups)
+}))
+
 ---
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="styles/header.css" />
-    <title>Astro</title>
-  </head>
-  <body>
-    <Header />
-    <Filter />
-    <Display />
-    <!-- <StatusDot />
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href="styles/header.css" />
+		<title>Astro</title>
+	</head>
+	<body>
+		<Header />
+		<Filter />
+		<Display />
+		<!-- <StatusDot />
     <StatusBadge /> -->
-    <LocationCard />
-  </body>
+		<LocationCard locations={locations} />
+	</body>
 </html>
