@@ -2,8 +2,34 @@
 import Inputfield from "./Inputfield.astro";
 ---
 
-<link rel="stylesheet" href="styles/components.css" />
+<link rel="stylesheet" href="styles/global.css" />
 <header>
-  <img src="public/assets/logo amsterdam.webp" alt="" />
+  <div>
+    <img src="public/assets/logo amsterdam.png" alt="" />
+    <h1>Mattie</h1>
+  </div>
   <Inputfield />
 </header>
+
+<style>
+header {
+    background-color: var(--ams-color-red);
+    padding: 20px 16px 24px;
+    gap: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+  header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h1 {
+    color: var(--ams-color-white);
+  }
+
+  header img {
+    width: 90px;
+  }
+</style>
