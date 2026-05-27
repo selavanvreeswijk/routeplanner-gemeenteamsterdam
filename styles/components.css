@@ -1,3 +1,38 @@
+/* hier komt de stijling van assets  */
+
+/* hier komt de stijling van de satus dots */
+
+.status-dot {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  padding: 0 13px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100%;
+  background: #ffdfc7;
+}
+
+/* desgin van de badges komen hier */
+
+.status-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: #ffd6d6;
+}
+
+.status-badge p {
+  color: #ec0000;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+
 /*
   Header Component
 */
