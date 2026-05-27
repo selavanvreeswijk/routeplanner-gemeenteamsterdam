@@ -40,8 +40,7 @@ import { lazy } from "astro:schema";
               {location.address}
             </p>
             <div class="badge">
-              {/* <StatusBadge accessibility={accessibility} /> */}
-              <StatusBadge />
+              <StatusBadge counts={location.counts} />
 
             </div>
           <svg
