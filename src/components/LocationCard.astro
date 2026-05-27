@@ -11,40 +11,39 @@ import { lazy } from "astro:schema";
 
 <section class="location-list">
   <ul>
-    {
-      locations.map((location) => (
-        <li>
-          <a href="">
-            <div>
+    {locations.map(location => (
+      <li>
+        <a href="">
+                <div>
               <DistanceDot />
             </div>
-            <div class="adres">
-              <h2>{location.name}</h2>
-              <p>
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M13.772 4.21855C15.9931 6.51565 15.9931 10.2198 13.772 12.5169L9.75017 16.6669L5.72827 12.5177C3.50724 10.2206 3.50724 6.51649 5.72827 4.21938C6.7917 3.11921 8.23952 2.50028 9.75 2.50012C11.2604 2.49996 12.7084 3.11861 13.772 4.21855Z"
-                    stroke="#767676"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M12.0249 8.00927C12.0101 9.2942 10.9851 10.3251 9.73232 10.315C8.4794 10.305 7.47025 9.25779 7.47512 7.97271C7.47998 6.68765 8.49698 5.64852 9.7499 5.64844C11.0137 5.65624 12.0321 6.7131 12.0249 8.00927Z"
-                    stroke="#767676"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+        <div class="adres">
+          <h2>{location.name}</h2>
+          <p>
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 11 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.77538 9.99123C6.62788 9.25515 9.16659 6.87181 9.16659 4.58335C9.16659 3.61089 8.78028 2.67826 8.09264 1.99063C7.40501 1.303 6.47238 0.916687 5.49992 0.916687C4.52746 0.916687 3.59483 1.303 2.90719 1.99063C2.21956 2.67826 1.83325 3.61089 1.83325 4.58335C1.83325 6.87181 4.37196 9.25515 5.22446 9.99123C5.30388 10.0509 5.40055 10.0832 5.49992 10.0832C5.59928 10.0832 5.69596 10.0509 5.77538 9.99123Z"
+                  stroke="#999999"
+                  stroke-width="0.916667"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+                <path
+                  d="M5.5 5.95831C6.25939 5.95831 6.875 5.3427 6.875 4.58331C6.875 3.82392 6.25939 3.20831 5.5 3.20831C4.74061 3.20831 4.125 3.82392 4.125 4.58331C4.125 5.3427 4.74061 5.95831 5.5 5.95831Z"
+                  stroke="#999999"
+                  stroke-width="0.916667"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+              {location.address}
+            </p>
+            <div class="badge">
+              <StatusBadge counts={location.counts} />
 
                 {location.address}
               </p>

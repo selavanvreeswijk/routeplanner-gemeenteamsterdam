@@ -1,6 +1,7 @@
 ---
 
 ---
+<!-- PAGINA LATEN STAAN VOOR DOCUMENTATIE & CODE xoxo Sela -->
 
 <!-- Bron Leaflet API & installatie: https://leafletjs.com/examples/quick-start/ -->
 
@@ -9,7 +10,6 @@
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-        <!-- Deze moet ook mee!! -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossorigin=""/>
@@ -24,13 +24,13 @@
         </main>
 	</body>
 
-    <!-- Leaflet laden -->
+    <!-- Leaflet -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin="">
     </script>
 
-    <!-- Kaart -->
+    <!-- Kaart  -->
     <script>
         // @ts-nocheck
 
@@ -41,7 +41,7 @@
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
-        // Route ------------------------------------------------------
+        // Route ------------------------------------------------------------------------------------------------------------
         const apiKey = import.meta.env.PUBLIC_API_KEY_ROUTE
 
         const start = [4.9041, 52.3676]
@@ -60,7 +60,7 @@
 </html>
 
 <style>
-    /* Aanpassen naar wens */
+
     #map{ 
         height: 100vh; 
     }
