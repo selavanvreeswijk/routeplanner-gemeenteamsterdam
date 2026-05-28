@@ -1,0 +1,87 @@
+---
+import cbaData from "../../cbadataset.json";
+
+import Header from "../../components/Header.astro";
+
+export async function getStaticPaths() { // maakt paginas aan voor astro build, op basis van de locaties in de JSON
+    return cbaData.features.map((feature) => ({ // Loopt door elke locatie in de JSON en maak voor elke locatie een pagina aan
+        params: {
+            slug: feature.properties.Naam_locatie.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""), // Maakt een slug, vervangt streepjes en speciale tekens te verwijderen
+        },
+        props: { feature }, // Stuurt de data van die locatie mee naar de pagina
+    }));
+}
+
+const p = Astro.props.feature.properties; // Ontvang die meegestuurde data en sla het op als p
+
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href="../styles/global.css" />
+		<title>{p.Naam_locatie}</title>
+	</head>
+	<body>
+		<Header />
+        <div>
+            <a class="back" href="/">← Terug</a>
+            <p class="category">{p.Subfilter?.trim()}</p>
+            <h2>{p.Naam_locatie}</h2>
+            <p><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-nhxjo3iv=""> <path fill-rule="evenodd" clip-rule="evenodd" d="M13.772 4.21855C15.9931 6.51565 15.9931 10.2198 13.772 12.5169L9.75017 16.6669L5.72827 12.5177C3.50724 10.2206 3.50724 6.51649 5.72827 4.21938C6.7917 3.11921 8.23952 2.50028 9.75 2.50012C11.2604 2.49996 12.7084 3.11861 13.772 4.21855Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-nhxjo3iv=""></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0249 8.00927C12.0101 9.2942 10.9851 10.3251 9.73232 10.315C8.4794 10.305 7.47025 9.25779 7.47512 7.97271C7.47998 6.68765 8.49698 5.64852 9.7499 5.64844C11.0137 5.65624 12.0321 6.7131 12.0249 8.00927Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-nhxjo3iv=""></path> </svg>{p.adres} {p.Huisnummer} {p.Postcode} </p>
+        </div>
+        <div class="map">
+        </div>
+
+        <div>
+            <h3>Toegankelijkheid</h3>
+            <ul>
+                <li>Lift: {p.Toegankelijke_lift}</li>
+                <li>Rolstoel vriendelijk toilet: {p.Rolstoelvriendelijk_toilet}</li>   <!--- staat nu met spaties voor klein scherm alleen slecht nederlands even kijken hoe fixen -->
+                <li>Gehandicapten parkeerplaatsen binnen 100 m: {p.Gehandicaptenparkeerplaatsen_binnen_100_m_}</li>
+                <li>Voorrijden toegestaan: {p.Voorrijden_toegestaan}</li>
+            </ul>
+        </div>
+
+	</body>
+</html>
+<style>
+    div {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    a.back {
+        font-size: var(--ams-font-size-body-small);
+        color: var(--ams-color-grey-5);
+        text-decoration: none;
+    }
+
+    p.category {
+        font-size: var(--ams-font-size-body-small);
+        color: var(--ams-color-red);
+        text-transform: uppercase;
+        margin: 0;
+        font-weight: bold;
+    }
+    
+    h2 {
+        font-size: 18px;
+    }
+    ul {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        list-style: none;
+    }
+
+    li {
+        padding: 1rem;
+        border: solid 0.5px var(--ams-color-grey-3);
+        font-size: var(--ams-font-size-body-small);
+    }
+</style>
