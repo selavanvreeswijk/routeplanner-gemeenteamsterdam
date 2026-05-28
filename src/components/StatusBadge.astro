@@ -1,0 +1,74 @@
+---
+//@ts-nocheck
+const { counts } = Astro.props
+console.log("counts:", counts)
+
+
+const ja = Object.values(counts).reduce((total, category) => total + category.Ja, 0) //beginwaarde van reduce is 0
+const total = Object.values(counts).reduce((total, category) => total + category.Ja + category.Nee + category.Onbekend, 0)
+const percentage = total === 0 ? 0 : Math.round(ja / total * 100)
+
+let status = "status-badge-accessible"
+
+if (percentage < 40) {
+  status = "status-badge-inaccessible"
+} else if (percentage < 75) {
+  status = "status-badge-partial"
+}
+---
+<link rel="stylesheet" href="styles/global.css" />
+
+<div class={status}>
+  <p>{percentage}% toegankelijk</p>
+  <!-- <p>Accessibility</p> -->
+</div>
+
+<style>
+  /* styling accessible */
+  .status-badge-accessible {
+    display: inline-flex;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--ams-color-green-light);
+  }
+
+  .status-badge-accessible p {
+    color: var(--ams-color-green);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+  }
+
+  /* styling partial */
+  .status-badge-partial {
+    display: inline-flex;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--ams-color-orange-light);
+  }
+
+  .status-badge-partial p {
+    color: var(--ams-color-orange);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+  }
+
+  /* styling inaccessible */
+  .status-badge-inaccessible {
+    display: inline-flex;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--ams-color-red-light);
+  }
+
+  .status-badge-inaccessible p {
+    color: var(--ams-color-red);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+  }
+</style>

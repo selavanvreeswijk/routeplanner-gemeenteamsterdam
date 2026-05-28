@@ -1,0 +1,106 @@
+---
+//@ts-nocheck
+const { locations } = Astro.props;
+
+import DistanceDot from "../components/DistanceDot.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import { lazy } from "astro:schema";
+---
+
+<link rel="stylesheet" href="styles/global.css" />
+
+<section class="location-list">
+  <ul>
+    {
+      locations.map((location) => (
+        <li
+          data-name={location.name.toLowerCase()}
+          data-address={location.address.toLowerCase()}
+        >
+          <a href="">
+            <div>
+              <DistanceDot />
+            </div>
+            <div class="adres">
+              <h2>{location.name}</h2>
+              <p>
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 11 11"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.77538 9.99123C6.62788 9.25515 9.16659 6.87181 9.16659 4.58335C9.16659 3.61089 8.78028 2.67826 8.09264 1.99063C7.40501 1.303 6.47238 0.916687 5.49992 0.916687C4.52746 0.916687 3.59483 1.303 2.90719 1.99063C2.21956 2.67826 1.83325 3.61089 1.83325 4.58335C1.83325 6.87181 4.37196 9.25515 5.22446 9.99123C5.30388 10.0509 5.40055 10.0832 5.49992 10.0832C5.59928 10.0832 5.69596 10.0509 5.77538 9.99123Z"
+                    stroke="#999999"
+                    stroke-width="0.916667"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M5.5 5.95831C6.25939 5.95831 6.875 5.3427 6.875 4.58331C6.875 3.82392 6.25939 3.20831 5.5 3.20831C4.74061 3.20831 4.125 3.82392 4.125 4.58331C4.125 5.3427 4.74061 5.95831 5.5 5.95831Z"
+                    stroke="#999999"
+                    stroke-width="0.916667"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                {location.address}
+              </p>
+              <div class="badge">
+                <StatusBadge counts={location.counts} />
+              </div>
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .location-list {
+    margin: 16px;
+  }
+
+  .location-list ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .location-list li {
+    border: solid 0.5px var(--ams-color-grey-3);
+    padding: 12px 16px;
+  }
+  a {
+    text-decoration: none;
+    color: var(--ams-color-black);
+    display: flex;
+    gap: 2em;
+
+    align-items: center;
+  }
+
+  .adres {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  .location-list li {
+    list-style: none;
+  }
+
+  .adres p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--ams-font-size-body-small);
+    gap: 2px;
+  }
+
+  .adres .badge {
+    margin-top: 6px;
+  }
+</style>
