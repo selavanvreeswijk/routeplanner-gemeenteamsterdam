@@ -13,7 +13,10 @@ import { lazy } from "astro:schema";
   <ul>
     {
       locations.map((location) => (
-        <li>
+        <li
+          data-name={location.name.toLowerCase()}
+          data-address={location.address.toLowerCase()}
+        >
           <a href="">
             <div>
               <DistanceDot />
