@@ -2,235 +2,118 @@
 
 ---
 
-<!-- Routeplanner Amsterdam — Zoekbalk + Kaart -->
-
+<!-- Routeplanner Amsterdam — Geolocation pagina -->
 <html lang="nl">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" href="/favicon.ico" />
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
 
-        <!-- Leaflet CSS (styling kaart) -->
-        <!-- Bron: https://leafletjs.com/examples/quick-start/ -->
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-            crossorigin=""
-        />
+    <!-- Leaflet CSS (styling kaart) -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
 
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
-        <title>Routeplanner Amsterdam</title>
-    </head>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Routeplanner Amsterdam</title>
+  </head>
 
-    <body>
-        <main>
-            <!-- Zoekbalk -->
-            <div id="zoekbalk-container">
-                <input
-                    id="zoekbalk"
-                    type="text"
-                    placeholder="Zoek een gebouw of adres..."
-                />
-                <button id="zoekknop">Zoeken</button>
-            </div>
+  <body>
+    <main>
+      <div id="map"></div>
+      <!-- Foutmelding als geolocation mislukt of geweigerd wordt -->
+      <p id="foutmelding"></p>
+    </main>
+  </body>
 
-            <p id="foutmelding"></p>
+  <!-- Leaflet JavaScript bibliotheek -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
 
-            <!-- Kaart -->
-            <div id="map"></div>
-        </main>
-    </body>
+  <script>
+    // @ts-nocheck
 
-    <!-- Leaflet JavaScript bibliotheek -->
-    <!-- Bron: https://leafletjs.com/examples/quick-start/ -->
-    <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""
-    ></script>
+    // KAART OPSTARTEN -------------------------------------------------------
+    // Fallback startlocatie: centrum van Amsterdam
+    var kaart = L.map("map").setView([52.3676, 4.9041], 13);
 
-    <script>
-        // @ts-nocheck
+    // OpenStreetMap tegels toevoegen aan de kaart
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(kaart);
 
-        // KAART OPSTARTEN -------------------------------------------------------
-        // Startlocatie: centrum Amsterdam, als fallback als geolocation faalt
-        var kaart = L.map('map').setView([52.3676, 4.9041], 13);
+    // GEOLOCATION API -------------------------------------------------------
+    // Bepaal de locatie van de gebruiker zodra de pagina laadt
+    // Bron MDN: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
+    // Bron W3Schools: https://www.w3schools.com/html/html5_geolocation.asp
+    // -------------------------------------------------------
+    const foutmelding = document.getElementById("foutmelding");
 
-        // OpenStreetMap tegels
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(kaart);
+    if (navigator.geolocation) {
+      // Browser ondersteunt geolocation: vraag locatie op
+      navigator.geolocation.getCurrentPosition(succes, fout);
+    } else {
+      // Browser biedt geen ondersteuning voor de Geolocation API
+      foutmelding.textContent =
+        "Geolocation wordt niet ondersteund door deze browser.";
+    }
 
-        // GEOLOCATION API -------------------------------------------------------
-        // Bepaal de locatie van de gebruiker bij het opstarten van de app
-        // Bron MDN: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
-        // Bron W3Schools: https://www.w3schools.com/html/html5_geolocation.asp
-        const foutmelding = document.getElementById('foutmelding');
+    // Wordt aangeroepen als de locatie succesvol is opgehaald
+    function succes(positie) {
+      const lat = positie.coords.latitude; // breedtegraad
+      const lng = positie.coords.longitude; // lengtegraad
 
-        if (navigator.geolocation) {
-            // Browser ondersteunt geolocation: vraag locatie op
-            navigator.geolocation.getCurrentPosition(succesLocatie, foutLocatie);
-        } else {
-            foutmelding.textContent = 'Geolocation wordt niet ondersteund door deze browser.';
-        }
+      // Kaart centreren op de gevonden locatie van de gebruiker
+      kaart.setView([lat, lng], 16);
 
-        function succesLocatie(positie) {
-            const lat = positie.coords.latitude;   // breedtegraad
-            const lng = positie.coords.longitude;  // lengtegraad
+      // Marker plaatsen op de locatie van de gebruiker
+      // Bron Leaflet markers: https://leafletjs.com/reference.html#marker
+      L.marker([lat, lng])
+        .addTo(kaart)
+        .bindPopup("Jouw huidige locatie")
+        .openPopup();
+    }
 
-            // Kaart centreren op de locatie van de gebruiker
-            kaart.setView([lat, lng], 15);
-
-            // Marker voor de huidige locatie van de gebruiker
-            // Bron Leaflet markers: https://leafletjs.com/reference.html#marker
-            L.marker([lat, lng])
-                .addTo(kaart)
-                .bindPopup('Jouw huidige locatie')
-                .openPopup();
-        }
-
-        // Bron foutcodes: https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError/code
-        function foutLocatie(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    foutmelding.textContent = 'Locatietoegang geweigerd. Sta locatie toe in je browserinstellingen.';
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    foutmelding.textContent = 'Locatiegegevens zijn momenteel niet beschikbaar.';
-                    break;
-                case error.TIMEOUT:
-                    foutmelding.textContent = 'Het opvragen van je locatie duurde te lang.';
-                    break;
-                default:
-                    foutmelding.textContent = 'Er is een onbekende fout opgetreden bij het ophalen van je locatie.';
-            }
-        }
-
-        // ZOEKBALK — NOMINATIM GEOCODING ----------------------------------------
-        // Bron Nominatim: https://nominatim.org/release-docs/latest/api/Search/
-        // Bron fetch API: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-
-        const zoekbalk = document.getElementById('zoekbalk');
-        const zoekknop = document.getElementById('zoekknop');
-
-        let zoekMarker = null;
-
-        zoekknop.addEventListener('click', zoekAdres);
-
-        zoekbalk.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') zoekAdres();
-        });
-
-        async function zoekAdres() {
-            const zoekterm = zoekbalk.value.trim();
-
-            // Niets doen als de zoekbalk leeg is
-            if (!zoekterm) return;
-
-            foutmelding.textContent = '';
-
-            // Stuur de zoekterm naar Nominatim
-            // countrycodes=nl beperkt de resultaten tot Nederland
-            // format=json geeft het antwoord terug als JSON
-            // limit=1 geeft alleen het beste resultaat terug
-            const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(zoekterm)}&format=json&limit=1&countrycodes=nl`
-            );
-
-            const data = await response.json();
-
-            // Geen resultaten gevonden
-            if (data.length === 0) {
-                foutmelding.textContent = 'Geen resultaten gevonden. Probeer een ander adres.';
-                return;
-            }
-
-            // Haal de coördinaten op uit het eerste resultaat
-            const lat = parseFloat(data[0].lat);
-            const lng = parseFloat(data[0].lon);
-            const naam = data[0].display_name; // volledig adres als tekst
-
-            // Verwijder de vorige zoekmarker als die er is
-            if (zoekMarker) {
-                kaart.removeLayer(zoekMarker);
-            }
-
-            // Kaart verschuiven naar het gevonden adres
-            kaart.setView([lat, lng], 16);
-
-            // Nieuwe marker plaatsen op het gevonden adres
-            zoekMarker = L.marker([lat, lng])
-                .addTo(kaart)
-                .bindPopup(naam)
-                .openPopup();
-        }
-    </script>
+    // Wordt aangeroepen als de locatie niet bepaald kan worden
+    // Bron foutcodes: https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError/code
+    function fout(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          foutmelding.textContent =
+            "Locatietoegang geweigerd. Sta locatie toe in je browserinstellingen.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          foutmelding.textContent =
+            "Locatiegegevens zijn momenteel niet beschikbaar.";
+          break;
+        case error.TIMEOUT:
+          foutmelding.textContent =
+            "Het opvragen van je locatie duurde te lang.";
+          break;
+        default:
+          foutmelding.textContent =
+            "Er is een onbekende fout opgetreden bij het ophalen van je locatie.";
+      }
+    }
+  </script>
 </html>
 
 <style>
-    body {
-        margin: 0;
-    }
+  #map {
+    height: 100vh;
+  }
 
-    main {
-        position: relative;
-    }
-
-    #map {
-        height: 100vh;
-    }
-
-    /* Zoekbalk zweeft bovenop de kaart */
-    #zoekbalk-container {
-        position: absolute;
-        top: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000; 
-        display: flex;
-        gap: 0.5rem;
-        background: white;
-        padding: 0.5rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        width: 90%;
-        max-width: 480px;
-    }
-
-    #zoekbalk {
-        flex: 1;
-        padding: 0.5rem 0.75rem;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 1rem;
-    }
-
-    #zoekknop {
-        padding: 0.5rem 1rem;
-        background-color: #c00;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-
-    #zoekknop:hover {
-        background-color: #900;
-    }
-
-    #foutmelding {
-        position: absolute;
-        top: 5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        color: #c00;
-        background: white;
-        padding: 0.4rem 0.75rem;
-        border-radius: 6px;
-        font-size: 0.9rem;
-    }
+  /* Foutmelding */
+  #foutmelding {
+    color: red;
+    padding: 1rem;
+    font-family: sans-serif;
+  }
 </style>
