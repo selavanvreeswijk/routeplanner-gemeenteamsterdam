@@ -5,7 +5,7 @@ export const filterGroups = {
 		"Mobiele_pin",
 		"Rustplekken",
 	],
-	slechtTerBeen: [
+	slechtterbeen: [
 		"Gehandicaptenparkeerplaatsen_binnen_100_m_",
 		"Voorrijden_toegestaan",
 		"Trappen_met_leuning_entree",
@@ -48,5 +48,5 @@ export const filterGroups = {
 		"Ringleiding_voor_slechthorenden",
 	],
 	prikkels: ["Prikkelarme_ruimte", "Prikkelarme_uren"],
-	hiddenDisability: ["Herkenning_Sunflower_Keycord"],
+	hiddendisability: ["Herkenning_Sunflower_Keycord"],
 };

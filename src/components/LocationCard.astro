@@ -243,3 +243,19 @@ import { lazy } from "astro:schema";
     margin-top: 10px;
   }
 </style>
+
+<script>
+  //@ts-nocheck
+
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	// console.log(checkboxes)
+
+	checkboxes.forEach((categ) => {
+		categ.addEventListener('click', () => {
+			if (categ.checked){
+				
+        
+			}
+		})
+	})
+</script>
