@@ -12,20 +12,19 @@ const total = Object.values(counts).reduce(
 );
 const percentage = total === 0 ? 0 : Math.round((ja / total) * 100);
 
-let status = "status-badge-accessible";
+// let status = "status-badge-accessible"
 
-if (percentage < 40) {
-  status = "status-badge-inaccessible";
-} else if (percentage < 75) {
-  status = "status-badge-partial";
-}
+// if (percentage < 40) {
+//   status = "status-badge-inaccessible"
+// } else if (percentage < 75) {
+//   status = "status-badge-partial"
+// }
 ---
 
 <link rel="stylesheet" href="styles/global.css" />
 
 <div class=`statusbadge ${status}`>
   <p>{percentage}% toegankelijk</p>
-  <!-- <p>Accessibility</p> -->
 </div>
 
 <style>

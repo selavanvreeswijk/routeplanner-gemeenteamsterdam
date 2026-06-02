@@ -3,260 +3,268 @@ const baseUrl = import.meta.env.BASE_URL;
 const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 ---
 
-<!-- Onboarding pagina — wordt getoond bij het eerste bezoek -->
-<!-- Bij een volgend bezoek wordt de gebruiker automatisch doorgestuurd naar de hoofdpagina -->
-
+<!-- Onboarding pagina — wordt getoond bij het eerste bezoek --><!-- Bij een volgend bezoek wordt de gebruiker automatisch doorgestuurd naar de hoofdpagina -->
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="styles/global.css" />
-    <title>Welkom — Toegankelijk Amsterdam</title>
-  </head>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href="styles/global.css" />
+		<title>Welkom — Toegankelijk Amsterdam</title>
+	</head>
 
-  <body>
-    <header>
-      <div class="header-links">
-        <img src={logoUrl} alt="Gemeente Amsterdam logo" />
-        <h1>Atlass</h1>
-      </div>
-    </header>
+	<body>
+		<header>
+			<div class="header-links">
+				<img src={logoUrl} alt="Gemeente Amsterdam logo" />
+				<h1>Atlass</h1>
+			</div>
+		</header>
 
-    <main>
-      <section class="sectie">
-        <h2>Hoe mogen we je noemen?</h2>
-        <input
-          id="naam-input"
-          type="text"
-          placeholder="Vul je naam in..."
-          autocomplete="given-name"
-        />
-      </section>
+		<main>
+			<section class="sectie">
+				<h2>Hoe mogen we je noemen?</h2>
+				<input
+					id="naam-input"
+					type="text"
+					placeholder="Vul je naam in..."
+					autocomplete="given-name"
+				/>
+			</section>
 
-      <!-- Profielkeuze -->
-      <section class="sectie">
-        <h2>Kies jouw profiel</h2>
-        <p>We laten je de meest relevante toegankelijkheidsinformatie zien.</p>
+			<!-- Profielkeuze -->
+			<section class="sectie">
+				<h2>Kies jouw profiel</h2>
+				<p>We laten je de meest relevante toegankelijkheidsinformatie zien.</p>
 
-        <div class="profiel-grid">
+				<div class="profiel-grid">
+					<label class="profiel-kaart">
+						<input type="radio" name="profiel" value="rolstoel" />
+						<span class="profiel-icoon">♿</span>
+						<span class="profiel-naam">Rolstoel</span>
+					</label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="rolstoel" />
-            <span class="profiel-icoon">♿</span>
-            <span class="profiel-naam">Rolstoel</span>
-          </label>
+					<label class="profiel-kaart">
+						<input type="radio" name="profiel" value="slechtterbeen" />
+						<span class="profiel-icoon">🦯</span>
+						<span class="profiel-naam">Slecht ter been</span>
+					</label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="rollator" />
-            <span class="profiel-icoon">🦯</span>
-            <span class="profiel-naam">Rollator</span>
-          </label>
+					<label class="profiel-kaart">
+						<input type="radio" name="profiel" value="slechtziend" />
+						<span class="profiel-icoon">👁️</span>
+						<span class="profiel-naam">Slechtziend</span>
+					</label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="visueel" />
-            <span class="profiel-icoon">👁️</span>
-            <span class="profiel-naam">Visueel</span>
-          </label>
+					<label class="profiel-kaart">
+						<input type="radio" name="profiel" value="slechthorend" />
+						<span class="profiel-icoon">🩼</span>
+						<span class="profiel-naam">Slechthorend</span>
+					</label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="tijdelijk" />
-            <span class="profiel-icoon">🩼</span>
-            <span class="profiel-naam">Tijdelijk</span>
-          </label>
+					<label class="profiel-kaart">
+						<input type="radio" name="profiel" value="hiddendisability" />
+						<span class="profiel-icoon">🩼</span>
+						<span class="profiel-naam">Hidden disability</span>
+					</label>
 
-        </div>
-      </section>
+					<label class="profiel-kaart">
+						<input type="radio" name="profiel" value="prikkels" />
+						<span class="profiel-icoon">🩼</span>
+						<span class="profiel-naam">Prikkels</span>
+					</label>
+				</div>
+			</section>
 
-      <!-- Foutmelding als iets ontbreekt -->
-      <p id="foutmelding" role="alert"></p>
+			<!-- Foutmelding als iets ontbreekt -->
+			<p id="foutmelding" role="alert"></p>
 
-      <button id="start-knop">Aan de slag</button>
-    </main>
+			<button id="start-knop">Aan de slag</button>
+		</main>
+	</body>
 
-  </body>
+	<script>
+		// @ts-nocheck
 
-  <script>
-    // @ts-nocheck
+		// Redirect wanneer de gebruiker al iets ingesteld heeft ----------------------
 
-    // Redirect wanneer de gebruiker al iets ingesteld heeft ----------------------
+		const opgeslagenNaam = localStorage.getItem("naam");
+		const opgeslagenProfiel = localStorage.getItem("profiel");
 
-    const opgeslagenNaam    = localStorage.getItem('naam');
-    const opgeslagenProfiel = localStorage.getItem('profiel');
+		// Als beide al zijn opgeslagen: direct door naar de hoofdpagina
+		// Bron: https://docs.astro.build/en/guides/environment-variables/#default-environment-variables
+		if (opgeslagenNaam && opgeslagenProfiel) {
+			window.location.href = import.meta.env.BASE_URL;
+		}
 
-    // Als beide al zijn opgeslagen: direct door naar de hoofdpagina
-    // Bron: https://docs.astro.build/en/guides/environment-variables/#default-environment-variables
-    if (opgeslagenNaam && opgeslagenProfiel) {
-      window.location.href = import.meta.env.BASE_URL;
-    }
+		// Plain JavaScript zonder TypeScript
+		const startKnop = document.getElementById("start-knop");
+		const naamInput = document.getElementById("naam-input");
+		const foutmelding = document.getElementById("foutmelding");
 
-    // Plain JavaScript zonder TypeScript
-    const startKnop   = document.getElementById('start-knop');
-    const naamInput   = document.getElementById('naam-input');
-    const foutmelding = document.getElementById('foutmelding');
+		startKnop.addEventListener("click", () => {
+			const naam = naamInput.value.trim();
+			const profielElement = document.querySelector(
+				'input[name="profiel"]:checked',
+			);
+			const profiel = profielElement ? profielElement.value : null;
 
-    startKnop.addEventListener('click', () => {
-      const naam    = naamInput.value.trim();
-      const profielElement = document.querySelector('input[name="profiel"]:checked');
-      const profiel = profielElement ? profielElement.value : null;
+			// Validatie: naam en profiel zijn verplicht
+			if (!naam) {
+				foutmelding.textContent = "Vul je naam in om verder te gaan.";
+				return;
+			}
+			if (!profiel) {
+				foutmelding.textContent = "Kies een profiel om verder te gaan.";
+				return;
+			}
 
-      // Validatie: naam en profiel zijn verplicht
-      if (!naam) {
-        foutmelding.textContent = 'Vul je naam in om verder te gaan.';
-        return;
-      }
-      if (!profiel) {
-        foutmelding.textContent = 'Kies een profiel om verder te gaan.';
-        return;
-      }
+			// Sla naam en profiel op in localStorage
+			localStorage.setItem("naam", naam);
+			localStorage.setItem("profiel", JSON.stringify({ [profiel]: true }));
 
-      // Sla naam en profiel op in localStorage
-      localStorage.setItem('naam', naam);
-      localStorage.setItem('profiel', profiel);
-
-      // Stuur door naar de hoofdpagina (met base-pad)
-      window.location.href = import.meta.env.BASE_URL;
-    });
-  </script>
-
+			// Stuur door naar de hoofdpagina (met base-pad)
+			window.location.href = import.meta.env.BASE_URL;
+		});
+	</script>
 </html>
 
 <style>
-  body {
-    background-color: var(--ams-color-white);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+	body {
+		background-color: var(--ams-color-white);
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
 
-  header {
-    background-color: var(--ams-color-primair-red);
-    padding: 20px 16px 24px;
-  }
+	header {
+		background-color: var(--ams-color-primair-red);
+		padding: 20px 16px 24px;
+	}
 
-  .header-links {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
+	.header-links {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+	}
 
-  header img {
-    width: 48px;
-    height: auto;
-  }
+	header img {
+		width: 48px;
+		height: auto;
+	}
 
-  header h1 {
-    color: var(--ams-color-white);
-    line-height: 1.2;
-    margin: 0;
-  }
+	header h1 {
+		color: var(--ams-color-white);
+		line-height: 1.2;
+		margin: 0;
+	}
 
-  main {
-    padding: 24px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    max-width: 480px;
-    margin: 0 auto;
-    width: 100%;
-  }
+	main {
+		padding: 24px 16px;
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+		max-width: 480px;
+		margin: 0 auto;
+		width: 100%;
+	}
 
-  .sectie {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+	.sectie {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
 
-  .sectie p {
-    color: var(--ams-color-grey-4);
-    font-size: var(--ams-font-size-body-small);
-  }
+	.sectie p {
+		color: var(--ams-color-grey-4);
+		font-size: var(--ams-font-size-body-small);
+	}
 
-  /* Naam-invoerveld */
-  #naam-input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--ams-color-grey-3);
-    border-radius: 6px;
-    font-size: var(--ams-font-size-body);
-    font-family: var(--ams-font-family);
-    background: var(--ams-color-white);
-    color: var(--ams-color-grey-5);
-    transition: border-color 0.15s ease;
-  }
+	/* Naam-invoerveld */
+	#naam-input {
+		width: 100%;
+		padding: 12px 14px;
+		border: 1.5px solid var(--ams-color-grey-3);
+		border-radius: 6px;
+		font-size: var(--ams-font-size-body);
+		font-family: var(--ams-font-family);
+		background: var(--ams-color-white);
+		color: var(--ams-color-grey-5);
+		transition: border-color 0.15s ease;
+	}
 
-  #naam-input:focus {
-    outline: none;
-    border-color: var(--ams-color-primair-red);
-  }
+	#naam-input:focus {
+		outline: none;
+		border-color: var(--ams-color-primair-red);
+	}
 
-  /* Raster van vier profielkaarten */
-  .profiel-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+	/* Raster van vier profielkaarten */
+	.profiel-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 10px;
+	}
 
-  /* Verberg de echte radio button — de label is het klikbare element */
-  .profiel-kaart input[type="radio"] {
-    display: none;
-  }
+	/* Verberg de echte radio button — de label is het klikbare element */
+	.profiel-kaart input[type="radio"] {
+		display: none;
+	}
 
-  /* De kaart zelf */
-  .profiel-kaart {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    padding: 18px 12px;
-    border: 1.5px solid var(--ams-color-grey-3);
-    background: var(--ams-color-white);
-    cursor: pointer;
-    transition: all 0.18s ease;
-  }
+	/* De kaart zelf */
+	.profiel-kaart {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		padding: 18px 12px;
+		border: 1.5px solid var(--ams-color-grey-3);
+		background: var(--ams-color-white);
+		cursor: pointer;
+		transition: all 0.18s ease;
+	}
 
-  /* Geselecteerde kaart: rood, zelfde als actieve filter op de hoofdpagina */
-  .profiel-kaart:has(input:checked) {
-    background-color: var(--ams-color-primair-red);
-    border-color: var(--ams-color-primair-red);
-    color: var(--ams-color-white);
-  }
+	/* Geselecteerde kaart: rood, zelfde als actieve filter op de hoofdpagina */
+	.profiel-kaart:has(input:checked) {
+		background-color: var(--ams-color-primair-red);
+		border-color: var(--ams-color-primair-red);
+		color: var(--ams-color-white);
+	}
 
-  .profiel-icoon {
-    font-size: 2rem;
-    line-height: 1;
-  }
+	.profiel-icoon {
+		font-size: 2rem;
+		line-height: 1;
+	}
 
-  .profiel-naam {
-    font-size: var(--ams-font-size-body-small);
-    font-weight: var(--ams-font-weight-semibold);
-  }
+	.profiel-naam {
+		font-size: var(--ams-font-size-body-small);
+		font-weight: var(--ams-font-weight-semibold);
+	}
 
-  /* Foutmelding */
-  #foutmelding {
-    color: var(--ams-color-primair-red);
-    font-size: var(--ams-font-size-body-small);
-    min-height: 1.2em;
-  }
+	/* Foutmelding */
+	#foutmelding {
+		color: var(--ams-color-primair-red);
+		font-size: var(--ams-font-size-body-small);
+		min-height: 1.2em;
+	}
 
-  /* Aan de slag knop */
-  #start-knop {
-    width: 100%;
-    padding: 14px;
-    background-color: var(--ams-color-primair-red);
-    color: var(--ams-color-white);
-    border: none;
-    font-family: var(--ams-font-family);
-    font-size: var(--ams-font-size-body);
-    font-weight: var(--ams-font-weight-semibold);
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-  }
+	/* Aan de slag knop */
+	#start-knop {
+		width: 100%;
+		padding: 14px;
+		background-color: var(--ams-color-primair-red);
+		color: var(--ams-color-white);
+		border: none;
+		font-family: var(--ams-font-family);
+		font-size: var(--ams-font-size-body);
+		font-weight: var(--ams-font-weight-semibold);
+		cursor: pointer;
+		transition: background-color 0.15s ease;
+	}
 
-  #start-knop:hover {
-    background-color: var(--ams-color-primair-red-dark);
-  }
+	#start-knop:hover {
+		background-color: var(--ams-color-primair-red-dark);
+	}
 </style>

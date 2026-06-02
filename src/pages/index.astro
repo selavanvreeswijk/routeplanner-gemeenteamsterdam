@@ -10,133 +10,140 @@ import LocationCard from "../components/LocationCard.astro";
 import Map from "../components/Map.astro";
 
 const locations = data.features.map((feature) => ({
-  name: feature.properties.Naam_locatie,
-  address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
-  counts: countFilter(feature, filterGroups),
-  lat: feature.geometry.coordinates[1],
-  lng: feature.geometry.coordinates[0],
+	name: feature.properties.Naam_locatie,
+	address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
+	counts: countFilter(feature, filterGroups),
+	lat: feature.geometry.coordinates[1],
+	lng: feature.geometry.coordinates[0],
 }));
 ---
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="styles/global.css" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin=""
-    />
-    <title>Astro</title>
-  </head>
-  <body>
-    <Header />
-    <Filter />
-    <Display />
-    <div id="list-view">
-      <LocationCard locations={locations} />
-    </div>
-    <script is:inline define:vars={{ locations }}>
-      window._locaties = locations;
-    </script>
-    <Map />
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""></script>
-  </body>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href="styles/global.css" />
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+			integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+			crossorigin=""
+		/>
+		<title>Astro</title>
+	</head>
+	<body>
+		<Header />
+		<Filter />
+		<Display />
+		<div id="list-view">
+			<LocationCard locations={locations} />
+		</div>
+		<script is:inline define:vars={{ locations }}>
+			window._locaties = locations;
+		</script>
+		<Map />
+		<script
+			src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+			integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+			crossorigin=""></script>
+	</body>
 
-  <script>
-    // @ts-nocheck
+	<script>
+		// @ts-nocheck
 
-    // Onboarding ------------------------------------------------------
+		// Onboarding ------------------------------------------------------
 
-    const opgeslagenProfiel = localStorage.getItem('profiel');
-    const opgeslagenNaam    = localStorage.getItem('naam');
+		const opgeslagenProfiel = localStorage.getItem("profiel");
+		const opgeslagenNaam = localStorage.getItem("naam");
 
-    if (!opgeslagenProfiel || !opgeslagenNaam) {
-      // Eerste bezoek: stuur naar onboarding
-      window.location.href = import.meta.env.BASE_URL + 'onboarding';
-    } else {
-      // Tweede bezoek: zet het opgeslagen profiel alvast aan in de filterknop
-      const bijbehorendeCheckbox = document.querySelector(
-        `input[name="filter"][value="${opgeslagenProfiel}"]`
-      );
+		if (!opgeslagenProfiel || !opgeslagenNaam) {
+			// Eerste bezoek: stuur naar onboarding
+			window.location.href = import.meta.env.BASE_URL + "onboarding";
+		} else {
+			// Tweede bezoek: zet het opgeslagen profiel alvast aan in de filterknop
+			const profielObject = Object.keys(JSON.parse(opgeslagenProfiel));
 
-      if (bijbehorendeCheckbox) {
-        bijbehorendeCheckbox.checked = true;
-        // Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
-        bijbehorendeCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    }
+			profielObject.forEach((waarde) => {
+				const checkbox = document.querySelector(
+					`input[name="filter"][value="${waarde}"]`,
+				);
+				if (checkbox) {
+					checkbox.checked = true;
+					// Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
+					checkbox.dispatchEvent(
+						new Event("change", { bubbles: true }),
+					);
+				}
+			});
+		}
 
-    const input = document.getElementById("search-input");
-    const cards = document.querySelectorAll(".location-list li");
-    const countEl = document.getElementById("location-count");
+		const input = document.getElementById("search-input");
+		const cards = document.querySelectorAll(".location-list li");
+		const countEl = document.getElementById("location-count");
 
-    function updateCount() {
-      const visible = Array.from(cards).filter(
-        (c) => c.style.display !== "none",
-      ).length;
-      if (countEl)
-        countEl.textContent = `${visible} locatie${visible === 1 ? "" : "s"} gevonden`;
-    }
+		function updateCount() {
+			const visible = Array.from(cards).filter(
+				(c) => c.style.display !== "none",
+			).length;
+			if (countEl)
+				countEl.textContent = `${visible} locatie${visible === 1 ? "" : "s"} gevonden`;
+		}
 
-    updateCount();
+		updateCount();
 
-    input.addEventListener("input", () => {
-      const query = input.value.toLowerCase();
-      cards.forEach((card) => {
-        const name = card.dataset.name ?? "";
-        const address = card.dataset.address ?? "";
-        card.style.display =
-          name.includes(query) || address.includes(query) ? "" : "none";
-      });
-      updateCount();
-      (window as any).filterMarkers?.(query);
-    });
+		input.addEventListener("input", () => {
+			const query = input.value.toLowerCase();
+			cards.forEach((card) => {
+				const name = card.dataset.name ?? "";
+				const address = card.dataset.address ?? "";
+				card.style.display =
+					name.includes(query) || address.includes(query) ? "" : "none";
+			});
+			updateCount();
+			(window as any).filterMarkers?.(query);
+		});
 
-    // toggle tussen lijst en kaartweergave
-    const radioLijst = document.getElementById("radio-1");
-    const radioMap = document.getElementById("radio-2");
-    const listView = document.getElementById("list-view");
-    const mapView = document.getElementById("map-view");
-    const zoekKnop = document.getElementById("search-input-btn") as HTMLButtonElement;
+		// toggle tussen lijst en kaartweergave
+		const radioLijst = document.getElementById("radio-1");
+		const radioMap = document.getElementById("radio-2");
+		const listView = document.getElementById("list-view");
+		const mapView = document.getElementById("map-view");
+		const zoekKnop = document.getElementById(
+			"search-input-btn",
+		) as HTMLButtonElement;
 
-    if (zoekKnop) zoekKnop.style.display = "none";
+		if (zoekKnop) zoekKnop.style.display = "none";
 
-    if (zoekKnop) {
-      zoekKnop.addEventListener("click", () => {
-        (window as any).zoekOpKaart?.(input.value.trim());
-      });
-    }
+		if (zoekKnop) {
+			zoekKnop.addEventListener("click", () => {
+				(window as any).zoekOpKaart?.(input.value.trim());
+			});
+		}
 
-    input.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "Enter" && zoekKnop && zoekKnop.style.display !== "none") {
-        (window as any).zoekOpKaart?.(input.value.trim());
-      }
-    });
+		input.addEventListener("keydown", (e: KeyboardEvent) => {
+			if (e.key === "Enter" && zoekKnop && zoekKnop.style.display !== "none") {
+				(window as any).zoekOpKaart?.(input.value.trim());
+			}
+		});
 
-    radioMap.addEventListener("change", () => {
-      listView!.style.display = "none";
-      mapView!.style.display = "block";
-      if (zoekKnop) zoekKnop.style.display = "";
-      setTimeout(() => {
-        if (window.initialiseerKaart) {
-          window.initialiseerKaart();
-        }
-      }, 50);
-    });
+		radioMap.addEventListener("change", () => {
+			listView!.style.display = "none";
+			mapView!.style.display = "block";
+			if (zoekKnop) zoekKnop.style.display = "";
+			setTimeout(() => {
+				if (window.initialiseerKaart) {
+					window.initialiseerKaart();
+				}
+			}, 50);
+		});
 
-    radioLijst.addEventListener("change", () => {
-      listView!.style.display = "block";
-      mapView!.style.display = "none";
-      if (zoekKnop) zoekKnop.style.display = "none";
-    });
-  </script>
+		radioLijst.addEventListener("change", () => {
+			listView!.style.display = "block";
+			mapView!.style.display = "none";
+			if (zoekKnop) zoekKnop.style.display = "none";
+		});
+	</script>
 </html>

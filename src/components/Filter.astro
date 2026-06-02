@@ -268,23 +268,16 @@
 </style>
 
 <script>
-  const btn = document.getElementById("bekijk-meer-btn");
-  const hiddenDisability = document.getElementById("hidden-disability");
+	//@ts-nocheck
+	const btn = document.getElementById("bekijk-meer-btn");
+	const hiddenDisability = document.getElementById("hidden-disability");
 
-  if (btn && hiddenDisability) {
-    btn.addEventListener("click", () => {
-      hiddenDisability.classList.toggle("open");
-      btn.textContent = hiddenDisability.classList.contains("open")
-        ? "Bekijk minder"
-        : "Bekijk meer";
-    });
-  }
-
-  const checkboxes = document.querySelectorAll('input[name="filter"]');
-
-  // function updateFilter(chosen) {
-  // 	document.querySelectorAll(".statusbadge").forEach((badge) => {
-
-  // });
-  // }
+	if (btn && hiddenDisability) {
+		btn.addEventListener("click", () => {
+			hiddenDisability.classList.toggle("open");
+			btn.textContent = hiddenDisability.classList.contains("open")
+				? "bekijk Minder"
+				: "bekijk Meer";
+		});
+	}
 </script>
