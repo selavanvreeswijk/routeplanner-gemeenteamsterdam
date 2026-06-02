@@ -14,7 +14,9 @@
   --ams-color-grey-4: #767676;
   --ams-color-grey-3: #d1d1d1;
   --ams-color-grey-2: #e8e8e8;
+  --ams-color-grey-1: #f4f4f4;
   --ams-color-white: #ffffff;
+  --ams-bg: #ffffff;
 
   /* Blauw */
   --ams-color-blue: #004699;
@@ -51,6 +53,30 @@
   --ams-font-size-body-small: 0.875rem; /* 14px */
   --ams-font-size-body-extra-small: 0.75rem; /* 12px */
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ams-color-black: #f0f0f0;
+    --ams-color-grey-5: #e0e0e0;
+    --ams-color-grey-4: #a0a0a0;
+    --ams-color-grey-3: #3a3a3a;
+    --ams-color-grey-2: #2a2a2a;
+    --ams-color-grey-1: #1e1e1e;
+    --ams-color-white: #111111;
+    --ams-bg: #111111;
+  }
+
+  body {
+    background-color: #111111;
+    color: #f0f0f0;
+  }
+
+  h2 {
+    color: #f0f0f0;
+  }
+}
+
+@import url("animations.css");
 
 * {
   margin: 0;

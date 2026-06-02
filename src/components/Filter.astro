@@ -199,11 +199,16 @@
 		transition: all 0.18s ease;
 	}
 
-	.filter-btn:has(input:checked) {
-		background-color: var(--ams-color-red);
-		color: var(--ams-color-white);
-		border-color: var(--ams-color-red);
-	}
+  .filter-btn:has(input:checked) {
+    background-color: var(--ams-color-red);
+    color: var(--ams-color-white);
+    border-color: var(--ams-color-red);
+    transform: scale(1.03);
+  }
+
+  .filter-btn:active {
+    transform: scale(0.96);
+  }
 
 	.hidden-disability {
 		display: none;
@@ -213,17 +218,30 @@
 		display: contents;
 	}
 
-	.bekijk-meer-wrapper {
-		grid-column: 1 / -1;
-		display: flex;
-	}
-	#bekijk-meer-btn {
-		border: none;
-		background: transparent;
-		text-decoration: underline;
-		color: var(--ams-color-blue);
-		font-weight: var(--ams-font-weight-semibold);
-	}
+  .hidden-disability.open .filter-btn:nth-child(1) {
+    animation: fadeInUp 0.3s ease both 0s;
+  }
+  .hidden-disability.open .filter-btn:nth-child(2) {
+    animation: fadeInUp 0.3s ease both 0.1s;
+  }
+  .hidden-disability.open .filter-btn:nth-child(3) {
+    animation: fadeInUp 0.3s ease both 0.2s;
+  }
+  .hidden-disability.open .filter-btn:nth-child(4) {
+    animation: fadeInUp 0.3s ease both 0.3s;
+  }
+
+  .bekijk-meer-wrapper {
+    grid-column: 1 / -1;
+    display: flex;
+  }
+  #bekijk-meer-btn {
+    border: none;
+    background: transparent;
+    text-decoration: underline;
+    color: var(--ams-color-black);
+    font-weight: var(--ams-font-weight-semibold);
+  }
 </style>
 
 <script>

@@ -1,13 +1,13 @@
 ---
-import Inputfield from "./Inputfield.astro";
+import Searchfield from "./Searchfield.astro";
 ---
 
 <header>
   <div>
     <img src="public/assets/logo-gemeente-amsterdam.png" alt="" />
-    <h1>Atlass</h1>
+    <h1>Atlas</h1>
   </div>
-  <Inputfield />
+  <Searchfield showButton={true} />
 </header>
 
 <style>
@@ -25,7 +25,7 @@ import Inputfield from "./Inputfield.astro";
     align-items: center;
   }
   h1 {
-    color: var(--ams-color-white);
+    color: #ffffff;
   }
 
   header img {
