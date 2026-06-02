@@ -16,7 +16,10 @@ export async function getStaticPaths() {
   }));
 }
 
-const p = Astro.props.feature.properties; // Ontvang die meegestuurde data en sla het op als p
+const { feature } = Astro.props;
+const p = feature.properties;
+const lat = feature.geometry.coordinates[1];
+const lng = feature.geometry.coordinates[0];
 ---
 
 <html lang="en">
@@ -25,15 +28,19 @@ const p = Astro.props.feature.properties; // Ontvang die meegestuurde data en sl
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <link rel="stylesheet" href="../styles/global.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
     <title>{p.Naam_locatie}</title>
   </head>
   <body>
     <Header />
-    <div>
-      <a class="back" href="/routeplanner-gemeenteamsterdam/">← Terug</a>
+    <a class="back" href="/routeplanner-gemeenteamsterdam/">← Terug</a>
+    <div class="location-information">
       <p class="category">{p.Subfilter?.trim()}</p>
       <h2>{p.Naam_locatie}</h2>
-      <p>
+      <p class="adres">
         <svg
           width="20"
           height="20"
@@ -63,7 +70,9 @@ const p = Astro.props.feature.properties; // Ontvang die meegestuurde data en sl
         {p.Postcode}
       </p>
     </div>
-    <div class="map"></div>
+    <div id="map-view">
+      <div id="map"></div>
+    </div>
 
     <div>
       <h3>Toegankelijkheid</h3>
@@ -79,6 +88,16 @@ const p = Astro.props.feature.properties; // Ontvang die meegestuurde data en sl
         <li>Voorrijden toegestaan: {p.Voorrijden_toegestaan}</li>
       </ul>
     </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" is:inline
+    ></script>
+    <script define:vars={{ lat, lng, naam: p.Naam_locatie }} is:inline>
+      var map = L.map("map").setView([lat, lng], 15);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+      L.marker([lat, lng]).addTo(map).bindPopup(naam).openPopup();
+    </script>
   </body>
 </html>
 <style>
@@ -93,13 +112,13 @@ const p = Astro.props.feature.properties; // Ontvang die meegestuurde data en sl
     font-size: var(--ams-font-size-body-small);
     color: var(--ams-color-grey-5);
     text-decoration: none;
+    margin: 16px;
   }
 
   p.category {
     font-size: var(--ams-font-size-body-small);
     color: var(--ams-color-red);
     text-transform: uppercase;
-    margin: 0;
     font-weight: bold;
   }
 
@@ -117,5 +136,26 @@ const p = Astro.props.feature.properties; // Ontvang die meegestuurde data en sl
     padding: 1rem;
     border: solid 0.5px var(--ams-color-grey-3);
     font-size: var(--ams-font-size-body-small);
+  }
+
+  #map {
+    height: 20vh;
+    border-radius: 5px;
+    animation: fadeInUp 0.9s ease both;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .location-information {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin: 16px;
+    border-left: 3px solid var(--ams-color-red);
+  }
+
+  p.adres {
+    align-items: center;
+    display: flex;
   }
 </style>
