@@ -74,6 +74,18 @@
   h2 {
     color: #f0f0f0;
   }
+
+  h1 {
+    color: #f0f0f0;
+  }
+
+  #start-knop {
+    color: #f0f0f0;
+  }
+
+  .filter-btn:has(input:checked) {
+    color: #f0f0f0;
+  }
 }
 
 @import url("animations.css");
