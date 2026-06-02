@@ -47,9 +47,31 @@ const locations = data.features.map((feature) => ({
   </body>
 
   <script>
-    // aantal getoonde locaties als je typt
-    const input = document.getElementById("search-input") as HTMLInputElement;
-    const cards = document.querySelectorAll<HTMLLIElement>(".location-list li");
+    // @ts-nocheck
+
+    // Onboarding ------------------------------------------------------
+
+    const opgeslagenProfiel = localStorage.getItem('profiel');
+    const opgeslagenNaam    = localStorage.getItem('naam');
+
+    if (!opgeslagenProfiel || !opgeslagenNaam) {
+      // Eerste bezoek: stuur naar onboarding
+      window.location.href = import.meta.env.BASE_URL + 'onboarding';
+    } else {
+      // Tweede bezoek: zet het opgeslagen profiel alvast aan in de filterknop
+      const bijbehorendeCheckbox = document.querySelector(
+        `input[name="filter"][value="${opgeslagenProfiel}"]`
+      );
+
+      if (bijbehorendeCheckbox) {
+        bijbehorendeCheckbox.checked = true;
+        // Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
+        bijbehorendeCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+
+    const input = document.getElementById("search-input");
+    const cards = document.querySelectorAll(".location-list li");
     const countEl = document.getElementById("location-count");
 
     function updateCount() {
@@ -74,8 +96,8 @@ const locations = data.features.map((feature) => ({
     });
 
     // toggle tussen lijst en kaartweergave
-    const radioLijst = document.getElementById("radio-1") as HTMLInputElement;
-    const radioMap = document.getElementById("radio-2") as HTMLInputElement;
+    const radioLijst = document.getElementById("radio-1");
+    const radioMap = document.getElementById("radio-2");
     const listView = document.getElementById("list-view");
     const mapView = document.getElementById("map-view");
 
@@ -83,7 +105,9 @@ const locations = data.features.map((feature) => ({
       listView!.style.display = "none";
       mapView!.style.display = "block";
       setTimeout(() => {
-        (window as any).initialiseerKaart?.();
+        if (window.initialiseerKaart) {
+          window.initialiseerKaart();
+        }
       }, 50);
     });
 

@@ -27,13 +27,23 @@
 
     var foutmelding = document.getElementById("foutmelding");
 
+    // Blauw locatie-icoon (Apple Maps stijl) via L.divIcon
+    // Bron L.divIcon: https://leafletjs.com/reference.html#divicon
+    var icoonLocatie = L.divIcon({
+      html: '<div class="locatie-icoon"><div class="locatie-ping"></div></div>',
+      iconSize: [20, 20],
+      iconAnchor: [10, 10],
+      className: ""
+    });
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function (positie) {
           var lat = positie.coords.latitude;
           var lng = positie.coords.longitude;
           kaart.setView([lat, lng], 16);
-          L.marker([lat, lng])
+          // Marker
+          L.marker([lat, lng], { icon: icoonLocatie })
             .addTo(kaart)
             .bindPopup("Jouw huidige locatie")
             .openPopup();
@@ -77,5 +87,33 @@
   #foutmelding {
     color: red;
     padding: 1rem;
+  }
+
+  /* Bron: https://docs.astro.build/en/guides/styling/#global-styles */
+  :global(.locatie-icoon) {
+    width: 20px;
+    height: 20px;
+    background-color: #007aff;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.4);
+    position: relative;
+  }
+
+  :global(.locatie-ping) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(0, 122, 255, 0.3);
+    animation: ping 2s ease-out infinite;
+  }
+
+  @keyframes ping {
+    0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
   }
 </style>
