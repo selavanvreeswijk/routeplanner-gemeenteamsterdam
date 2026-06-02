@@ -1,8 +1,6 @@
 ---
 //@ts-nocheck
 const { counts } = Astro.props
-console.log("counts:", counts)
-
 
 const ja = Object.values(counts).reduce((total, category) => total + category.Ja, 0) //beginwaarde van reduce is 0
 const total = Object.values(counts).reduce((total, category) => total + category.Ja + category.Nee + category.Onbekend, 0)
@@ -18,7 +16,7 @@ if (percentage < 40) {
 ---
 <link rel="stylesheet" href="styles/global.css" />
 
-<div class={status}>
+<div class=`statusbadge ${status}`>
   <p>{percentage}% toegankelijk</p>
   <!-- <p>Accessibility</p> -->
 </div>
