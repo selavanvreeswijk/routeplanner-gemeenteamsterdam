@@ -1,6 +1,4 @@
 ---
-import Inputfield from "./Inputfield.astro";
-
 // BASE_URL bevat het base-pad uit astro.config.mjs
 // bijv. '/routeplanner-gemeenteamsterdam/'
 // Dit is nodig om assets van de public folder correct in te laden
@@ -11,7 +9,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 <header>
   <!-- Bovenste rij: logo + titels links, gebruikersnaam rechts -->
   <div class="header-top">
-
     <!-- Links: logo boven, "Atlass" eronder -->
     <div class="header-links">
       <img src={logoUrl} alt="Gemeente Amsterdam logo" />
@@ -20,19 +17,17 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
     <!-- Rechts: naam van de ingelogde gebruiker (ingevuld via script) -->
     <span id="header-gebruiker-naam" class="gebruiker-naam"></span>
-
   </div>
 
   <!-- Zoekbalk onder de titelbalk -->
-  <Inputfield />
 </header>
 
 <!-- Lees de naam op uit localStorage en zet hem in de header -->
 <!-- localStorage werkt alleen client-side, vandaar een apart script -->
 <!-- Bron localStorage: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage -->
 <script>
-  const naam = localStorage.getItem('naam');
-  const naamElement = document.getElementById('header-gebruiker-naam');
+  const naam = localStorage.getItem("naam");
+  const naamElement = document.getElementById("header-gebruiker-naam");
   if (naam && naamElement) {
     naamElement.textContent = `Hi, ${naam}`;
   }
