@@ -2,6 +2,5 @@
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
-    site: 'https://selavanvreeswijk.github.io',
-    base: '/routeplanner-gemeenteamsterdam',
+    site: 'https://routeplanner-gemeenteamsterdam.onrender.com',
 })
