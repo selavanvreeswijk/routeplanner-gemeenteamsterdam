@@ -13,12 +13,11 @@ export function countFilter(feature, filterGroups) {
       if (filterValue !== undefined) {
         const value = filterValue.trim();
 
-        if (value in count[filter]) {
-          count[filter][value]++;
-        }
-      }
-    }
-  }
-  console.log(count);	
-  return count;
+				if (value in count[filter]) {
+					count[filter][value]++;
+				}
+			}
+		}
+	}
+	return count;
 }
