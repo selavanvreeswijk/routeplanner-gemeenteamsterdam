@@ -1,5 +1,5 @@
 ---
-
+import Searchfield from "../components/Searchfield.astro";
 ---
 
 <!-- Routeplanner Amsterdam — Zoekbalk + Kaart -->
@@ -27,12 +27,7 @@
     <main>
       <!-- Zoekbalk -->
       <div id="zoekbalk-container">
-        <input
-          id="zoekbalk"
-          type="text"
-          placeholder="Zoek een gebouw of adres..."
-        />
-        <button id="zoekknop">Zoeken</button>
+        <Searchfield id="zoekbalk" showButton={true} />
       </div>
 
       <p id="foutmelding"></p>
@@ -144,7 +139,7 @@
     // Bron fetch API: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 
     const zoekbalk = document.getElementById("zoekbalk");
-    const zoekknop = document.getElementById("zoekknop");
+    const zoekknop = document.getElementById("zoekbalk-btn");
 
     let zoekMarker = null;
 
@@ -221,36 +216,8 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    display: flex;
-    gap: 0.5rem;
-    background: white;
-    padding: 0.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     width: 90%;
     max-width: 480px;
-  }
-
-  #zoekbalk {
-    flex: 1;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-  }
-
-  #zoekknop {
-    padding: 0.5rem 1rem;
-    background-color: #c00;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-
-  #zoekknop:hover {
-    background-color: #900;
   }
 
   #foutmelding {

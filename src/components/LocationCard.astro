@@ -18,7 +18,7 @@ import { lazy } from "astro:schema";
           data-address={location.address.toLowerCase()}
         >
           <a
-            href={`/locaties/${location.name
+            href={`/routeplanner-gemeenteamsterdam/locaties/${location.name
               .toLowerCase()
               .replace(/\s+/g, "-")
               .replace(/[^a-z0-9-]/g, "")}`}
@@ -53,9 +53,9 @@ import { lazy } from "astro:schema";
                 </svg>
                 {location.address}
               </p>
-              <div class="badge">
+              {/* <div class="badge">
                 <StatusBadge counts={location.counts} />
-              </div>
+              </div> */}
               <div class="accses-icon">
                 <svg
                   width="20"
@@ -66,12 +66,12 @@ import { lazy } from "astro:schema";
                 >
                   <path
                     d="M9.92683 11.9091C10.7971 11.9091 11.5026 11.2036 11.5026 10.3333C11.5026 9.46306 10.7971 8.75757 9.92683 8.75757C9.05656 8.75757 8.35107 9.46306 8.35107 10.3333C8.35107 11.2036 9.05656 11.9091 9.92683 11.9091Z"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linejoin="round"
                   />
                   <path
                     d="M9.92691 6C6.53523 6 3.99905 8.8232 3.14701 9.91205C2.951 10.1625 2.951 10.5041 3.14701 10.7546C3.99905 11.8435 6.53523 14.6667 9.92691 14.6667C13.3186 14.6667 15.8547 11.8435 16.7068 10.7546C16.9029 10.5041 16.9029 10.1625 16.7068 9.91205C15.8547 8.8232 13.3186 6 9.92691 6Z"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
@@ -85,22 +85,22 @@ import { lazy } from "astro:schema";
                 >
                   <path
                     d="M15.3125 15.6906L12.5 11.925C12.4815 11.9004 12.4573 11.8806 12.4297 11.867C12.402 11.8534 12.3715 11.8465 12.3407 11.8469H8.47817C8.42925 11.8464 8.3822 11.828 8.34592 11.7952C8.30964 11.7624 8.28665 11.7174 8.2813 11.6688L7.78442 7.1344"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                   />
                   <path
                     d="M12.8218 8.8938H7.97803"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                   />
                   <path
                     d="M13.325 15.6905C12.912 16.2325 12.3888 16.6808 11.7899 17.0059C11.191 17.3309 10.5299 17.5253 9.8504 17.5763C9.17087 17.6272 8.48826 17.5336 7.84756 17.3015C7.20686 17.0694 6.62263 16.7041 6.13339 16.2298C5.64414 15.7555 5.261 15.1828 5.0092 14.5496C4.75741 13.9164 4.6427 13.237 4.67262 12.5562C4.70254 11.8754 4.87642 11.2087 5.18279 10.6C5.48917 9.99133 5.92108 9.45449 6.45005 9.0249"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                   />
                   <path
                     d="M7.34692 5.46558C8.18398 5.46558 8.86255 4.78701 8.86255 3.94995C8.86255 3.11289 8.18398 2.43433 7.34692 2.43433C6.50987 2.43433 5.8313 3.11289 5.8313 3.94995C5.8313 4.78701 6.50987 5.46558 7.34692 5.46558Z"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                   />
                 </svg>
@@ -113,12 +113,12 @@ import { lazy } from "astro:schema";
                 >
                   <path
                     d="M9.92683 11.9091C10.7971 11.9091 11.5026 11.2036 11.5026 10.3333C11.5026 9.46306 10.7971 8.75757 9.92683 8.75757C9.05656 8.75757 8.35107 9.46306 8.35107 10.3333C8.35107 11.2036 9.05656 11.9091 9.92683 11.9091Z"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linejoin="round"
                   />
                   <path
                     d="M9.92691 6C6.53523 6 3.99905 8.8232 3.14701 9.91205C2.951 10.1625 2.951 10.5041 3.14701 10.7546C3.99905 11.8435 6.53523 14.6667 9.92691 14.6667C13.3186 14.6667 15.8547 11.8435 16.7068 10.7546C16.9029 10.5041 16.9029 10.1625 16.7068 9.91205C15.8547 8.8232 13.3186 6 9.92691 6Z"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
@@ -132,22 +132,22 @@ import { lazy } from "astro:schema";
                 >
                   <path
                     d="M15.3125 15.6906L12.5 11.925C12.4815 11.9004 12.4573 11.8806 12.4297 11.867C12.402 11.8534 12.3715 11.8465 12.3407 11.8469H8.47817C8.42925 11.8464 8.3822 11.828 8.34592 11.7952C8.30964 11.7624 8.28665 11.7174 8.2813 11.6688L7.78442 7.1344"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                   />
                   <path
                     d="M12.8218 8.8938H7.97803"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                   />
                   <path
                     d="M13.325 15.6905C12.912 16.2325 12.3888 16.6808 11.7899 17.0059C11.191 17.3309 10.5299 17.5253 9.8504 17.5763C9.17087 17.6272 8.48826 17.5336 7.84756 17.3015C7.20686 17.0694 6.62263 16.7041 6.13339 16.2298C5.64414 15.7555 5.261 15.1828 5.0092 14.5496C4.75741 13.9164 4.6427 13.237 4.67262 12.5562C4.70254 11.8754 4.87642 11.2087 5.18279 10.6C5.48917 9.99133 5.92108 9.45449 6.45005 9.0249"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                   />
                   <path
                     d="M7.34692 5.46558C8.18398 5.46558 8.86255 4.78701 8.86255 3.94995C8.86255 3.11289 8.18398 2.43433 7.34692 2.43433C6.50987 2.43433 5.8313 3.11289 5.8313 3.94995C5.8313 4.78701 6.50987 5.46558 7.34692 5.46558Z"
-                    stroke="black"
+                    stroke="currentColor"
                     stroke-linecap="round"
                   />
                 </svg>
@@ -161,6 +161,17 @@ import { lazy } from "astro:schema";
 </section>
 
 <style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .location-list {
     margin: 16px;
   }
@@ -173,8 +184,29 @@ import { lazy } from "astro:schema";
 
   .location-list li {
     border: solid 0.5px var(--ams-color-grey-3);
+    background-color: var(--ams-color-white);
     padding: 12px 16px;
+    animation: fadeInUp 0.5s ease both;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
   }
+
+  .location-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .location-list li:nth-child(1)  { animation-delay: 0.10s; }
+  .location-list li:nth-child(2)  { animation-delay: 0.22s; }
+  .location-list li:nth-child(3)  { animation-delay: 0.34s; }
+  .location-list li:nth-child(4)  { animation-delay: 0.46s; }
+  .location-list li:nth-child(5)  { animation-delay: 0.58s; }
+  .location-list li:nth-child(6)  { animation-delay: 0.70s; }
+  .location-list li:nth-child(7)  { animation-delay: 0.82s; }
+  .location-list li:nth-child(8)  { animation-delay: 0.94s; }
+  .location-list li:nth-child(9)  { animation-delay: 1.06s; }
+  .location-list li:nth-child(10) { animation-delay: 1.18s; }
   a {
     text-decoration: none;
     color: var(--ams-color-black);

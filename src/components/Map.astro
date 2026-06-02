@@ -9,6 +9,7 @@
 
 <script is:inline>
   window.kaartGeinitialiseerd = false;
+  window._markers = [];
 
   window.initialiseerKaart = function () {
     if (window.kaartGeinitialiseerd) {
@@ -25,7 +26,18 @@
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(kaart);
 
-    var foutmelding = document.getElementById("foutmelding");
+    var locaties = window._locaties || [];
+    locaties.forEach(function (loc) {
+      if (!loc.lat || !loc.lng) return;
+      var marker = L.marker([loc.lat, loc.lng])
+        .addTo(kaart)
+        .bindPopup("<strong>" + loc.name + "</strong><br>" + loc.address);
+      marker._locatieNaam = loc.name.toLowerCase();
+      marker._locatieAdres = loc.address.toLowerCase();
+      marker._naam = loc.name;
+      marker._adres = loc.address;
+      window._markers.push(marker);
+    });
 
     // Blauw locatie-icoon (Apple Maps stijl) via L.divIcon
     // Bron L.divIcon: https://leafletjs.com/reference.html#divicon
@@ -75,13 +87,56 @@
           "Geolocation wordt niet ondersteund door deze browser.";
     }
   };
+
+  window.filterMarkers = function (query) {
+    window._markers.forEach(function (marker) {
+      var match =
+        !query ||
+        marker._locatieNaam.includes(query) ||
+        marker._locatieAdres.includes(query);
+      if (match) {
+        if (!window._kaart.hasLayer(marker)) marker.addTo(window._kaart);
+      } else {
+        if (window._kaart.hasLayer(marker)) window._kaart.removeLayer(marker);
+      }
+    });
+  };
+
+  var zoekMarker = null;
+
+  window.zoekOpKaart = async function (zoekterm) {
+    if (!zoekterm || !window._kaart) return;
+
+    var response = await fetch(
+      "https://nominatim.openstreetmap.org/search?q=" +
+        encodeURIComponent(zoekterm) +
+        "&format=json&limit=1&countrycodes=nl",
+    );
+    var data = await response.json();
+    if (data.length === 0) return;
+
+    var lat = parseFloat(data[0].lat);
+    var lng = parseFloat(data[0].lon);
+    var naam = data[0].display_name;
+
+    if (zoekMarker) window._kaart.removeLayer(zoekMarker);
+    window._kaart.setView([lat, lng], 15);
+    zoekMarker = L.marker([lat, lng])
+      .addTo(window._kaart)
+      .bindPopup(naam)
+      .openPopup();
+  };
 </script>
 
 <style>
   #map {
-    height: calc(100vh - 140px);
-    width: 100%;
-    margin-top: 20px;
+    height: 40vh;
+    border-radius: 8px;
+    margin: 16px;
+    animation: fadeInUp 0.9s ease both;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
   }
 
   #foutmelding {

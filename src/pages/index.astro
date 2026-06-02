@@ -13,6 +13,8 @@ const locations = data.features.map((feature) => ({
   name: feature.properties.Naam_locatie,
   address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
   counts: countFilter(feature, filterGroups),
+  lat: feature.geometry.coordinates[1],
+  lng: feature.geometry.coordinates[0],
 }));
 ---
 
@@ -39,6 +41,9 @@ const locations = data.features.map((feature) => ({
     <div id="list-view">
       <LocationCard locations={locations} />
     </div>
+    <script is:inline define:vars={{ locations }}>
+      window._locaties = locations;
+    </script>
     <Map />
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -93,6 +98,7 @@ const locations = data.features.map((feature) => ({
           name.includes(query) || address.includes(query) ? "" : "none";
       });
       updateCount();
+      (window as any).filterMarkers?.(query);
     });
 
     // toggle tussen lijst en kaartweergave
@@ -100,10 +106,26 @@ const locations = data.features.map((feature) => ({
     const radioMap = document.getElementById("radio-2");
     const listView = document.getElementById("list-view");
     const mapView = document.getElementById("map-view");
+    const zoekKnop = document.getElementById("search-input-btn") as HTMLButtonElement;
+
+    if (zoekKnop) zoekKnop.style.display = "none";
+
+    if (zoekKnop) {
+      zoekKnop.addEventListener("click", () => {
+        (window as any).zoekOpKaart?.(input.value.trim());
+      });
+    }
+
+    input.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "Enter" && zoekKnop && zoekKnop.style.display !== "none") {
+        (window as any).zoekOpKaart?.(input.value.trim());
+      }
+    });
 
     radioMap.addEventListener("change", () => {
       listView!.style.display = "none";
       mapView!.style.display = "block";
+      if (zoekKnop) zoekKnop.style.display = "";
       setTimeout(() => {
         if (window.initialiseerKaart) {
           window.initialiseerKaart();
@@ -114,6 +136,7 @@ const locations = data.features.map((feature) => ({
     radioLijst.addEventListener("change", () => {
       listView!.style.display = "block";
       mapView!.style.display = "none";
+      if (zoekKnop) zoekKnop.style.display = "none";
     });
   </script>
 </html>
