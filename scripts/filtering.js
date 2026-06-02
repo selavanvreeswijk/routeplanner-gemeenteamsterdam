@@ -19,6 +19,5 @@ export function countFilter(feature, filterGroups) {
 			}
 		}
 	}
-	console.log(count)
 	return count;
 }
