@@ -39,9 +39,9 @@
         >
           <path
             d="M2.49976 7.25794C2.49976 6.02999 2.49976 5.41601 2.82696 5.05791C2.94312 4.93077 3.08431 4.829 3.24166 4.759C3.68486 4.56184 4.26733 4.75599 5.43226 5.1443C6.32164 5.44076 6.76633 5.58899 7.21567 5.57364C7.38071 5.56801 7.54476 5.54604 7.70546 5.50805C8.14301 5.40463 8.533 5.14462 9.31309 4.62459L10.465 3.8566C11.4643 3.19048 11.9638 2.85742 12.5373 2.78062C13.1108 2.70382 13.6804 2.89369 14.8197 3.27344L15.7903 3.59699C16.6153 3.87199 17.0278 4.0095 17.2638 4.33686C17.4998 4.66422 17.4998 5.09904 17.4998 5.96869V12.7424C17.4998 13.9703 17.4998 14.5843 17.1726 14.9424C17.0564 15.0695 16.9152 15.1713 16.7578 15.2413C16.3147 15.4385 15.7322 15.2443 14.5673 14.856C13.6778 14.5595 13.2332 14.4113 12.7838 14.4266C12.6188 14.4323 12.4548 14.4542 12.2941 14.4922C11.8565 14.5956 11.4665 14.8556 10.6864 15.3757L9.53451 16.1436C8.53526 16.8098 8.03568 17.1429 7.4622 17.2196C6.88871 17.2965 6.31908 17.1065 5.17983 16.7268L4.20919 16.4033C3.38416 16.1283 2.97165 15.9908 2.73571 15.6634C2.49976 15.336 2.49976 14.9012 2.49976 14.0315V7.25794Z"
-            stroke="black"></path>
-          <path d="M7.49988 5.53235V17.0835" stroke="black"></path>
-          <path d="M12.4998 2.50012V14.1668" stroke="black"></path>
+            stroke="currentColor"></path>
+          <path d="M7.49988 5.53235V17.0835" stroke="currentColor"></path>
+          <path d="M12.4998 2.50012V14.1668" stroke="currentColor"></path>
         </svg>
 
         Map
@@ -51,11 +51,23 @@
 </section>
 
 <style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .display-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
+    animation: fadeInUp 0.4s ease both 0.05s;
   }
 
   .display-options p {
@@ -92,5 +104,17 @@
   .display [type="radio"]:checked + label {
     background-color: var(--ams-color-grey-2);
     color: var(--ams-color-grey-5);
+    animation: labelPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  }
+
+  @keyframes labelPop {
+    0% {
+      transform: scale(0.85);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 </style>
