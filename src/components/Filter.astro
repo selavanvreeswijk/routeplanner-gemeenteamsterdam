@@ -224,7 +224,7 @@
 
   .filter-btn:has(input:checked) {
     background-color: var(--ams-color-red);
-    color: var(--ams-color-white);
+    color: #ffffff;
     border-color: var(--ams-color-red);
     transform: scale(1.03);
   }
@@ -268,16 +268,16 @@
 </style>
 
 <script>
-	//@ts-nocheck
-	const btn = document.getElementById("bekijk-meer-btn");
-	const hiddenDisability = document.getElementById("hidden-disability");
+  //@ts-nocheck
+  const btn = document.getElementById("bekijk-meer-btn");
+  const hiddenDisability = document.getElementById("hidden-disability");
 
-	if (btn && hiddenDisability) {
-		btn.addEventListener("click", () => {
-			hiddenDisability.classList.toggle("open");
-			btn.textContent = hiddenDisability.classList.contains("open")
-				? "bekijk Minder"
-				: "bekijk Meer";
-		});
-	}
+  if (btn && hiddenDisability) {
+    btn.addEventListener("click", () => {
+      hiddenDisability.classList.toggle("open");
+      btn.textContent = hiddenDisability.classList.contains("open")
+        ? "Bekijk minder"
+        : "Bekijk meer";
+    });
+  }
 </script>
