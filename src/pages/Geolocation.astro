@@ -62,6 +62,33 @@
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(kaart);
 
+    // ICONEN ----------------------------------------------------------------
+    // L.divIcon maakt een marker op basis van HTML (in dit geval een emoji)
+    // html:       de inhoud van de marker — hier een emoji
+    // iconSize:   breedte en hoogte van de marker in pixels [x, y]
+    // iconAnchor: welk punt van het icoon op de coördinaat staat [x, y]
+    //             [15, 30] = horizontaal gecentreerd, onderkant op de plek
+    // className:  '' zodat Leaflet geen eigen achtergrond/rand toevoegt
+    // Bron Leaflet divIcon: https://leafletjs.com/reference.html#divicon
+
+    // Blauw locatie-icoon, geïnspireerd op Apple Maps
+    // In plaats van een emoji gebruiken we een gestylde div via CSS
+    // De klassen verwijzen naar stijlen onderaan in de <style> tag
+    var icoonLocatie = L.divIcon({
+        html: '<div class="locatie-icoon"><div class="locatie-ping"></div></div>',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10], // gecentreerd op de coördinaat (midden van het rondje)
+        className: ''
+    });
+
+    var icoonZoeken = L.divIcon({
+        html: '📍',
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+        className: ''
+    });
+
+
     // GEOLOCATION API -------------------------------------------------------
     // Bepaal de locatie van de gebruiker bij het opstarten van de app
     // Bron MDN: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
@@ -83,9 +110,9 @@
       // Kaart centreren op de locatie van de gebruiker
       kaart.setView([lat, lng], 15);
 
-      // Marker voor de huidige locatie van de gebruiker
+      // Marker voor de huidige locatie van de gebruiker (blauw bolletje)
       // Bron Leaflet markers: https://leafletjs.com/reference.html#marker
-      L.marker([lat, lng])
+      L.marker([lat, lng], { icon: icoonLocatie })
         .addTo(kaart)
         .bindPopup("Jouw huidige locatie")
         .openPopup();
@@ -165,8 +192,8 @@
       // Kaart verschuiven naar het gevonden adres
       kaart.setView([lat, lng], 16);
 
-      // Nieuwe marker plaatsen op het gevonden adres
-      zoekMarker = L.marker([lat, lng])
+      // Nieuwe marker plaatsen op het gevonden adres (pin icoon)
+      zoekMarker = L.marker([lat, lng], { icon: icoonZoeken })
         .addTo(kaart)
         .bindPopup(naam)
         .openPopup();
@@ -237,5 +264,47 @@
     padding: 0.4rem 0.75rem;
     border-radius: 6px;
     font-size: 0.9rem;
+  }
+
+  /* Blauw locatie-icoon (Apple Maps stijl) --------------------------------- */
+  /* :global() is nodig omdat Leaflet de marker-HTML zelf aan de pagina toevoegt. */
+  /* Astro scoped stijlen bereiken die elementen normaal niet. */
+  /* Bron Astro scoped styles: https://docs.astro.build/en/guides/styling/#global-styles */
+
+  /* Het blauwe rondje zelf */
+  :global(.locatie-icoon) {
+    width: 20px;
+    height: 20px;
+    background-color: #007AFF;   /* Apple-blauw */
+    border: 3px solid white;     /* witte rand eromheen */
+    border-radius: 50%;          /* volledig rond maken */
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.4); /* zachte blauwe gloed */
+    position: relative;
+  }
+
+  /* Pulserende ring die uitdijt — geeft aan dat het een live locatie is */
+  /* Bron CSS animaties: https://developer.mozilla.org/en-US/docs/Web/CSS/animation */
+  :global(.locatie-ping) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(0, 122, 255, 0.3);
+    animation: ping 2s ease-out infinite; /* herhaalt continu */
+  }
+
+  /* De animatie: van klein en zichtbaar naar groot en transparant */
+  @keyframes ping {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(3);
+      opacity: 0;
+    }
   }
 </style>
