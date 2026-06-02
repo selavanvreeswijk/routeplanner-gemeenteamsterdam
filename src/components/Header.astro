@@ -1,4 +1,7 @@
 ---
+import Searchfield from "./Searchfield.astro";
+import Inputfield from "./Searchfield.astro";
+
 // BASE_URL bevat het base-pad uit astro.config.mjs
 // bijv. '/routeplanner-gemeenteamsterdam/'
 // Dit is nodig om assets van de public folder correct in te laden
@@ -20,6 +23,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   </div>
 
   <!-- Zoekbalk onder de titelbalk -->
+  <Searchfield />
 </header>
 
 <!-- Lees de naam op uit localStorage en zet hem in de header -->
