@@ -35,16 +35,18 @@ const locations = data.features.map((feature) => ({
 		<title>Astro</title>
 	</head>
 	<body>
-		<Header />
-		<Filter />
-		<Display />
-		<div id="list-view">
-			<LocationCard locations={locations} />
+		<div class="app-wrapper">
+			<Header />
+			<Filter />
+			<Display />
+			<div id="list-view">
+				<LocationCard locations={locations} />
+			</div>
+			<script is:inline define:vars={{ locations }}>
+				window._locaties = locations;
+			</script>
+			<Map />
 		</div>
-		<script is:inline define:vars={{ locations }}>
-			window._locaties = locations;
-		</script>
-		<Map />
 		<script
 			src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
 			integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="

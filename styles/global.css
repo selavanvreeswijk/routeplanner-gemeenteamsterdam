@@ -120,3 +120,30 @@ p {
   font-weight: 400;
   line-height: 1.5;
 }
+
+/* ================================
+     DESKTOP MARK: Centering wrapper + clamp schaling
+     ================================ */
+
+/* De app schaalt vloeiend mee van mobiel (375px) naar desktop (600px) */
+/* Bron clamp: https://developer.mozilla.org/en-US/docs/Web/CSS/clamp */
+.app-wrapper {
+  max-width: clamp(375px, 92vw, 600px);
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ams-bg);
+}
+
+/* Schaduw op desktop zodat de app duidelijk afgebakend is */
+@media (min-width: 520px) {
+  body {
+    background-color: var(--ams-color-grey-2);
+  }
+
+  .app-wrapper {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.12);
+  }
+}

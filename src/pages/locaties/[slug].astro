@@ -27,7 +27,7 @@ const lng = feature.geometry.coordinates[0];
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="/styles/global.css" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -35,6 +35,7 @@ const lng = feature.geometry.coordinates[0];
     <title>{p.Naam_locatie}</title>
   </head>
   <body>
+    <div class="app-wrapper">
     <Header />
     <a class="back" href="/">← Terug</a>
     <div class="location-information">
@@ -88,6 +89,27 @@ const lng = feature.geometry.coordinates[0];
         <li>Voorrijden toegestaan: {p.Voorrijden_toegestaan}</li>
       </ul>
     </div>
+    <!-- Print & Deel knoppen -->
+    <div class="acties">
+      <button class="actie-knop" id="print-knop">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 9V2H18V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 18H4C3.46957 18 2.96086 17.7893 2.58579 17.4142C2.21071 17.0391 2 16.5304 2 16V11C2 10.4696 2.21071 9.96086 2.58579 9.58579C2.96086 9.21071 3.46957 9 4 9H20C20.5304 9 21.0391 9.21071 21.4142 9.58579C21.7893 9.96086 22 10.4696 22 11V16C22 16.5304 21.7893 17.0391 21.4142 17.4142C21.0391 17.7893 20.5304 18 20 18H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 14H6V22H18V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Printen
+      </button>
+      <button class="actie-knop" id="deel-knop">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/>
+          <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+          <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/>
+          <path d="M8.59 13.51L15.42 17.49M15.41 6.51L8.59 10.49" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Delen
+      </button>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" is:inline
     ></script>
     <script define:vars={{ lat, lng, naam: p.Naam_locatie }} is:inline>
@@ -98,6 +120,39 @@ const lng = feature.geometry.coordinates[0];
       }).addTo(map);
       L.marker([lat, lng]).addTo(map).bindPopup(naam).openPopup();
     </script>
+
+    <script>
+      // Print knop
+      document.getElementById("print-knop")?.addEventListener("click", () => {
+        window.print();
+      });
+
+      // Deel knop — Web Share API met fallback naar kopiëren
+      // Bron: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share
+      document.getElementById("deel-knop")?.addEventListener("click", async () => {
+        const deelData = {
+          title: document.title,
+          url: window.location.href,
+        };
+        if (navigator.share) {
+          try {
+            await navigator.share(deelData);
+          } catch {
+            // gebruiker annuleerde het delen
+          }
+        } else {
+          await navigator.clipboard.writeText(window.location.href);
+          const knop = document.getElementById("deel-knop");
+          if (knop) {
+            knop.textContent = "Link gekopieerd!";
+            setTimeout(() => {
+              knop.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/><path d="M8.59 13.51L15.42 17.49M15.41 6.51L8.59 10.49" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Delen`;
+            }, 2000);
+          }
+        }
+      });
+    </script>
+    </div>
   </body>
 </html>
 <style>
@@ -157,5 +212,43 @@ const lng = feature.geometry.coordinates[0];
   p.adres {
     align-items: center;
     display: flex;
+  }
+
+  /* Print & Deel knoppen */
+  .acties {
+    display: flex;
+    gap: 10px;
+    padding: 0 1rem 1rem;
+  }
+
+  .actie-knop {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--ams-color-grey-3);
+    background: var(--ams-color-white);
+    color: var(--ams-color-grey-5);
+    font-family: var(--ams-font-family);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .actie-knop:hover {
+    background-color: var(--ams-color-grey-1);
+  }
+
+  /* Verberg actieknoppen bij printen */
+  @media print {
+    .acties,
+    header,
+    a.back {
+      display: none;
+    }
   }
 </style>

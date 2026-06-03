@@ -166,19 +166,19 @@ import { lazy } from "astro:schema";
 	}
 
 	.location-list {
-		margin: 16px;
+		margin: clamp(10px, 3vw, 20px);
 	}
 
 	.location-list ul {
 		display: flex;
 		flex-direction: column;
-		gap: 10px;
+		gap: clamp(8px, 2vw, 12px);
 	}
 
 	.location-list li {
 		border: solid 0.5px var(--ams-color-grey-3);
 		background-color: var(--ams-color-white);
-		padding: 12px 16px;
+		padding: clamp(10px, 3vw, 16px) clamp(12px, 4vw, 20px);
 		animation: fadeInUp 0.5s ease both;
 		transition:
 			transform 0.18s ease,
