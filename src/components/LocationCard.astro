@@ -286,7 +286,7 @@ import { lazy } from "astro:schema";
 				delete huidigProfiel[categ.value];
 			}
 			localStorage.setItem("profiel", JSON.stringify(huidigProfiel));
-			console.log(JSON.parse(localStorage.getItem("profiel")));
+			console.log('profiel:', JSON.parse(localStorage.getItem("profiel")));
 		});
 	});
 </script>
