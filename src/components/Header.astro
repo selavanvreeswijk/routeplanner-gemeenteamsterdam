@@ -2,9 +2,6 @@
 import Searchfield from "./Searchfield.astro";
 import Inputfield from "./Searchfield.astro";
 
-// BASE_URL bevat het base-pad uit astro.config.mjs
-// bijv. '/routeplanner-gemeenteamsterdam/'
-// Dit is nodig om assets van de public folder correct in te laden
 const { showSearch = true } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
@@ -24,9 +21,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   <Searchfield />
 </header>
 
-<!-- Lees de naam op uit localStorage en zet hem in de header -->
-<!-- localStorage werkt alleen client-side, vandaar een apart script -->
-<!-- Bron localStorage: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage -->
 <script is:inline>
   const naam = localStorage.getItem("naam");
   const naamElement = document.getElementById("header-gebruiker-naam");
