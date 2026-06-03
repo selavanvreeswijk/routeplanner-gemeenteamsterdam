@@ -18,7 +18,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <span id="header-gebruiker-naam" class="gebruiker-naam"></span>
   </div>
 
-  <Searchfield />
+  {showSearch && <Searchfield />}
 </header>
 
 <script is:inline>
@@ -83,6 +83,12 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       transform: none;
       font-size: clamp(1.5rem, 2.5vw, 2rem);
       pointer-events: auto;
+    }
+
+    /* Zoekbalk even breed als het linkerpaneel naast de kaart
+       (content-left = clamp(340px, 38%, 500px) in index.astro) */
+    :global(.search-wrapper) {
+      width: clamp(340px, 38%, 500px);
     }
   }
 
