@@ -1,4 +1,5 @@
 ---
+import Header from "../components/Header.astro";
 const baseUrl = import.meta.env.BASE_URL;
 const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 ---
@@ -12,22 +13,19 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <link rel="stylesheet" href="styles/global.css" />
+
     <title>Welkom — Toegankelijk Amsterdam</title>
   </head>
 
   <body>
-    <header>
-      <div class="header-links">
-        <img src={logoUrl} alt="Gemeente Amsterdam logo" />
-        <h1>Atlass</h1>
-      </div>
-    </header>
+    <Header showSearch={false} />
+    <!-- show search = false gedaan omdat je niet kan zoeken op de onboarding page -->
 
     <main>
-      <section class="sectie">
+      <section class="name-input">
         <h2>Hoe mogen we je noemen?</h2>
         <input
-          id="naam-input"
+          id="name-input"
           type="text"
           placeholder="Vul je naam in..."
           autocomplete="given-name"
@@ -35,14 +33,15 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       </section>
 
       <!-- Profielkeuze -->
-      <section class="sectie">
-        <h2>Kies jouw profiel</h2>
-        <p>We laten je de meest relevante toegankelijkheidsinformatie zien.</p>
-
-        <div class="profiel-grid">
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="rolstoel" />
-            <span class="profiel-icoon">
+      <section class="profile-choice">
+        <div class="profile-text">
+          <h2>Kies jouw profiel</h2>
+          <p>Zo krijg je informatie die past bij jouw situatie</p>
+        </div>
+        <div class="profile-grid">
+          <label class="profile-card">
+            <input type="checkbox" name="profiel" value="rolstoel" />
+            <span class="profile-icon">
               <svg
                 width="40"
                 height="40"
@@ -72,12 +71,12 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   stroke-linecap="round"></path>
               </svg></span
             >
-            <span class="profiel-naam">Rolstoel</span>
+            <span class="profile-name">Rolstoel</span>
           </label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="slechtterbeen" />
-            <span class="profiel-icoon">
+          <label class="profile-card">
+            <input type="checkbox" name="profiel" value="slechtterbeen" />
+            <span class="profile-icon">
               <svg
                 width="40"
                 height="40"
@@ -101,13 +100,13 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   d="M15.2545 6.95072L12.8328 5.08255C12.6598 4.94886 12.4111 4.98096 12.2774 5.15411C12.1494 5.32008 12.1753 5.55432 12.3301 5.69109L10.8949 7.5517C10.633 7.89096 10.5328 8.30696 10.584 8.7008C10.6205 8.98586 10.7377 9.26112 10.9275 9.49109L10.5955 9.92132L11.0315 10.4868L11.4743 9.91274C11.7451 10.038 12.0412 10.0814 12.3257 10.0445C12.7197 9.99392 13.0967 9.79142 13.3584 9.45198L14.7934 7.59118C14.9652 7.70649 15.1984 7.67199 15.3263 7.50606C15.46 7.33273 15.4279 7.08406 15.2545 6.95072ZM12.8898 9.09038C12.7262 9.30164 12.4956 9.42555 12.25 9.45765C12.0044 9.48887 11.7499 9.42778 11.538 9.26474C11.3267 9.10137 11.2028 8.87055 11.1709 8.62516C11.1395 8.37939 11.2006 8.12473 11.3638 7.9133L11.7674 7.3897L13.2935 8.56695L12.8898 9.09038ZM13.5947 8.17655L12.0686 6.99929L12.7971 6.05491L14.3231 7.23216L13.5947 8.17655Z"
                   fill="currentColor"></path>
               </svg></span
-            > 
-            <span class="profiel-naam">Slecht ter been</span>
+            >
+            <span class="profile-name">Slecht ter been</span>
           </label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="slechtziend" />
-            <span class="profiel-icoon">
+          <label class="profile-card">
+            <input type="checkbox" name="profiel" value="slechtziend" />
+            <span class="profile-icon">
               <svg
                 width="40"
                 height="40"
@@ -128,12 +127,12 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   stroke-linejoin="round"></path>
               </svg></span
             >
-            <span class="profiel-naam">Slechtziend</span>
+            <span class="profile-name">Slechtziend</span>
           </label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="slechthorend" />
-            <span class="profiel-icoon">
+          <label class="profile-card">
+            <input type="checkbox" name="profiel" value="slechthorend" />
+            <span class="profile-icon">
               <svg
                 width="40"
                 height="40"
@@ -149,12 +148,12 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   fill="currentColor"></path>
               </svg></span
             >
-            <span class="profiel-naam">Slechthorend</span>
+            <span class="profile-name">Slechthorend</span>
           </label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="hiddendisability" />
-            <span class="profiel-icoon">
+          <label class="profile-card">
+            <input type="checkbox" name="profiel" value="hiddendisability" />
+            <span class="profile-icon">
               <svg
                 width="40"
                 height="40"
@@ -176,12 +175,12 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   fill="currentColor"></path>
               </svg></span
             >
-            <span class="profiel-naam">Hidden disability</span>
+            <span class="profile-name">Hidden disability</span>
           </label>
 
-          <label class="profiel-kaart">
-            <input type="radio" name="profiel" value="prikkels" />
-            <span class="profiel-icoon">
+          <label class="profile-card">
+            <input type="checkbox" name="profiel" value="prikkels" />
+            <span class="profile-icon">
               <svg
                 width="40"
                 height="40"
@@ -215,15 +214,15 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   fill="currentColor"></path>
               </svg></span
             >
-            <span class="profiel-naam">Prikkels</span>
+            <span class="profile-name">Prikkels</span>
           </label>
         </div>
       </section>
 
       <!-- Foutmelding als iets ontbreekt -->
-      <p id="foutmelding" role="alert"></p>
+      <p id="error-message" role="alert"></p>
 
-      <button id="start-knop">Aan de slag</button>
+      <button id="start-button">Aan de slag</button>
     </main>
   </body>
 
@@ -242,12 +241,12 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     }
 
     // Plain JavaScript zonder TypeScript
-    const startKnop = document.getElementById("start-knop");
-    const naamInput = document.getElementById("naam-input");
-    const foutmelding = document.getElementById("foutmelding");
+    const startButton = document.getElementById("start-button");
+    const nameInput = document.getElementById("name-input");
+    const errorMessage = document.getElementById("error-message");
 
-    startKnop.addEventListener("click", () => {
-      const naam = naamInput.value.trim();
+    startButton.addEventListener("click", () => {
+      const naam = nameInput.value.trim();
       const profielElement = document.querySelector(
         'input[name="profiel"]:checked',
       );
@@ -255,11 +254,11 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
       // Validatie: naam en profiel zijn verplicht
       if (!naam) {
-        foutmelding.textContent = "Vul je naam in om verder te gaan.";
+        errorMessage.textContent = "Vul je naam in om verder te gaan.";
         return;
       }
       if (!profiel) {
-        foutmelding.textContent = "Kies een profiel om verder te gaan.";
+        errorMessage.textContent = "Kies een profiel om verder te gaan.";
         return;
       }
 
@@ -274,34 +273,26 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 </html>
 
 <style>
+  h2 {
+    font-size: 22px;
+    color: var(--ams-color-black);
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   body {
     background-color: var(--ams-color-white);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-  }
-
-  header {
-    background-color: var(--ams-color-primair-red);
-    padding: 20px 16px 24px;
-  }
-
-  .header-links {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  header img {
-    width: 48px;
-    height: auto;
-  }
-
-  header h1 {
-    color: var(--ams-color-white);
-    line-height: 1.2;
-    margin: 0;
   }
 
   main {
@@ -314,19 +305,30 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     width: 100%;
   }
 
-  .sectie {
+  .name-input {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
-  .sectie p {
-    color: var(--ams-color-grey-4);
+  .name-input h2,
+  .profile-text h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ams-color-grey-5);
+    letter-spacing: -0.01em;
+  }
+
+  .name-input p,
+  .profile-text p {
     font-size: var(--ams-font-size-body-small);
+    color: var(--ams-color-grey-4);
+    margin-top: 2px;
   }
 
   /* Naam-invoerveld */
-  #naam-input {
+  #name-input {
     width: 100%;
     padding: 12px 14px;
     border: 1.5px solid var(--ams-color-grey-3);
@@ -338,67 +340,108 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     transition: border-color 0.15s ease;
   }
 
-  #naam-input:focus {
+  #name-input:focus {
     outline: none;
     border-color: var(--ams-color-primair-red);
   }
 
   /* Raster van vier profielkaarten */
-  .profiel-grid {
+  .profile-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 
-  /* Verberg de echte radio button — de label is het klikbare element */
-  .profiel-kaart input[type="radio"] {
+  /* Verberg de echte checkbox — de label is het klikbare element */
+
+  .profile-card input[type="checkbox"] {
     display: none;
   }
-
   /* De kaart zelf */
-  .profiel-kaart {
+  .profile-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
     padding: 18px 12px;
-    border: 1.5px solid var(--ams-color-grey-3);
-    background: var(--ams-color-white);
+    border: solid 1.5px var(--ams-color-grey-1);
+
     cursor: pointer;
-    transition: all 0.18s ease;
+    animation: fadeInUp 0.5s ease both;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
+
+    /* box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05); */
+    border-radius: 6px;
+  }
+
+  .profile-card:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .profile-card:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .profile-card:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  .profile-card:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  .profile-card:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  .profile-card:nth-child(6) {
+    animation-delay: 0.5s;
   }
 
   /* Geselecteerde kaart: rood, zelfde als actieve filter op de hoofdpagina */
-  .profiel-kaart:has(input:checked) {
-    background-color: var(--ams-color-primair-red);
-    border-color: var(--ams-color-primair-red);
-    color: #ffffff;
+  .profile-card:has(input:checked) {
+    background-color: var(--ams-color-primair-red-light);
+    border: solid 1.5px var(--ams-color-primair-red);
+    transform: scale(1.03);
   }
 
-  .profiel-icoon {
+  .profile-icon {
     font-size: 2rem;
     line-height: 1;
   }
 
-  .profiel-naam {
+  .profile-text {
+    font-size: var(--ams-font-size-body-small);
+    color: var(--ams-color-grey-4);
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0px;
+  }
+  .profile-text span {
+    color: var(--ams-color-primair-red);
+  }
+
+  .name-input span {
+    color: var(--ams-color-primair-red);
+  }
+
+  .profile-name {
     font-size: var(--ams-font-size-body-small);
     font-weight: var(--ams-font-weight-semibold);
   }
 
   /* Foutmelding */
-  #foutmelding {
+  #error-message {
     color: var(--ams-color-primair-red);
     font-size: var(--ams-font-size-body-small);
     min-height: 1.2em;
   }
 
   /* Aan de slag knop */
-  #start-knop {
+  #start-button {
     width: 100%;
     padding: 14px;
     background-color: var(--ams-color-primair-red);
     color: #ffffff;
     border: none;
+    border-radius: 999px;
     font-family: var(--ams-font-family);
     font-size: var(--ams-font-size-body);
     font-weight: var(--ams-font-weight-semibold);
@@ -406,7 +449,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     transition: background-color 0.15s ease;
   }
 
-  #start-knop:hover {
+  #start-button:hover {
     background-color: var(--ams-color-primair-red-dark);
   }
 </style>

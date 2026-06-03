@@ -1,3 +1,5 @@
+@import url("animations.css");
+
 :root {
   /* ================================
        KLEUREN MARK: Variables
@@ -6,7 +8,7 @@
   /* Rood (primaire merkkleur) */
   --ams-color-primair-red: #ec0000;
   --ams-color-primair-red-dark: #c20000;
-  --ams-color-primair-red-light: #f9cccc;
+  --ams-color-primair-red-light: #fffbfb;
 
   /* Zwart & Grijs */
   --ams-color-black: #111111;
@@ -87,8 +89,6 @@
     color: #f0f0f0;
   }
 }
-
-@import url("animations.css");
 
 * {
   margin: 0;
