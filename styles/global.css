@@ -125,10 +125,10 @@ p {
      DESKTOP MARK: Centering wrapper + clamp schaling
      ================================ */
 
-/* De app schaalt vloeiend mee van mobiel (375px) naar desktop (600px) */
+/* Mobiel: gecentreerde kaart (phone-formaat) */
 /* Bron clamp: https://developer.mozilla.org/en-US/docs/Web/CSS/clamp */
 .app-wrapper {
-  max-width: clamp(375px, 92vw, 600px);
+  max-width: clamp(375px, 92vw, 540px);
   margin: 0 auto;
   width: 100%;
   min-height: 100vh;
@@ -137,13 +137,24 @@ p {
   background-color: var(--ams-bg);
 }
 
-/* Schaduw op desktop zodat de app duidelijk afgebakend is */
-@media (min-width: 520px) {
+@media (min-width: 520px) and (max-width: 767px) {
   body {
     background-color: var(--ams-color-grey-2);
   }
 
   .app-wrapper {
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* Tablet & desktop: volledige breedte, geen kaart-centering */
+@media (min-width: 768px) {
+  body {
+    background-color: var(--ams-bg);
+  }
+
+  .app-wrapper {
+    max-width: 100%;
+    box-shadow: none;
   }
 }
