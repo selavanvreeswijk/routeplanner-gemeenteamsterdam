@@ -117,11 +117,13 @@ const locations = data.features.map((feature) => ({
 		} else {
 			// Tweede bezoek: zet het opgeslagen profiel alvast aan in de filterknop
 			const profielObject = Object.keys(JSON.parse(opgeslagenProfiel));
+			console.log(profielObject)
 
 			profielObject.forEach((waarde) => {
 				const checkbox = document.querySelector(
 					`input[name="filter"][value="${waarde}"]`,
 				);
+				console.log(checkbox)
 				if (checkbox) {
 					checkbox.checked = true;
 					// Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
