@@ -11,18 +11,22 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 ---
 
 <header>
-  <!-- Bovenste rij: logo + titels links, gebruikersnaam rechts -->
   <div class="header-top">
-    <!-- Links: logo boven, "Atlass" eronder -->
     <div class="header-links">
       <img src={logoUrl} alt="Gemeente Amsterdam logo" />
       <h1>TAVI</h1>
     </div>
 
-    <!-- Rechts: naam van de ingelogde gebruiker (ingevuld via script) -->
+    <h1>TAVI</h1>
+
     <span id="header-gebruiker-naam" class="gebruiker-naam"></span>
   </div>
 
+  <Searchfield />
+</header>
+
+<!-- Naam in header -->
+<script>
   <!-- Zoekbalk onder de titelbalk -->
   {showSearch && <Searchfield />}
 </header>
@@ -41,56 +45,64 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 <style>
   header {
     background-color: var(--ams-color-primair-red);
-    padding: 20px 16px 24px;
-    gap: 14px;
+    padding: clamp(14px, 4vw, 24px) clamp(12px, 4vw, 20px) clamp(18px, 5vw, 28px);
+    gap: clamp(10px, 3vw, 16px);
     display: flex;
     flex-direction: column;
   }
 
-  /* Bovenste rij: logo-blok links, naam rechts */
   .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
   }
 
-  /* Logo boven, "Atlass" eronder */
   .header-links {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   header img {
-    width: 48px;
+    width: clamp(36px, 10vw, 52px);
     height: auto;
   }
 
-  /* Tekst-stapel: "Gemeente Amsterdam" boven "Atlass" */
-  .header-titels {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .gemeente-label {
-    color: var(--ams-color-white);
-    font-size: var(--ams-font-size-body-extra-small);
-    font-weight: var(--ams-font-weight-regular);
-    opacity: 0.85;
-    line-height: 1.2;
-  }
-
   h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     color: var(--ams-color-white);
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
     line-height: 1.2;
+    white-space: nowrap;
+    pointer-events: none;
   }
 
-  /* Naam van de gebruiker rechts in de header */
+  @media (min-width: 1024px) {
+    .header-top {
+      position: static;
+    }
+
+    .header-links {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    h1 {
+      position: static;
+      transform: none;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      pointer-events: auto;
+    }
+  }
+
   .gebruiker-naam {
     color: var(--ams-color-white);
-    font-size: var(--ams-font-size-body-small);
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
     font-weight: var(--ams-font-weight-semibold);
+    flex-shrink: 0;
   }
 </style>

@@ -120,3 +120,41 @@ p {
   font-weight: 400;
   line-height: 1.5;
 }
+
+/* ================================
+     DESKTOP MARK: Centering wrapper + clamp schaling
+     ================================ */
+
+/* Mobiel: gecentreerde kaart (phone-formaat) */
+/* Bron clamp: https://developer.mozilla.org/en-US/docs/Web/CSS/clamp */
+.app-wrapper {
+  max-width: clamp(375px, 92vw, 540px);
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ams-bg);
+}
+
+@media (min-width: 520px) and (max-width: 767px) {
+  body {
+    background-color: var(--ams-color-grey-2);
+  }
+
+  .app-wrapper {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* Tablet & desktop: volledige breedte, geen kaart-centering */
+@media (min-width: 768px) {
+  body {
+    background-color: var(--ams-bg);
+  }
+
+  .app-wrapper {
+    max-width: 100%;
+    box-shadow: none;
+  }
+}

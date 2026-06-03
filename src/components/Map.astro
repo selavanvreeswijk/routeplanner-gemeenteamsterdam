@@ -144,6 +144,20 @@
     padding: 1rem;
   }
 
+  /* Op desktop vult de kaart de volledige rechterkant */
+  @media (min-width: 1024px) {
+    #map-view {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #map {
+      height: 100%;
+      margin: 0;
+      border-radius: 0;
+    }
+  }
+
   /* Bron: https://docs.astro.build/en/guides/styling/#global-styles */
   :global(.locatie-icoon) {
     width: 20px;
