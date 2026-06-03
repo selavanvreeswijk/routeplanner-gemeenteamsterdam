@@ -5,6 +5,7 @@ import { countFilter } from "../../scripts/filtering.js";
 
 import Header from "../components/Header.astro";
 import Filter from "../components/Filter.astro";
+import LocationFilter from "../components/LocationFilter.astro";
 import Display from "../components/Display.astro";
 import LocationCard from "../components/LocationCard.astro";
 import Map from "../components/Map.astro";
@@ -37,6 +38,7 @@ const locations = data.features.map((feature) => ({
 	<body>
 		<Header />
 		<Filter />
+		<LocationFilter/>
 		<Display />
 		<div id="list-view">
 			<LocationCard locations={locations} />
