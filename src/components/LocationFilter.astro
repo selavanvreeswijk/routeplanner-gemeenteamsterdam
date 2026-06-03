@@ -1,7 +1,21 @@
 ---
-
+import data from '../cbadataset.json' with { type: 'json' };
+const subfilters = [...new Set(data.features.map(f => f.properties.Subfilter.trim()))].sort();
 ---
 
+<select id="subfilter-select">
+  <option value="">Alles</option>
+  {subfilters.map(f => (
+    <option value={f}>{f}</option>
+  ))}
+</select>
+
 <style>
-    
+    select {
+        padding: 8px;
+        font-size: var(--ams-font-size-body);
+        border: 1px solid var(--ams-color-gray-300);
+        border-radius: 4px;
+        margin: 1rem;
+    }
 </style>

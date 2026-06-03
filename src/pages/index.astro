@@ -11,11 +11,12 @@ import LocationCard from "../components/LocationCard.astro";
 import Map from "../components/Map.astro";
 
 const locations = data.features.map((feature) => ({
-	name: feature.properties.Naam_locatie,
-	address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
-	counts: countFilter(feature, filterGroups),
-	lat: feature.geometry.coordinates[1],
-	lng: feature.geometry.coordinates[0],
+  name: feature.properties.Naam_locatie,
+  address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
+  subfilter: feature.properties.Subfilter.trim(),
+  counts: countFilter(feature, filterGroups),
+  lat: feature.geometry.coordinates[1],
+  lng: feature.geometry.coordinates[0],
 }));
 ---
 
@@ -61,9 +62,9 @@ const locations = data.features.map((feature) => ({
 		const opgeslagenProfiel = localStorage.getItem("profiel");
 		const opgeslagenNaam = localStorage.getItem("naam");
 
-		if (!opgeslagenProfiel || !opgeslagenNaam) {
-			// Eerste bezoek: stuur naar onboarding
-			window.location.href = import.meta.env.BASE_URL + "onboarding";
+		const isOnboarding = window.location.pathname.includes('onboarding');
+		if (!opgeslagenProfiel || !opgeslagenNaam && !isOnboarding) {
+		window.location.href = import.meta.env.BASE_URL + "onboarding";
 		} else {
 			// Tweede bezoek: zet het opgeslagen profiel alvast aan in de filterknop
 			const profielObject = Object.keys(JSON.parse(opgeslagenProfiel));
@@ -146,6 +147,22 @@ const locations = data.features.map((feature) => ({
 			listView!.style.display = "block";
 			mapView!.style.display = "none";
 			if (zoekKnop) zoekKnop.style.display = "none";
+		});
+
+		// Locatie Filter balk
+		const subfilterSelect = document.getElementById('subfilter-select');
+
+		subfilterSelect.addEventListener('change', () => {
+		const selected = subfilterSelect.value.trim().toLowerCase();
+		cards.forEach(card => {
+			const subfilter = card.dataset.subfilter ?? '';
+			if (!selected || subfilter === selected) {
+			card.style.display = '';
+			} else {
+			card.style.display = 'none';
+			}
+		});
+		updateCount();
 		});
 	</script>
 </html>
