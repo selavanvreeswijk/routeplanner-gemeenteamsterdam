@@ -175,14 +175,12 @@ import { lazy } from "astro:schema";
 		gap: clamp(8px, 2vw, 12px);
 	}
 
-	/* Tablet: 2-koloms grid */
 	@media (min-width: 768px) {
 		.location-list ul {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 
-	/* Desktop split-view: terug naar 1 kolom (lijst is smal) */
 	@media (min-width: 1024px) {
 		.location-list ul {
 			grid-template-columns: 1fr;
