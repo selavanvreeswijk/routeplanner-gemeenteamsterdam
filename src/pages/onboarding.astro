@@ -11,7 +11,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href={`${baseUrl}styles/global.css`} />
 
     <title>Welkom — Toegankelijk Amsterdam</title>
   </head>
@@ -308,6 +308,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   .header-spacer {
     width: clamp(36px, 10vw, 52px);
     flex-shrink: 0;
+  }
+
   @keyframes fadeInUp {
     from {
       opacity: 0;
