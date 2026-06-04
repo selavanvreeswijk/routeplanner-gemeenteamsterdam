@@ -10,283 +10,296 @@ import { lazy } from "astro:schema";
 <!-- 
 <link rel="stylesheet" href="styles/global.css" /> -->
 <section class="location-list">
-	<ul>
-		{
-			locations.map((location) => (
-				<li
-					data-name={location.name.toLowerCase()}
-					data-address={location.address.toLowerCase()}>
-					<a
-						href={`/locaties/${location.name
-							.toLowerCase()
-							.replace(/\s+/g, "-")
-							.replace(/[^a-z0-9-]/g, "")}`}>
-						<div>
-							<DistanceDot />
-						</div>
-						<div class="adres">
-							<h2>{location.name}</h2>
-							<p>
-								<svg
-									width="11"
-									height="11"
-									viewBox="0 0 11 11"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M5.77538 9.99123C6.62788 9.25515 9.16659 6.87181 9.16659 4.58335C9.16659 3.61089 8.78028 2.67826 8.09264 1.99063C7.40501 1.303 6.47238 0.916687 5.49992 0.916687C4.52746 0.916687 3.59483 1.303 2.90719 1.99063C2.21956 2.67826 1.83325 3.61089 1.83325 4.58335C1.83325 6.87181 4.37196 9.25515 5.22446 9.99123C5.30388 10.0509 5.40055 10.0832 5.49992 10.0832C5.59928 10.0832 5.69596 10.0509 5.77538 9.99123Z"
-										stroke="#999999"
-										stroke-width="0.916667"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-									<path
-										d="M5.5 5.95831C6.25939 5.95831 6.875 5.3427 6.875 4.58331C6.875 3.82392 6.25939 3.20831 5.5 3.20831C4.74061 3.20831 4.125 3.82392 4.125 4.58331C4.125 5.3427 4.74061 5.95831 5.5 5.95831Z"
-										stroke="#999999"
-										stroke-width="0.916667"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
-								{location.address}
-							</p>
-							{/* <div class="badge">
+  <ul>
+    {
+      locations.map((location) => (
+        <li
+          data-name={location.name.toLowerCase()}
+          data-address={location.address.toLowerCase()}
+        >
+          <a
+            href={`/locaties/${location.name
+              .toLowerCase()
+              .replace(/\s+/g, "-")
+              .replace(/[^a-z0-9-]/g, "")}`}
+          >
+            <div>
+              <DistanceDot />
+            </div>
+            <div class="adres">
+              <h2>{location.name}</h2>
+              <p>
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 11 11"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.77538 9.99123C6.62788 9.25515 9.16659 6.87181 9.16659 4.58335C9.16659 3.61089 8.78028 2.67826 8.09264 1.99063C7.40501 1.303 6.47238 0.916687 5.49992 0.916687C4.52746 0.916687 3.59483 1.303 2.90719 1.99063C2.21956 2.67826 1.83325 3.61089 1.83325 4.58335C1.83325 6.87181 4.37196 9.25515 5.22446 9.99123C5.30388 10.0509 5.40055 10.0832 5.49992 10.0832C5.59928 10.0832 5.69596 10.0509 5.77538 9.99123Z"
+                    stroke="#999999"
+                    stroke-width="0.916667"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M5.5 5.95831C6.25939 5.95831 6.875 5.3427 6.875 4.58331C6.875 3.82392 6.25939 3.20831 5.5 3.20831C4.74061 3.20831 4.125 3.82392 4.125 4.58331C4.125 5.3427 4.74061 5.95831 5.5 5.95831Z"
+                    stroke="#999999"
+                    stroke-width="0.916667"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                {location.address}
+              </p>
+              {/* <div class="badge">
                 <StatusBadge counts={location.counts} />
               </div> */}
-							<div class="accses-icon">
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 20 20"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M9.92683 11.9091C10.7971 11.9091 11.5026 11.2036 11.5026 10.3333C11.5026 9.46306 10.7971 8.75757 9.92683 8.75757C9.05656 8.75757 8.35107 9.46306 8.35107 10.3333C8.35107 11.2036 9.05656 11.9091 9.92683 11.9091Z"
-										stroke="currentColor"
-										stroke-linejoin="round"
-									/>
-									<path
-										d="M9.92691 6C6.53523 6 3.99905 8.8232 3.14701 9.91205C2.951 10.1625 2.951 10.5041 3.14701 10.7546C3.99905 11.8435 6.53523 14.6667 9.92691 14.6667C13.3186 14.6667 15.8547 11.8435 16.7068 10.7546C16.9029 10.5041 16.9029 10.1625 16.7068 9.91205C15.8547 8.8232 13.3186 6 9.92691 6Z"
-										stroke="currentColor"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 20 20"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M15.3125 15.6906L12.5 11.925C12.4815 11.9004 12.4573 11.8806 12.4297 11.867C12.402 11.8534 12.3715 11.8465 12.3407 11.8469H8.47817C8.42925 11.8464 8.3822 11.828 8.34592 11.7952C8.30964 11.7624 8.28665 11.7174 8.2813 11.6688L7.78442 7.1344"
-										stroke="currentColor"
-										stroke-linecap="round"
-									/>
-									<path
-										d="M12.8218 8.8938H7.97803"
-										stroke="currentColor"
-										stroke-linecap="round"
-									/>
-									<path
-										d="M13.325 15.6905C12.912 16.2325 12.3888 16.6808 11.7899 17.0059C11.191 17.3309 10.5299 17.5253 9.8504 17.5763C9.17087 17.6272 8.48826 17.5336 7.84756 17.3015C7.20686 17.0694 6.62263 16.7041 6.13339 16.2298C5.64414 15.7555 5.261 15.1828 5.0092 14.5496C4.75741 13.9164 4.6427 13.237 4.67262 12.5562C4.70254 11.8754 4.87642 11.2087 5.18279 10.6C5.48917 9.99133 5.92108 9.45449 6.45005 9.0249"
-										stroke="currentColor"
-										stroke-linecap="round"
-									/>
-									<path
-										d="M7.34692 5.46558C8.18398 5.46558 8.86255 4.78701 8.86255 3.94995C8.86255 3.11289 8.18398 2.43433 7.34692 2.43433C6.50987 2.43433 5.8313 3.11289 5.8313 3.94995C5.8313 4.78701 6.50987 5.46558 7.34692 5.46558Z"
-										stroke="currentColor"
-										stroke-linecap="round"
-									/>
-								</svg>
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 20 20"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M9.92683 11.9091C10.7971 11.9091 11.5026 11.2036 11.5026 10.3333C11.5026 9.46306 10.7971 8.75757 9.92683 8.75757C9.05656 8.75757 8.35107 9.46306 8.35107 10.3333C8.35107 11.2036 9.05656 11.9091 9.92683 11.9091Z"
-										stroke="currentColor"
-										stroke-linejoin="round"
-									/>
-									<path
-										d="M9.92691 6C6.53523 6 3.99905 8.8232 3.14701 9.91205C2.951 10.1625 2.951 10.5041 3.14701 10.7546C3.99905 11.8435 6.53523 14.6667 9.92691 14.6667C13.3186 14.6667 15.8547 11.8435 16.7068 10.7546C16.9029 10.5041 16.9029 10.1625 16.7068 9.91205C15.8547 8.8232 13.3186 6 9.92691 6Z"
-										stroke="currentColor"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
-								<svg
-									width="20"
-									height="20"
-									viewBox="0 0 20 20"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M15.3125 15.6906L12.5 11.925C12.4815 11.9004 12.4573 11.8806 12.4297 11.867C12.402 11.8534 12.3715 11.8465 12.3407 11.8469H8.47817C8.42925 11.8464 8.3822 11.828 8.34592 11.7952C8.30964 11.7624 8.28665 11.7174 8.2813 11.6688L7.78442 7.1344"
-										stroke="currentColor"
-										stroke-linecap="round"
-									/>
-									<path
-										d="M12.8218 8.8938H7.97803"
-										stroke="currentColor"
-										stroke-linecap="round"
-									/>
-									<path
-										d="M13.325 15.6905C12.912 16.2325 12.3888 16.6808 11.7899 17.0059C11.191 17.3309 10.5299 17.5253 9.8504 17.5763C9.17087 17.6272 8.48826 17.5336 7.84756 17.3015C7.20686 17.0694 6.62263 16.7041 6.13339 16.2298C5.64414 15.7555 5.261 15.1828 5.0092 14.5496C4.75741 13.9164 4.6427 13.237 4.67262 12.5562C4.70254 11.8754 4.87642 11.2087 5.18279 10.6C5.48917 9.99133 5.92108 9.45449 6.45005 9.0249"
-										stroke="currentColor"
-										stroke-linecap="round"
-									/>
-									<path
-										d="M7.34692 5.46558C8.18398 5.46558 8.86255 4.78701 8.86255 3.94995C8.86255 3.11289 8.18398 2.43433 7.34692 2.43433C6.50987 2.43433 5.8313 3.11289 5.8313 3.94995C5.8313 4.78701 6.50987 5.46558 7.34692 5.46558Z"
-										stroke="currentColor"
-										stroke-linecap="round"
-									/>
-								</svg>
-							</div>
-						</div>
-					</a>
-				</li>
-			))
-		}
-	</ul>
+              <div class="accses-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.92683 11.9091C10.7971 11.9091 11.5026 11.2036 11.5026 10.3333C11.5026 9.46306 10.7971 8.75757 9.92683 8.75757C9.05656 8.75757 8.35107 9.46306 8.35107 10.3333C8.35107 11.2036 9.05656 11.9091 9.92683 11.9091Z"
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M9.92691 6C6.53523 6 3.99905 8.8232 3.14701 9.91205C2.951 10.1625 2.951 10.5041 3.14701 10.7546C3.99905 11.8435 6.53523 14.6667 9.92691 14.6667C13.3186 14.6667 15.8547 11.8435 16.7068 10.7546C16.9029 10.5041 16.9029 10.1625 16.7068 9.91205C15.8547 8.8232 13.3186 6 9.92691 6Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15.3125 15.6906L12.5 11.925C12.4815 11.9004 12.4573 11.8806 12.4297 11.867C12.402 11.8534 12.3715 11.8465 12.3407 11.8469H8.47817C8.42925 11.8464 8.3822 11.828 8.34592 11.7952C8.30964 11.7624 8.28665 11.7174 8.2813 11.6688L7.78442 7.1344"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M12.8218 8.8938H7.97803"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M13.325 15.6905C12.912 16.2325 12.3888 16.6808 11.7899 17.0059C11.191 17.3309 10.5299 17.5253 9.8504 17.5763C9.17087 17.6272 8.48826 17.5336 7.84756 17.3015C7.20686 17.0694 6.62263 16.7041 6.13339 16.2298C5.64414 15.7555 5.261 15.1828 5.0092 14.5496C4.75741 13.9164 4.6427 13.237 4.67262 12.5562C4.70254 11.8754 4.87642 11.2087 5.18279 10.6C5.48917 9.99133 5.92108 9.45449 6.45005 9.0249"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M7.34692 5.46558C8.18398 5.46558 8.86255 4.78701 8.86255 3.94995C8.86255 3.11289 8.18398 2.43433 7.34692 2.43433C6.50987 2.43433 5.8313 3.11289 5.8313 3.94995C5.8313 4.78701 6.50987 5.46558 7.34692 5.46558Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.92683 11.9091C10.7971 11.9091 11.5026 11.2036 11.5026 10.3333C11.5026 9.46306 10.7971 8.75757 9.92683 8.75757C9.05656 8.75757 8.35107 9.46306 8.35107 10.3333C8.35107 11.2036 9.05656 11.9091 9.92683 11.9091Z"
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M9.92691 6C6.53523 6 3.99905 8.8232 3.14701 9.91205C2.951 10.1625 2.951 10.5041 3.14701 10.7546C3.99905 11.8435 6.53523 14.6667 9.92691 14.6667C13.3186 14.6667 15.8547 11.8435 16.7068 10.7546C16.9029 10.5041 16.9029 10.1625 16.7068 9.91205C15.8547 8.8232 13.3186 6 9.92691 6Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15.3125 15.6906L12.5 11.925C12.4815 11.9004 12.4573 11.8806 12.4297 11.867C12.402 11.8534 12.3715 11.8465 12.3407 11.8469H8.47817C8.42925 11.8464 8.3822 11.828 8.34592 11.7952C8.30964 11.7624 8.28665 11.7174 8.2813 11.6688L7.78442 7.1344"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M12.8218 8.8938H7.97803"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M13.325 15.6905C12.912 16.2325 12.3888 16.6808 11.7899 17.0059C11.191 17.3309 10.5299 17.5253 9.8504 17.5763C9.17087 17.6272 8.48826 17.5336 7.84756 17.3015C7.20686 17.0694 6.62263 16.7041 6.13339 16.2298C5.64414 15.7555 5.261 15.1828 5.0092 14.5496C4.75741 13.9164 4.6427 13.237 4.67262 12.5562C4.70254 11.8754 4.87642 11.2087 5.18279 10.6C5.48917 9.99133 5.92108 9.45449 6.45005 9.0249"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M7.34692 5.46558C8.18398 5.46558 8.86255 4.78701 8.86255 3.94995C8.86255 3.11289 8.18398 2.43433 7.34692 2.43433C6.50987 2.43433 5.8313 3.11289 5.8313 3.94995C5.8313 4.78701 6.50987 5.46558 7.34692 5.46558Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </section>
 
 <style>
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(12px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-	.location-list {
-		margin: clamp(10px, 3vw, 20px);
-	}
+  .location-list {
+    margin: clamp(10px, 3vw, 20px);
+  }
 
-	.location-list ul {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: clamp(8px, 2vw, 12px);
-	}
+  .location-list ul {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(8px, 2vw, 12px);
+  }
 
-	/* Tablet: 2-koloms grid */
-	@media (min-width: 768px) {
-		.location-list ul {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
+  @media (min-width: 768px) {
+    .location-list ul {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
-	/* Desktop split-view: terug naar 1 kolom (lijst is smal) */
-	@media (min-width: 1024px) {
-		.location-list ul {
-			grid-template-columns: 1fr;
-		}
-	}
+  @media (min-width: 1024px) {
+    .location-list ul {
+      grid-template-columns: 1fr;
+    }
+  }
 
-	.location-list li {
-		border: solid 0.5px var(--ams-color-grey-3);
-		background-color: var(--ams-color-white);
-		padding: clamp(10px, 3vw, 16px) clamp(12px, 4vw, 20px);
-		animation: fadeInUp 0.5s ease both;
-		transition:
-			transform 0.18s ease,
-			box-shadow 0.18s ease;
-	}
+  .location-list li {
+    border: solid 0.5px var(--ams-color-grey-3);
+    background-color: var(--ams-color-white);
+    padding: clamp(10px, 3vw, 16px) clamp(12px, 4vw, 20px);
+    animation: fadeInUp 0.5s ease both;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
+  }
 
-	.location-list li:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-	}
+  .location-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
 
-	.location-list li:nth-child(1) {
-		animation-delay: 0.1s;
-	}
-	.location-list li:nth-child(2) {
-		animation-delay: 0.22s;
-	}
-	.location-list li:nth-child(3) {
-		animation-delay: 0.34s;
-	}
-	.location-list li:nth-child(4) {
-		animation-delay: 0.46s;
-	}
-	.location-list li:nth-child(5) {
-		animation-delay: 0.58s;
-	}
-	.location-list li:nth-child(6) {
-		animation-delay: 0.7s;
-	}
-	.location-list li:nth-child(7) {
-		animation-delay: 0.82s;
-	}
-	.location-list li:nth-child(8) {
-		animation-delay: 0.94s;
-	}
-	.location-list li:nth-child(9) {
-		animation-delay: 1.06s;
-	}
-	.location-list li:nth-child(10) {
-		animation-delay: 1.18s;
-	}
-	a {
-		text-decoration: none;
-		color: var(--ams-color-black);
-		display: flex;
-		gap: 2em;
+  .location-list li:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .location-list li:nth-child(2) {
+    animation-delay: 0.22s;
+  }
+  .location-list li:nth-child(3) {
+    animation-delay: 0.34s;
+  }
+  .location-list li:nth-child(4) {
+    animation-delay: 0.46s;
+  }
+  .location-list li:nth-child(5) {
+    animation-delay: 0.58s;
+  }
+  .location-list li:nth-child(6) {
+    animation-delay: 0.7s;
+  }
+  .location-list li:nth-child(7) {
+    animation-delay: 0.82s;
+  }
+  .location-list li:nth-child(8) {
+    animation-delay: 0.94s;
+  }
+  .location-list li:nth-child(9) {
+    animation-delay: 1.06s;
+  }
+  .location-list li:nth-child(10) {
+    animation-delay: 1.18s;
+  }
+  a {
+    text-decoration: none;
+    color: var(--ams-color-black);
+    display: flex;
+    gap: 2em;
 
-		align-items: center;
-	}
+    align-items: center;
+  }
 
-	.adres {
-		display: flex;
-		flex-direction: column;
-		align-items: start;
-	}
-	.location-list li {
-		list-style: none;
-	}
+  .adres {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  .location-list li {
+    list-style: none;
+  }
 
-	.adres p {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: var(--ams-font-size-body-small);
-		gap: 2px;
-	}
+  .adres p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--ams-font-size-body-small);
+    gap: 2px;
+  }
 
-	.adres .badge {
-		margin-top: 6px;
-	}
+  .adres .badge {
+    margin-top: 6px;
+  }
 
-	.accses-icon {
-		display: flex;
-		gap: 10px;
-		margin-top: 10px;
-	}
+  .accses-icon {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  /* mark zoekterm */
+  :global(mark) {
+    background: none;
+    color: var(--ams-color-primair-red);
+    font-weight: 800;
+    text-underline-offset: 2px;
+  }
 </style>
 
 <script>
-	//@ts-nocheck
+  //@ts-nocheck
 
-	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-	// console.log(checkboxes)
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  // console.log(checkboxes)
 
-	checkboxes.forEach((categ) => {
-		categ.addEventListener("click", () => {
-			const huidigProfiel = JSON.parse(localStorage.getItem("profiel") || "{}");
-			if (categ.checked) {
-				huidigProfiel[categ.value] = true;
-			} else {
-				delete huidigProfiel[categ.value];
-			}
-			localStorage.setItem("profiel", JSON.stringify(huidigProfiel));
-			console.log(JSON.parse(localStorage.getItem("profiel")));
-		});
-	});
+  checkboxes.forEach((categ) => {
+    categ.addEventListener("click", () => {
+      const huidigProfiel = JSON.parse(localStorage.getItem("profiel") || "{}");
+      if (categ.checked) {
+        huidigProfiel[categ.value] = true;
+      } else {
+        delete huidigProfiel[categ.value];
+      }
+      localStorage.setItem("profiel", JSON.stringify(huidigProfiel));
+      console.log("profiel:", JSON.parse(localStorage.getItem("profiel")));
+    });
+  });
 </script>
