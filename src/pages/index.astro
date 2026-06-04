@@ -24,8 +24,7 @@ const locations = data.features.map((feature) => ({
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="stylesheet" href="styles/global.css" />
@@ -38,22 +37,75 @@ const locations = data.features.map((feature) => ({
 		<title>Astro</title>
 	</head>
 	<body>
-		<Header />
-		<Filter />
-		<LocationFilter/>
-		<Display />
-		<div id="list-view">
-			<LocationCard locations={locations} />
+		<div class="app-wrapper">
+			<Header />
+			<div class="content-area">
+				<div class="content-left">
+					<Filter />
+          <LocationFilter/>
+					<Display />
+					<div id="list-view">
+						<LocationCard locations={locations} />
+					</div>
+				</div>
+				<script is:inline define:vars={{ locations }}>
+					window._locaties = locations;
+				</script>
+				<Map />
+			</div>
 		</div>
-		<script is:inline define:vars={{ locations }}>
-			window._locaties = locations;
-		</script>
-		<Map />
 		<script
 			src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
 			integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 			crossorigin=""></script>
 	</body>
+
+	<style>
+		/* ── Mobiel & tablet: content als kolom ── */
+		.content-area {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+		}
+
+		.content-left {
+			display: flex;
+			flex-direction: column;
+		}
+
+		/* ── Desktop (1024px+): split-view lijst links, kaart rechts ── */
+		@media (min-width: 1024px) {
+			.app-wrapper {
+				height: 100vh;
+				overflow: hidden;
+			}
+
+			.content-area {
+				flex-direction: row;
+				flex: 1;
+				overflow: hidden;
+			}
+
+			.content-left {
+				width: clamp(340px, 38%, 500px);
+				overflow-y: auto;
+				border-right: 1px solid var(--ams-color-grey-2);
+				flex-shrink: 0;
+			}
+
+			/* :global() nodig want #map-view en #list-view komen uit andere components */
+			/* Bron Astro global: https://docs.astro.build/en/guides/styling/#global-styles */
+			:global(#map-view) {
+				display: flex !important;
+				flex: 1;
+				flex-direction: column;
+			}
+
+			:global(#list-view) {
+				display: block !important;
+			}
+		}
+	</style>
 
 	<script>
 		// @ts-nocheck
@@ -74,6 +126,7 @@ const locations = data.features.map((feature) => ({
 				const checkbox = document.querySelector(
 					`input[name="filter"][value="${waarde}"]`,
 				);
+				console.log('checkbox:', checkbox)
 				if (checkbox) {
 					checkbox.checked = true;
 					// Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
@@ -174,5 +227,13 @@ const locations = data.features.map((feature) => ({
 		// --- roept filterCards aan zodra je iets kiest in een van de twee dropdowns.
 		hoofdfilterSelect.addEventListener('change', filterCards);
 		subfilterSelect.addEventListener('change', filterCards);
+		// Op desktop (≥1024px) kaart automatisch initialiseren naast de lijst
+		if (window.innerWidth >= 1024) {
+			setTimeout(() => {
+				if (window.initialiseerKaart) {
+					window.initialiseerKaart();
+				}
+			}, 100);
+		}
 	</script>
 </html>
