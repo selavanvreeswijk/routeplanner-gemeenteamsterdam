@@ -5,16 +5,19 @@ import { countFilter } from "../../scripts/filtering.js";
 
 import Header from "../components/Header.astro";
 import Filter from "../components/Filter.astro";
+import LocationFilter from "../components/LocationFilter.astro";
 import Display from "../components/Display.astro";
 import LocationCard from "../components/LocationCard.astro";
 import Map from "../components/Map.astro";
 
 const locations = data.features.map((feature) => ({
-	name: feature.properties.Naam_locatie,
-	address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
-	counts: countFilter(feature, filterGroups),
-	lat: feature.geometry.coordinates[1],
-	lng: feature.geometry.coordinates[0],
+  name: feature.properties.Naam_locatie,
+  address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
+  hoofdfilter: feature.properties.Hoofdfilter.trim(),
+  subfilter: feature.properties.Subfilter.trim(),
+  counts: countFilter(feature, filterGroups),
+  lat: feature.geometry.coordinates[1],
+  lng: feature.geometry.coordinates[0],
 }));
 ---
 
@@ -39,6 +42,7 @@ const locations = data.features.map((feature) => ({
 			<div class="content-area">
 				<div class="content-left">
 					<Filter />
+          <LocationFilter/>
 					<Display />
 					<div id="list-view">
 						<LocationCard locations={locations} />
@@ -111,9 +115,9 @@ const locations = data.features.map((feature) => ({
 		const opgeslagenProfiel = localStorage.getItem("profiel");
 		const opgeslagenNaam = localStorage.getItem("naam");
 
-		if (!opgeslagenProfiel || !opgeslagenNaam) {
-			// Eerste bezoek: stuur naar onboarding
-			window.location.href = import.meta.env.BASE_URL + "onboarding";
+		const isOnboarding = window.location.pathname.includes('onboarding');
+		if (!opgeslagenProfiel || !opgeslagenNaam && !isOnboarding) {
+		window.location.href = import.meta.env.BASE_URL + "onboarding";
 		} else {
 			// Tweede bezoek: zet het opgeslagen profiel alvast aan in de filterknop
 			const profielObject = Object.keys(JSON.parse(opgeslagenProfiel));
@@ -122,7 +126,6 @@ const locations = data.features.map((feature) => ({
 				const checkbox = document.querySelector(
 					`input[name="filter"][value="${waarde}"]`,
 				);
-				console.log('checkbox:', checkbox)
 				if (checkbox) {
 					checkbox.checked = true;
 					// Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
@@ -199,6 +202,30 @@ const locations = data.features.map((feature) => ({
 			if (zoekKnop) zoekKnop.style.display = "none";
 		});
 
+		// Locatie Filter balk -- ZORGT ERVOOR DAT DE LOCATIES IN DE LIJST EN OP DE KAART FILTEREN
+		// --- haalt ids uit de LocationFilter
+		const hoofdfilterSelect = document.getElementById('hoofdfilter-select'); 
+		const subfilterSelect = document.getElementById('subfilter-select');
+
+		function filterCards() {
+		// --- haalt de huidige waarde op van beide dropdowns. .trim() verwijdert spaties, .toLowerCase() zodat hoofdletters niet uitmaken.
+		const hoofdfilter = hoofdfilterSelect.value.trim().toLowerCase();
+		const subfilter = subfilterSelect.value.trim().toLowerCase();
+
+		cards.forEach(card => {
+			// --- pakt van elke kaart de data-hoofdfilter en data-subfilter waarden die je op de <li> hebt gezet.
+			const cardHoofd = card.dataset.hoofdfilter ?? '';
+			const cardSub = card.dataset.subfilter ?? '';
+			const matchHoofd = !hoofdfilter || cardHoofd === hoofdfilter; // als er niks gekozen is, altijd tonen
+			const matchSub = !subfilter || cardSub === subfilter; // anders alleen tonen als het overeenkomt
+			card.style.display = matchHoofd && matchSub ? '' : 'none'; // tonen als beide filters matchen
+		});
+
+		updateCount();
+		}
+		// --- roept filterCards aan zodra je iets kiest in een van de twee dropdowns.
+		hoofdfilterSelect.addEventListener('change', filterCards);
+		subfilterSelect.addEventListener('change', filterCards);
 		// Op desktop (≥1024px) kaart automatisch initialiseren naast de lijst
 		if (window.innerWidth >= 1024) {
 			setTimeout(() => {

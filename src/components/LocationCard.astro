@@ -5,17 +5,17 @@ const { locations } = Astro.props;
 import DistanceDot from "../components/DistanceDot.astro";
 import StatusBadge from "../components/StatusBadge.astro";
 import { lazy } from "astro:schema";
+
 ---
 
-<!-- 
-<link rel="stylesheet" href="styles/global.css" /> -->
 <section class="location-list">
-	<ul>
-		{
-			locations.map((location) => (
+	<ul> 
+		{ locations.map((location) => (
 				<li
 					data-name={location.name.toLowerCase()}
-					data-address={location.address.toLowerCase()}>
+					data-address={location.address.toLowerCase()}
+					data-subfilter={location.subfilter?.toLowerCase()}
+					data-hoofdfilter={location.hoofdfilter?.toLowerCase()}>
 					<a
 						href={`/locaties/${location.name
 							.toLowerCase()
@@ -175,12 +175,14 @@ import { lazy } from "astro:schema";
 		gap: clamp(8px, 2vw, 12px);
 	}
 
+	/* Tablet: 2-koloms grid */
 	@media (min-width: 768px) {
 		.location-list ul {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 
+	/* Desktop split-view: terug naar 1 kolom (lijst is smal) */
 	@media (min-width: 1024px) {
 		.location-list ul {
 			grid-template-columns: 1fr;
@@ -284,7 +286,7 @@ import { lazy } from "astro:schema";
 				delete huidigProfiel[categ.value];
 			}
 			localStorage.setItem("profiel", JSON.stringify(huidigProfiel));
-			console.log('profiel:', JSON.parse(localStorage.getItem("profiel")));
+			console.log(JSON.parse(localStorage.getItem("profiel")));
 		});
 	});
 </script>
