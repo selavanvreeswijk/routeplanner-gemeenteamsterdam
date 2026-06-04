@@ -85,10 +85,9 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       pointer-events: auto;
     }
 
-    /* Zoekbalk even breed als het linkerpaneel naast de kaart
-       (content-left = clamp(340px, 38%, 500px) in index.astro) */
+    /* Zoekbalk beperkte breedte zodat hij niet de hele header vult */
     :global(.search-wrapper) {
-      width: clamp(340px, 38%, 500px);
+      width: clamp(280px, 30%, 400px);
     }
   }
 
