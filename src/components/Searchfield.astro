@@ -53,11 +53,11 @@ const { id = "search-input", showButton = false } = Astro.props;
   }
 
   .search-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    transition: transform 0.25s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: min(100%, max(31.5vw, 420px));
+      transition: transform 0.25s ease;
   }
 
   .search-wrapper:focus-within {
