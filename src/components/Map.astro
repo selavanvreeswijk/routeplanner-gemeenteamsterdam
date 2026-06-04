@@ -26,20 +26,10 @@
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(kaart);
 
-    // Rode SVG pin drop in Amsterdam-huisstijlkleur voor alle locaties
-    // Bron L.divIcon: https://leafletjs.com/reference.html#divicon
-    var rodePin = L.divIcon({
-      html: '<svg width="22" height="32" viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 26 14 26S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="#EC0000" stroke="white" stroke-width="1.5"/><circle cx="14" cy="14" r="5" fill="white"/></svg>',
-      iconSize: [22, 32],
-      iconAnchor: [11, 32],
-      popupAnchor: [0, -32],
-      className: ""
-    });
-
     var locaties = window._locaties || [];
     locaties.forEach(function (loc) {
       if (!loc.lat || !loc.lng) return;
-      var marker = L.marker([loc.lat, loc.lng], { icon: rodePin })
+      var marker = L.marker([loc.lat, loc.lng])
         .addTo(kaart)
         .bindPopup("<strong>" + loc.name + "</strong><br>" + loc.address);
       marker._locatieNaam = loc.name.toLowerCase();
@@ -131,16 +121,7 @@
 
     if (zoekMarker) window._kaart.removeLayer(zoekMarker);
     window._kaart.setView([lat, lng], 15);
-
-    // Zoekresultaat krijgt ook een rode pin
-    var zoekPin = L.divIcon({
-      html: '<svg width="22" height="32" viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 26 14 26S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="#EC0000" stroke="white" stroke-width="1.5"/><circle cx="14" cy="14" r="5" fill="white"/></svg>',
-      iconSize: [22, 32],
-      iconAnchor: [11, 32],
-      popupAnchor: [0, -32],
-      className: ""
-    });
-    zoekMarker = L.marker([lat, lng], { icon: zoekPin })
+    zoekMarker = L.marker([lat, lng])
       .addTo(window._kaart)
       .bindPopup(naam)
       .openPopup();
@@ -163,6 +144,7 @@
     padding: 1rem;
   }
 
+  /* Op desktop vult de kaart de volledige rechterkant */
   @media (min-width: 1024px) {
     #map-view {
       flex: 1;
