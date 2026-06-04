@@ -91,6 +91,11 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       font-size: clamp(1.5rem, 2.5vw, 2rem);
       pointer-events: auto;
     }
+
+    /* Zoekbalk beperkte breedte zodat hij niet de hele header vult */
+    :global(.search-wrapper) {
+      width: clamp(280px, 30%, 400px);
+    }
   }
 
   .gebruiker-naam {
