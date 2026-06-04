@@ -187,6 +187,7 @@
     }
   }
 
+  /* ── Mobiel: 2-koloms grid ── */
   .filters {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -205,9 +206,9 @@
 
   .filter-btn {
     padding: clamp(8px, 2.5vw, 14px) clamp(10px, 3vw, 20px);
-
-    background: var(--ams-color-white);
-
+  
+    background: var(--ams-color-grey-1);
+  
     font-size: clamp(0.75rem, 2.5vw, 0.9rem);
     border: solid 1.5px var(--ams-color-grey-1);
 
@@ -286,18 +287,21 @@
     transform: rotate(90deg);
   }
 
+  /* ── Tablet (768px+): horizontale rij, 3 kolommen per rij ── */
   @media (min-width: 768px) {
     .filters {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
+  /* ── Desktop (1024px+): alle filters zichtbaar, 3-koloms in split-panel ── */
   @media (min-width: 1024px) {
     .filters {
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
 
+    /* Alle filters altijd zichtbaar op desktop */
     .hidden-disability {
       display: contents;
     }
