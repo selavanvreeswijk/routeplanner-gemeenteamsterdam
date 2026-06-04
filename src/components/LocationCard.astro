@@ -14,7 +14,8 @@ import { lazy } from "astro:schema";
 				<li
 					data-name={location.name.toLowerCase()}
 					data-address={location.address.toLowerCase()}
-					data-subfilter={location.subfilter?.toLowerCase()}>
+					data-subfilter={location.subfilter?.toLowerCase()}
+					data-hoofdfilter={location.hoofdfilter?.toLowerCase()}>
 					<a
 						href={`/locaties/${location.name
 							.toLowerCase()

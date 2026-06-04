@@ -13,6 +13,7 @@ import Map from "../components/Map.astro";
 const locations = data.features.map((feature) => ({
   name: feature.properties.Naam_locatie,
   address: `${feature.properties.adres} ${feature.properties.Huisnummer}`,
+  hoofdfilter: feature.properties.Hoofdfilter.trim(),
   subfilter: feature.properties.Subfilter.trim(),
   counts: countFilter(feature, filterGroups),
   lat: feature.geometry.coordinates[1],
@@ -149,20 +150,29 @@ const locations = data.features.map((feature) => ({
 			if (zoekKnop) zoekKnop.style.display = "none";
 		});
 
-		// Locatie Filter balk
+		// Locatie Filter balk -- ZORGT ERVOOR DAT DE LOCATIES IN DE LIJST EN OP DE KAART FILTEREN
+		// --- haalt ids uit de LocationFilter
+		const hoofdfilterSelect = document.getElementById('hoofdfilter-select'); 
 		const subfilterSelect = document.getElementById('subfilter-select');
 
-		subfilterSelect.addEventListener('change', () => {
-		const selected = subfilterSelect.value.trim().toLowerCase();
+		function filterCards() {
+		// --- haalt de huidige waarde op van beide dropdowns. .trim() verwijdert spaties, .toLowerCase() zodat hoofdletters niet uitmaken.
+		const hoofdfilter = hoofdfilterSelect.value.trim().toLowerCase();
+		const subfilter = subfilterSelect.value.trim().toLowerCase();
+
 		cards.forEach(card => {
-			const subfilter = card.dataset.subfilter ?? '';
-			if (!selected || subfilter === selected) {
-			card.style.display = '';
-			} else {
-			card.style.display = 'none';
-			}
+			// --- pakt van elke kaart de data-hoofdfilter en data-subfilter waarden die je op de <li> hebt gezet.
+			const cardHoofd = card.dataset.hoofdfilter ?? '';
+			const cardSub = card.dataset.subfilter ?? '';
+			const matchHoofd = !hoofdfilter || cardHoofd === hoofdfilter; // als er niks gekozen is, altijd tonen
+			const matchSub = !subfilter || cardSub === subfilter; // anders alleen tonen als het overeenkomt
+			card.style.display = matchHoofd && matchSub ? '' : 'none'; // tonen als beide filters matchen
 		});
+
 		updateCount();
-		});
+		}
+		// --- roept filterCards aan zodra je iets kiest in een van de twee dropdowns.
+		hoofdfilterSelect.addEventListener('change', filterCards);
+		subfilterSelect.addEventListener('change', filterCards);
 	</script>
 </html>

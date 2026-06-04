@@ -1,21 +1,92 @@
 ---
+// Haalt de data op uit de JSON
 import data from '../cbadataset.json' with { type: 'json' };
+
+const hoofdfilters = [...new Set(data.features.map(f => f.properties.Hoofdfilter.trim()))].sort();
 const subfilters = [...new Set(data.features.map(f => f.properties.Subfilter.trim()))].sort();
+
+// Maak een map van hoofdfilter -> subfilters
+const subfiltersByHoofd = {};
+data.features.forEach(f => {
+  const hoofd = f.properties.Hoofdfilter.trim();
+  const sub = f.properties.Subfilter.trim();
+  if (!subfiltersByHoofd[hoofd]) subfiltersByHoofd[hoofd] = new Set();
+  subfiltersByHoofd[hoofd].add(sub);
+});
+
+// Zet Sets om naar gesorteerde arrays
+Object.keys(subfiltersByHoofd).forEach(k => {
+  subfiltersByHoofd[k] = [...subfiltersByHoofd[k]].sort();
+});
 ---
 
-<select id="subfilter-select">
-  <option value="">Alles</option>
-  {subfilters.map(f => (
-    <option value={f}>{f}</option>
-  ))}
-</select>
+<div class="filters">
+  <select id="hoofdfilter-select">
+    <option value="">Alle categorieën</option>
+    {hoofdfilters.map(f => <option value={f}>{f}</option>)} <!-- Opties voor hoofdfilters genereren bijvb <option value="f = Sport"> f = Sport</option>-->
+  </select>
+
+  <select id="subfilter-select" disabled>
+    <option value="">Alle subcategorieën</option>
+    {subfilters.map(f => <option value={f}>{f}</option>)}
+  </select>
+</div>
+
+<script define:vars={{ subfiltersByHoofd }}>
+  // --- haalt filters op uit de LocationFilter component
+  const hoofdSelect = document.getElementById('hoofdfilter-select');
+  const subSelect = document.getElementById('subfilter-select');
+
+  function updateSubfilters() {
+    // Kijkt welke hoofdfilter gekozen is en zoekt de bijbehorende subfilters op uit de map.
+    const gekozen = hoofdSelect.value;
+    const subs = gekozen ? subfiltersByHoofd[gekozen] ?? [] : [];
+
+    subSelect.innerHTML = '<option value="">Alle subcategorieën</option>';
+    // Maakt voor elke subfilter een nieuwe <option> aan en voegt die toe.
+    subs.forEach(sub => {
+      const opt = document.createElement('option');
+      opt.value = sub;
+      opt.textContent = sub;
+      subSelect.appendChild(opt);
+    });
+    // Zet de subfilter uit als er geen hoofdfilter gekozen is.
+    subSelect.disabled = !gekozen;
+  }
+
+  // Roept updateSubfilters aan zodra je een hoofdfilter kiest.
+  hoofdSelect.addEventListener('change', updateSubfilters);
+</script>
 
 <style>
-    select {
-        padding: 8px;
-        font-size: var(--ams-font-size-body);
-        border: 1px solid var(--ams-color-gray-300);
-        border-radius: 4px;
-        margin: 1rem;
+  .filters {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem;
+  }
+
+  select {
+    border: var(--ams-color-grey-3) 0.5px solid;
+    font-size: var(--ams-font-size-body-small);
+    border-radius: 4px;
+    padding: 0.5rem;
+  }
+
+  select:focus {
+    outline: none;
+    border-color: #CC0000;
+  }
+
+  select:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  @media (min-width: 450px) {
+    .filters {
+      flex-direction: row;
     }
+  }
+
 </style>
