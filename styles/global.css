@@ -85,8 +85,11 @@
     color: #f0f0f0;
   }
 
-  .filter-btn:has(input:checked) {
-    color: #f0f0f0;
+  .filter-btn:has(input:checked),
+  .profile-card:has(input:checked) {
+    background-color: #3a0000 !important;
+    border-color: var(--ams-color-primair-red) !important;
+    color: #f0f0f0 !important;
   }
 }
 
@@ -157,4 +160,64 @@ p {
     max-width: 100%;
     box-shadow: none;
   }
+}
+
+/* ================================
+   HOOG CONTRAST MODUS
+   Bron CSS variabelen overschrijven: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
+   ================================ */
+body.hoog-contrast {
+  --ams-color-primair-red: #ffff00;
+  --ams-color-black: #ffffff;
+  --ams-color-grey-5: #ffffff;
+  --ams-color-grey-4: #cccccc;
+  --ams-color-grey-3: #555555;
+  --ams-color-grey-2: #222222;
+  --ams-color-grey-1: #1a1a1a;
+  --ams-color-white: #111111;
+  --ams-bg: #111111;
+  background-color: #111111;
+  color: #ffffff;
+}
+
+body.hoog-contrast h2,
+body.hoog-contrast h1,
+body.hoog-contrast p,
+body.hoog-contrast a,
+body.hoog-contrast li {
+  color: #ffffff;
+}
+
+body.hoog-contrast header {
+  color: #000000;
+}
+
+body.hoog-contrast header h1,
+body.hoog-contrast header span,
+body.hoog-contrast header button {
+  color: #000000;
+}
+
+body.hoog-contrast #start-button {
+  color: #000000 !important;
+}
+
+body.hoog-contrast .filter-btn:has(input:checked),
+body.hoog-contrast .profile-card:has(input:checked) {
+  background-color: #1a1a00 !important;
+  border-color: #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+body.hoog-contrast .location-list li:hover {
+  background-color: #111111;
+  box-shadow: none;
+  border-color: #ffff00;
+  color: #ffff00;
+}
+
+body.hoog-contrast .location-list li:hover h2,
+body.hoog-contrast .location-list li:hover p,
+body.hoog-contrast .location-list li:hover a {
+  color: #ffff00;
 }
