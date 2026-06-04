@@ -101,6 +101,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     pointer-events: none;
   }
 
+  /* Responsiveness */
+
   @media (min-width: 1024px) {
     .header-top {
       position: static;
@@ -119,8 +121,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       pointer-events: auto;
     }
 
-    /* Zoekbalk even breed als het linkerpaneel naast de kaart
-       (content-left = clamp(340px, 38%, 500px) in index.astro) */
     :global(.search-wrapper) {
       width: clamp(340px, 38%, 500px);
     }
