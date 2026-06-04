@@ -4,7 +4,6 @@ const { locations } = Astro.props;
 
 import DistanceDot from "../components/DistanceDot.astro";
 import StatusBadge from "../components/StatusBadge.astro";
-import { lazy } from "astro:schema";
 
 ---
 
@@ -12,6 +11,7 @@ import { lazy } from "astro:schema";
 	<ul> 
 		{ locations.map((location) => (
 				<li
+					data-counts={JSON.stringify(location.counts)}
 					data-name={location.name.toLowerCase()}
 					data-address={location.address.toLowerCase()}
 					data-subfilter={location.subfilter?.toLowerCase()}
@@ -326,21 +326,51 @@ import { lazy } from "astro:schema";
 </style>
 
 <script>
-  //@ts-nocheck
+	//@ts-nocheck
+	function chosenCateg(chosen) {
+    const list = document.querySelector('.location-list ul')
+    const cards = [...document.querySelectorAll('.location-list li')]
 
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  // console.log(checkboxes)
-
-  checkboxes.forEach((categ) => {
-    categ.addEventListener("click", () => {
-      const huidigProfiel = JSON.parse(localStorage.getItem("profiel") || "{}");
-      if (categ.checked) {
-        huidigProfiel[categ.value] = true;
-      } else {
-        delete huidigProfiel[categ.value];
+    cards.sort((a, b) => {
+      //doe ik binnen sort
+      const countA = JSON.parse(a.dataset.counts)
+      const countB = JSON.parse(b.dataset.counts) 
+      
+      let percentageA = 0
+      let percentageB = 0
+      
+      //we tellen 'percentages' van alle categorieen bij elkaar op om een gelijke berekening te maken
+      for (const cat of chosen) {
+        if(countA[cat]) {
+          percentageA += Math.round(countA[cat].Ja / (countA[cat].Ja + countA[cat].Nee + countA[cat].Onbekend))
+        }
+        if (countB[cat]){
+          percentageB += Math.round(countB[cat].Ja / (countB[cat].Ja + countB[cat].Nee + countB[cat].Onbekend))
+        }
       }
-      localStorage.setItem("profiel", JSON.stringify(huidigProfiel));
-      console.log("profiel:", JSON.parse(localStorage.getItem("profiel")));
-    });
-  });
+      return percentageB - percentageA
+    })
+
+    cards.forEach(card => list.appendChild(card))
+  }
+
+	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+	checkboxes.forEach((categ) => {
+		categ.addEventListener("click", () => {
+			const huidigProfiel = JSON.parse(localStorage.getItem("profiel") || "{}");
+			if (categ.checked) {
+				huidigProfiel[categ.value] = true;
+			} else {
+				delete huidigProfiel[categ.value];
+			}
+			localStorage.setItem("profiel", JSON.stringify(huidigProfiel));
+			console.log("profiel:", JSON.parse(localStorage.getItem("profiel")));
+			
+			const chosenFilter = [...checkboxes].filter(categ => categ.checked)
+			const chosen = chosenFilter.map(categ => categ.value)
+			
+			chosenCateg(chosen)
+		});
+	});
 </script>
