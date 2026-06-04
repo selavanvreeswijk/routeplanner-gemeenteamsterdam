@@ -4,7 +4,7 @@ const { locations } = Astro.props;
 
 import DistanceDot from "../components/DistanceDot.astro";
 import StatusBadge from "../components/StatusBadge.astro";
-import { lazy } from "astro:schema";
+
 ---
 
 <!-- 
@@ -14,6 +14,7 @@ import { lazy } from "astro:schema";
 		{
 			locations.map((location) => (
 				<li
+					data-counts={JSON.stringify(location.counts)}
 					data-name={location.name.toLowerCase()}
 					data-address={location.address.toLowerCase()}>
 					<a
@@ -284,7 +285,7 @@ import { lazy } from "astro:schema";
 				delete huidigProfiel[categ.value];
 			}
 			localStorage.setItem("profiel", JSON.stringify(huidigProfiel));
-			console.log('profiel:', JSON.parse(localStorage.getItem("profiel")));
+			console.log("profiel:", JSON.parse(localStorage.getItem("profiel")));
 		});
 	});
 </script>

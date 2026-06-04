@@ -328,4 +328,32 @@
         : "Bekijk meer";
     });
   }
+
+  function chosenCateg(chosen) {
+    const list = document.querySelector('.location-list ul')
+    const cards = document.querySelectorAll('.location-list li')
+
+    cards.sort((a, b) => {
+      //doe ik binnen sort
+      const countA = JSON.parse(a.dataset.counts)
+      const countB = JSON.parse(b.dataset.counts) 
+      
+      let percentageA = 0
+      let percentageB = 0
+      
+      //we tellen 'percentages' van alle categorieen bij elkaar op om een gelijke berekening te maken
+      for (const cat of chosen) {
+        if(countA[cat]) {
+          percentageA += Math.round(countsA[cat].Ja / (countA[cat].Ja + countA[cat].Nee + countA[cat].Onbekend))
+        }
+        if (countB[cat]){
+          percentageB += Math.round(countsB[cat].Ja / (countB[cat].Ja + countB[cat].Nee + countB[cat].Onbekend))
+        }
+      }
+      return percentageB - percentageA
+    })
+
+    cards.forEach(card => list.appendChild(card))
+  }
+
 </script>
