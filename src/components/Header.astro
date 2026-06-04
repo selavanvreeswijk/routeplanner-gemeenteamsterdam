@@ -2,9 +2,6 @@
 import Searchfield from "./Searchfield.astro";
 import Inputfield from "./Searchfield.astro";
 
-// BASE_URL bevat het base-pad uit astro.config.mjs
-// bijv. '/routeplanner-gemeenteamsterdam/'
-// Dit is nodig om assets van de public folder correct in te laden
 const { showSearch = true } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL;
 const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
@@ -14,21 +11,50 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   <div class="header-top">
     <div class="header-links">
       <img src={logoUrl} alt="Gemeente Amsterdam logo" />
-      <h1>TAVI</h1>
     </div>
 
     <h1>TAVI</h1>
 
-    <span id="header-gebruiker-naam" class="gebruiker-naam"></span>
+    <div class="gebruiker-rechts">
+      <span id="header-gebruiker-naam" class="gebruiker-naam"></span>
+      <button id="contrast-toggle" aria-label="Hoog contrast aan/uit">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.4 10C4.4 6.9123 6.9123 4.4 10 4.4V15.6C6.9123 15.6 4.4 13.0877 4.4 10ZM10 3C6.1339 3 3 6.1339 3 10C3 13.8661 6.1339 17 10 17C13.8661 17 17 13.8661 17 10C17 6.1339 13.8661 3 10 3Z"
+            fill="currentcolor"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 
-  <Searchfield />
+  {showSearch && <Searchfield />}
 </header>
 
-<!-- Lees de naam op uit localStorage en zet hem in de header -->
-<!-- localStorage werkt alleen client-side, vandaar een apart script -->
-<!-- Bron localStorage: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage -->
 <script is:inline>
+  // Hoog contrast toggle
+  // Bron classList.toggle: https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
+  // Bron localStorage: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+  const contrastKnop = document.getElementById("contrast-toggle");
+
+  if (localStorage.getItem("contrast") === "hoog") {
+    document.body.classList.add("hoog-contrast");
+    contrastKnop.setAttribute("aria-pressed", "true");
+  }
+
+  contrastKnop.addEventListener("click", () => {
+    const aan = document.body.classList.toggle("hoog-contrast");
+    localStorage.setItem("contrast", aan ? "hoog" : "normaal");
+    contrastKnop.setAttribute("aria-pressed", aan ? "true" : "false");
+  });
+
   const naam = localStorage.getItem("naam");
   const naamElement = document.getElementById("header-gebruiker-naam");
   if (naam && naamElement) {
@@ -39,7 +65,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 <style>
   header {
     background-color: var(--ams-color-primair-red);
-    padding: clamp(14px, 4vw, 24px) clamp(12px, 4vw, 20px) clamp(18px, 5vw, 28px);
+    padding: clamp(14px, 4vw, 24px) clamp(12px, 4vw, 20px)
+      clamp(18px, 5vw, 28px);
     gap: clamp(10px, 3vw, 16px);
     display: flex;
     flex-direction: column;
@@ -91,6 +118,32 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       font-size: clamp(1.5rem, 2.5vw, 2rem);
       pointer-events: auto;
     }
+
+    /* Zoekbalk even breed als het linkerpaneel naast de kaart
+       (content-left = clamp(340px, 38%, 500px) in index.astro) */
+    :global(.search-wrapper) {
+      width: clamp(340px, 38%, 500px);
+    }
+  }
+
+  #contrast-toggle {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+
+  #contrast-toggle[aria-pressed="true"] {
+    background-color: none;
+  }
+
+  .gebruiker-rechts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
   }
 
   .gebruiker-naam {
