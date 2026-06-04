@@ -5,17 +5,17 @@ const { locations } = Astro.props;
 import DistanceDot from "../components/DistanceDot.astro";
 import StatusBadge from "../components/StatusBadge.astro";
 import { lazy } from "astro:schema";
+
 ---
 
-<!-- 
-<link rel="stylesheet" href="styles/global.css" /> -->
 <section class="location-list">
-	<ul>
-		{
-			locations.map((location) => (
+	<ul> 
+		{ locations.map((location) => (
 				<li
 					data-name={location.name.toLowerCase()}
-					data-address={location.address.toLowerCase()}>
+					data-address={location.address.toLowerCase()}
+					data-subfilter={location.subfilter?.toLowerCase()}
+					data-hoofdfilter={location.hoofdfilter?.toLowerCase()}>
 					<a
 						href={`/locaties/${location.name
 							.toLowerCase()
