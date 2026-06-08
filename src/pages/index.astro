@@ -9,6 +9,8 @@ import LocationFilter from "../components/LocationFilter.astro";
 import Display from "../components/Display.astro";
 import LocationCard from "../components/LocationCard.astro";
 import Map from "../components/Map.astro";
+// import "leaflet/dist/leaflet.css";
+import "../../styles/global.css";
 
 const locations = data.features.map((feature) => ({
   name: feature.properties.Naam_locatie,
@@ -27,13 +29,7 @@ const locations = data.features.map((feature) => ({
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="styles/global.css" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin=""
-    />
+
     <title>TAVI</title>
   </head>
   <body>

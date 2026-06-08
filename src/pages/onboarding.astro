@@ -1,5 +1,6 @@
 ---
 import Header from "../components/Header.astro";
+import "../../styles/global.css";
 const baseUrl = import.meta.env.BASE_URL;
 const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 ---
@@ -10,7 +11,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href={`${baseUrl}styles/global.css`} />
 
     <title>Welkom — Toegankelijk Amsterdam</title>
   </head>
@@ -45,8 +45,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   height="40"
                   viewBox="0 0 20 20"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M13.438 14.2628L11.4727 11.6316C11.4598 11.6144 11.4429 11.6005 11.4236 11.591C11.4042 11.5816 11.3829 11.5768 11.3614 11.577H8.66249C8.6283 11.5767 8.59543 11.5638 8.57007 11.5409C8.54472 11.518 8.52866 11.4865 8.52492 11.4525L8.17773 8.28418"
                     stroke="currentColor"
@@ -81,8 +81,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   height="40"
                   viewBox="0 0 20 20"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M7.29712 14.7201L7.86738 15.1598L8.21138 14.714L7.64114 14.274L7.29712 14.7201Z"
                     fill="currentColor"></path>
@@ -112,8 +112,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   height="40"
                   viewBox="0 0 20 20"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M10.1276 11.2272C10.8974 11.2272 11.5215 10.6031 11.5215 9.83327C11.5215 9.06342 10.8974 8.43933 10.1276 8.43933C9.35773 8.43933 8.73364 9.06342 8.73364 9.83327C8.73364 10.6031 9.35773 11.2272 10.1276 11.2272Z"
                     stroke="currentColor"
@@ -140,7 +140,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   height="40"
                   viewBox="0 0 20 20"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M12.4022 14.6834L12.3831 14.6814C12.3848 14.6829 12.3687 14.7403 12.3148 14.8094C12.2363 14.9147 12.085 15.0449 11.8922 15.1402C11.6986 15.2367 11.4651 15.301 11.2124 15.3008C10.9182 15.3 10.5959 15.2172 10.2521 14.9793C9.92267 14.7493 9.75195 14.5651 9.63793 14.3798C9.55258 14.2396 9.49524 14.0897 9.44026 13.8963C9.35765 13.6077 9.28699 13.2269 9.13301 12.7293C8.97905 12.2312 8.7404 11.6184 8.32015 10.8459C7.98491 10.2322 7.69712 9.31692 7.69917 8.45048C7.69917 8.08707 7.74834 7.73269 7.85791 7.4089C7.96785 7.08457 8.13616 6.79064 8.38127 6.53597C8.96096 5.93715 9.62938 5.70091 10.2651 5.69921C10.7253 5.69887 11.1667 5.82773 11.5245 6.04382C11.8832 6.25976 12.1547 6.56003 12.2936 6.89407L12.9389 6.62504C12.7326 6.13174 12.3534 5.72719 11.8853 5.44486C11.4166 5.16269 10.8547 5.00035 10.2651 5.00001C9.45222 4.99829 8.58303 5.31716 7.87807 6.05081C7.55546 6.38502 7.33391 6.77524 7.19562 7.18492C7.05702 7.59493 7 8.02457 7 8.45046C7.00204 9.46729 7.31885 10.464 7.70602 11.1797C8.06105 11.833 8.27273 12.351 8.41509 12.7795C8.52161 13.1011 8.58954 13.3725 8.64929 13.6191C8.73905 13.9868 8.80804 14.3108 8.98043 14.637C9.06611 14.7988 9.17774 14.9559 9.3208 15.1069C9.46419 15.2582 9.6383 15.4039 9.85267 15.5531C10.3061 15.8694 10.7806 16.001 11.2124 16C11.7242 15.9993 12.17 15.8242 12.4981 15.5891C12.6627 15.4707 12.7992 15.337 12.9023 15.1902C13.0034 15.0429 13.0795 14.8811 13.0822 14.6834H12.4022V14.6834Z"
                     fill="currentColor"></path>
@@ -161,8 +162,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
                   height="40"
                   viewBox="0 0 20 20"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M9.00929 10.6224C8.8779 10.6224 8.771 10.7293 8.771 10.8607C8.771 10.9921 8.8779 11.099 9.00929 11.099C9.14069 11.099 9.24759 10.9921 9.24759 10.8607C9.24759 10.7293 9.14069 10.6224 9.00929 10.6224Z"
                     fill="currentColor"></path>
@@ -473,12 +474,24 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       box-shadow 0.18s ease;
   }
 
-  .profile-card:nth-child(1) { animation-delay: 0s; }
-  .profile-card:nth-child(2) { animation-delay: 0.1s; }
-  .profile-card:nth-child(3) { animation-delay: 0.2s; }
-  .profile-card:nth-child(4) { animation-delay: 0.3s; }
-  .profile-card:nth-child(5) { animation-delay: 0.4s; }
-  .profile-card:nth-child(6) { animation-delay: 0.5s; }
+  .profile-card:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .profile-card:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .profile-card:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  .profile-card:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  .profile-card:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  .profile-card:nth-child(6) {
+    animation-delay: 0.5s;
+  }
 
   .profile-card:has(input:checked) {
     background-color: var(--ams-color-primair-red-light);

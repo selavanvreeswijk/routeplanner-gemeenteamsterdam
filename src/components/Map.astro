@@ -1,5 +1,5 @@
 ---
-
+import "leaflet/dist/leaflet.css";
 ---
 
 <div id="map-view" style="display: none;">
@@ -32,7 +32,7 @@
       iconSize: [22, 32],
       iconAnchor: [11, 32],
       popupAnchor: [0, -32],
-      className: ""
+      className: "",
     });
 
     var locaties = window._locaties || [];
@@ -54,7 +54,7 @@
       html: '<div class="locatie-icoon"><div class="locatie-ping"></div></div>',
       iconSize: [20, 20],
       iconAnchor: [10, 10],
-      className: ""
+      className: "",
     });
 
     if (navigator.geolocation) {
@@ -136,7 +136,7 @@
       iconSize: [22, 32],
       iconAnchor: [11, 32],
       popupAnchor: [0, -32],
-      className: ""
+      className: "",
     });
     zoekMarker = L.marker([lat, lng], { icon: zoekPin })
       .addTo(window._kaart)
@@ -198,7 +198,13 @@
   }
 
   @keyframes ping {
-    0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(3);
+      opacity: 0;
+    }
   }
 </style>
