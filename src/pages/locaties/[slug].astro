@@ -23,7 +23,7 @@ const lng = feature.geometry.coordinates[0];
 // Toegankelijkheidsinformatie verzamelen en sorteren
 const toegankelijkheidItems = [
   // Maakt een lijst van toegankelijkheidskenmerken met label en waarde + een icon van de gemeente amsterdam, filtert lege waarden eruit
-  { label: "Gehandicaptenparkeerplaatsen", value: p.Gehandicaptenparkeerplaatsen_binnen_100_m_ },
+  { label: "Gehandicapten parkeerplaatsen", value: p.Gehandicaptenparkeerplaatsen_binnen_100_m_ },
   { label: "Voorrijden toegestaan", value: p.Voorrijden_toegestaan },
   { label: "Toegankelijk gebouw", value: p.Toegankelijk_gebouw },
   { label: "Assistentiehond toegestaan", value: p.Assistentiehond_toegestaan },
@@ -116,6 +116,25 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
           </p>
         </div>
 
+        <div class="acties">
+          <a href={`tel:${p.Telefoonnummer}`} class="actie-knop-rood">
+            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone-call">
+            <path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7
+             2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            Bel
+          </a>
+          
+          <button class="actie-knop" id="deel-knop">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/>
+              <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+              <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/>
+              <path d="M8.59 13.51L15.42 17.49M15.41 6.51L8.59 10.49" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Delen
+          </button>
+        </div>
+
         <!-- Toegankelijkheidsinformatie als 2-koloms raster -->
         <div class="toegankelijkheid">
           <h3>Toegankelijkheid</h3>
@@ -158,7 +177,7 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
         </div>
 
         <!-- Print & Deel knoppen -->
-        <div class="acties">
+        <div class="actie">
           <button class="actie-knop" id="print-knop">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 9V2H18V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -166,16 +185,6 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
               <path d="M18 14H6V22H18V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             Printen
-          </button>
-          
-          <button class="actie-knop" id="deel-knop">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2"/>
-              <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-              <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2"/>
-              <path d="M8.59 13.51L15.42 17.49M15.41 6.51L8.59 10.49" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Delen
           </button>
         </div>
       </div>
@@ -252,6 +261,9 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
     overflow: hidden;
   }
 
+  a {
+    text-decoration: none;
+  }
   .split-view {
     display: flex;
     flex-direction: column;
@@ -273,7 +285,6 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
     gap: 6px;
     font-size: var(--ams-font-size-body-small);
     color: var(--ams-color-grey-5);
-    text-decoration: none;
     padding: 16px 16px 8px;
   }
 
@@ -344,6 +355,7 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
     align-items: center;
     gap: 10px;
     padding: 12px;
+    height: 100%;
     border: 0.5px solid;
     font-size: var(--ams-font-size-body-small);
     border-radius: 4px;
@@ -375,6 +387,12 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
     padding: 16px;
   }
 
+  .actie {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+  }
+
   .actie-knop {
     display: flex;
     align-items: center;
@@ -396,6 +414,30 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
   .actie-knop:hover {
     background-color: var(--ams-color-grey-1);
   }
+
+  .actie-knop-rood {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--ams-color-primair-red);
+    background: var(--ams-color-primair-red);
+    color: var(--ams-color-white);
+    font-family: var(--ams-font-family);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .actie-knop-rood:hover{
+    background-color: var(--ams-color-primair-red-dark);
+  }
+
+  
 
   /* ── Kaart paneel ── */
   .map-panel {
