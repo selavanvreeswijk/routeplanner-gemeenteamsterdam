@@ -2,7 +2,6 @@
 
 ---
 
-<link rel="stylesheet" href="styles/global.css" />
 
 <nav class="filters">
   <label class="filter-btn">
@@ -64,7 +63,6 @@
     <input type="checkbox" name="filter" value="slechtterbeen" />
     Slecht ter been
   </label>
-
   <div class="hidden-disability" id="hidden-disability">
     <label class="filter-btn">
       <svg
@@ -286,6 +284,7 @@
     transform: rotate(90deg);
   }
 
+  /* Responsiveness */
   @media (min-width: 768px) {
     .filters {
       grid-template-columns: repeat(3, 1fr);

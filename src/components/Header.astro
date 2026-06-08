@@ -15,8 +15,12 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
     <h1>TAVI</h1>
 
+    <!-- Gebruikersprofiel -->
     <div class="gebruiker-rechts">
       <span id="header-gebruiker-naam" class="gebruiker-naam"></span>
+      <img src="./public/profile-icon.png" alt="Icoon voor een profiel">
+
+      <!-- Contrast toggle -->
       <button id="contrast-toggle" aria-label="Hoog contrast aan/uit">
         <svg
           width="20"
@@ -39,7 +43,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 </header>
 
 <script is:inline>
-  // Hoog contrast toggle
+  // Hoog contrast toggle -------------------------------------
   // Bron classList.toggle: https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
   // Bron localStorage: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
   const contrastKnop = document.getElementById("contrast-toggle");
@@ -101,6 +105,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     pointer-events: none;
   }
 
+  /* Responsiveness */
   @media (min-width: 1024px) {
     .header-top {
       position: static;
@@ -119,14 +124,14 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       pointer-events: auto;
     }
 
-    /* Zoekbalk even breed als het linkerpaneel naast de kaart
-       (content-left = clamp(340px, 38%, 500px) in index.astro) */
     :global(.search-wrapper) {
       width: clamp(340px, 38%, 500px);
     }
   }
 
   #contrast-toggle {
+    display: none;
+    
     background-color: transparent;
     border: none;
     border-radius: 6px;
@@ -140,10 +145,20 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
   .gebruiker-rechts {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: center;
     gap: 4px;
     flex-shrink: 0;
+
+    padding: 0.1em 0.5em;
+    border: 1px white;
+    border-radius: 5px;
+
+    border-style: dashed;
+  }
+
+  .gebruiker-rechts:hover {
+    cursor: pointer;
   }
 
   .gebruiker-naam {
