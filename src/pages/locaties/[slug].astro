@@ -34,7 +34,7 @@ const toegankelijkheidItems = [
   { label: "Toegankelijke lift", value: p.Toegankelijke_lift, icon: "/public/assets/toegankelijke-lift-icon.svg" },
   { label: "Drempelvrije ingang / hellend vlak", value: p.Toegang_zonder_drempels_en_treden_worden_overbrugd_door_een_hellend_vlak },
   { label: "Drempelloos gebouw", value: p.Drempelloos_gebouw_en_doorgangen_zijn_voldoende_breed },
-  { label: "Rolstoelvriendelijk toilet", value: p.Rolstoelvriendelijk_toilet, icon: "/public/assets/rolstoelvriendelijk-toilet-icon.svg" },
+  { label: "Rolstoelvriendelijk toilet", value: p.Rolstoelvriendelijk_toilet },
   { label: "Mobiele pin", value: p.Mobiele_pin },
   { label: "Toeschouwersplaatsen rolstoelgebruikers", value: p.Speciale_toeschouwersplaatsen_rolstoelgebruikers },
   { label: "Restaurant tafels onderrijdbaar", value: p.Restaurant_tafels_onderrijdbaar },
@@ -139,41 +139,52 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
         <div class="toegankelijkheid">
           <h3>Toegankelijkheid</h3>
           <ul class="toegankelijkheid-grid">
-            {gesorteerdeItems.map(i => (
-              <li class={
-                i.value === "Ja" ? "item-ja" :
-                i.value === "Nee" ? "item-nee" :
-                "item-onbekend"
-              }>
-                {i.icon ? ( // haalt het icon op als er een icon veld is, anders toont het een standaard Ja/Nee/Onbekend icoon
-                  <img 
-                    src={i.icon} 
-                    width="20" 
-                    height="20"
-                  />
-                ) : ( // Standaard iconen voor Ja, Nee en Onbekend
+            {gesorteerdeItems.filter(i => i.value !== "Onbekend").map(i => (
+              <li class={i.value === "Ja" ? "item-ja" : "item-nee"}>
+                {i.icon ? (
+                  <svg width="40" height="40" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <Fragment set:html={i.icon} />
+                  </svg>
+                ) : (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {i.value === "Ja" && ( // een groen vinkje voor ja
+                    {i.value === "Ja" && (
                       <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     )}
-                    {i.value === "Nee" && ( // een kruisje voor nee
+                    {i.value === "Nee" && (
                       <>
                         <path d="M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                         <path d="M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                       </>
                     )}
-                    {i.value === "Onbekend" && ( // een vraagteken icoon voor onbekend
-                      <>
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                        <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                      </>
-                    )}
                   </svg>
-                )} 
-                <span><strong>{i.label}</strong></span> 
+                )}
+                <span><strong>{i.label}</strong></span>
               </li>
             ))}
           </ul>
+
+          {gesorteerdeItems.filter(i => i.value === "Onbekend").length > 0 && (
+            <>
+              <h3>Informatie onbekend</h3>
+              <ul class="toegankelijkheid-grid">
+                {gesorteerdeItems.filter(i => i.value === "Onbekend").map(i => (
+                  <li class="item-onbekend">
+                    {i.icon ? (
+                      <svg width="40" height="40" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <Fragment set:html={i.icon} />
+                      </svg>
+                    ) : (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      </svg>
+                    )}
+                    <span><strong>{i.label}</strong></span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
 
         <!-- Print & Deel knoppen -->
@@ -331,7 +342,7 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
   h3 {
     font-size: 1rem;
     font-weight: var(--ams-font-weight-semibold);
-    margin: 0 0 12px;
+    padding: 16px 0;
   }
 
   .toegankelijkheid-grid {
@@ -384,7 +395,7 @@ const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) 
   .acties {
     display: flex;
     gap: 10px;
-    padding: 16px;
+    padding: 16px 16px 0;
   }
 
   .actie {
