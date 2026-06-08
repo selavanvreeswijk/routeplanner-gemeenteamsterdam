@@ -63,14 +63,21 @@ Object.keys(subfiltersByHoofd).forEach(k => {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin: 1rem;
+    padding: 1rem;
+    
   }
 
   select {
-    border: var(--ams-color-grey-3) 0.5px solid;
-    font-size: var(--ams-font-size-body-small);
-    border-radius: 4px;
-    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 0.5px solid var(--ams-color-grey-3);
+    font-family: var(--ams-font-family);
+    font-weight: var(--ams-font-weight-semibold);
+    cursor: pointer;
+    border-radius: 6px;
+    flex: 1;
   }
 
   select:focus {
@@ -83,7 +90,7 @@ Object.keys(subfiltersByHoofd).forEach(k => {
     cursor: not-allowed;
   }
 
-  @media (min-width: 450px) {
+  @media (min-width: 550px) {
     .filters {
       flex-direction: row;
     }
