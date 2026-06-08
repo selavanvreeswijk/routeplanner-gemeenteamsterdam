@@ -19,6 +19,44 @@ const { feature } = Astro.props;
 const p = feature.properties;
 const lat = feature.geometry.coordinates[1];
 const lng = feature.geometry.coordinates[0];
+
+// Toegankelijkheidsinformatie verzamelen en sorteren
+const toegankelijkheidItems = [
+  // Maakt een lijst van toegankelijkheidskenmerken met label en waarde + een icon van de gemeente amsterdam, filtert lege waarden eruit
+  { label: "Gehandicapten parkeerplaatsen", value: p.Gehandicaptenparkeerplaatsen_binnen_100_m_ },
+  { label: "Voorrijden toegestaan", value: p.Voorrijden_toegestaan },
+  { label: "Toegankelijk gebouw", value: p.Toegankelijk_gebouw },
+  { label: "Assistentiehond toegestaan", value: p.Assistentiehond_toegestaan },
+  { label: "Persoonlijke assistent", value: p.Persoonlijke_assistent },
+  { label: "Rustplekken", value: p.Rustplekken },
+  { label: "Trappen met leuning entree", value: p.Trappen_met_leuning_entree },
+  { label: "Aantal traptreden", value: p.Aantal_traptreden },
+  { label: "Toegankelijke lift", value: p.Toegankelijke_lift, icon: "/public/assets/toegankelijke-lift-icon.svg" },
+  { label: "Drempelvrije ingang / hellend vlak", value: p.Toegang_zonder_drempels_en_treden_worden_overbrugd_door_een_hellend_vlak },
+  { label: "Drempelloos gebouw", value: p.Drempelloos_gebouw_en_doorgangen_zijn_voldoende_breed },
+  { label: "Rolstoelvriendelijk toilet", value: p.Rolstoelvriendelijk_toilet, icon: "/public/assets/rolstoelvriendelijk-toilet-icon.svg" },
+  { label: "Mobiele pin", value: p.Mobiele_pin },
+  { label: "Toeschouwersplaatsen rolstoelgebruikers", value: p.Speciale_toeschouwersplaatsen_rolstoelgebruikers },
+  { label: "Restaurant tafels onderrijdbaar", value: p.Restaurant_tafels_onderrijdbaar },
+  { label: "Toegankelijke hotelkamers", value: p.Toegankelijke_hotelkamers },
+  { label: "Toegankelijke kleedkamer", value: p.Toegankelijke_kleedkamer },
+  { label: "Toegankelijke douche", value: p.Toegankelijke_douche },
+  { label: "Geleidelijnen en vloermarkeringen", value: p.Geleidelijnen_en_vloermarkeringen },
+  { label: "Audiodescriptie of beeldbeschrijving", value: p.Audiodescriptie_of_beeldbeschrijving },
+  { label: "Toegankelijke afdruk", value: p.Toegankelijke_afdruk },
+  { label: "Materiaal in braille", value: p.Materiaal_in_braille },
+  { label: "Zintuigelijke beleving", value: p.Zintuigelijke_beleving },
+  { label: "Open ondertiteling", value: p.Open_ondertiteling },
+  { label: "Gesloten ondertiteling", value: p.Gesloten_ondertiteling },
+  { label: "Tolk gebarentaal", value: p.Tolk_gebarentaal },
+  { label: "Ringleiding voor slechthorenden", value: p.Ringleiding_voor_slechthorenden },
+  { label: "Prikkelarme ruimte", value: p.Prikkelarme_ruimte },
+  { label: "Prikkelarme uren", value: p.Prikkelarme_uren },
+  { label: "Herkenning Sunflower Keycord", value: p.Herkenning_Sunflower_Keycord },
+].filter(i => i.value !== undefined && i.value !== null); // Filtert kenmerken zonder waarde eruit
+
+const volgorde = (v: string) => v === "Ja" ? 0 : v === "Nee" ? 1 : 2; // Zorgt dat "Ja" bovenaan komt, "Nee" daaronder en "Onbekend" onderaan
+const gesorteerdeItems = toegankelijkheidItems.sort((a, b) => volgorde(a.value) - volgorde(b.value)); // Sorteert de items op basis van die volgorde
 ---
 
 <html lang="en">
@@ -35,6 +73,7 @@ const lng = feature.geometry.coordinates[0];
     <title>{p.Naam_locatie}</title>
   </head>
   <body>
+    <div class="app-wrapper">
     <Header />
 
     <div class="split-view">
@@ -77,29 +116,13 @@ const lng = feature.geometry.coordinates[0];
           </p>
         </div>
 
-        <!-- Toegankelijkheidsinformatie als 2-koloms raster -->
-        <div class="toegankelijkheid">
-          <h3>Toegankelijkheid</h3>
-          <ul class="toegankelijkheid-grid">
-            <li>Lift: {p.Toegankelijke_lift}</li>
-            <li>Rolstoel vriendelijk toilet: {p.Rolstoelvriendelijk_toilet}</li>
-            <li>Gehandicapten parkeerplaatsen: {p.Gehandicaptenparkeerplaatsen_binnen_100_m_}</li>
-            <li>Voorrijden toegestaan: {p.Voorrijden_toegestaan}</li>
-            {p.Drempelvrije_ingang && <li>Drempelvrije ingang: {p.Drempelvrije_ingang}</li>}
-            {p.Automatische_deur && <li>Automatische deur: {p.Automatische_deur}</li>}
-          </ul>
-        </div>
-
-        <!-- Print & Deel knoppen -->
         <div class="acties">
-          <button class="actie-knop" id="print-knop">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 9V2H18V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M6 18H4C3.46957 18 2.96086 17.7893 2.58579 17.4142C2.21071 17.0391 2 16.5304 2 16V11C2 10.4696 2.21071 9.96086 2.58579 9.58579C2.96086 9.21071 3.46957 9 4 9H20C20.5304 9 21.0391 9.21071 21.4142 9.58579C21.7893 9.96086 22 10.4696 22 11V16C22 16.5304 21.7893 17.0391 21.4142 17.4142C21.0391 17.7893 20.5304 18 20 18H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M18 14H6V22H18V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Printen
-          </button>
+          <a href={`tel:${p.Telefoonnummer}`} class="actie-knop-rood">
+            <svg width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone-call">
+            <path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7
+             2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            Bel
+          </a>
           
           <button class="actie-knop" id="deel-knop">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -111,11 +134,65 @@ const lng = feature.geometry.coordinates[0];
             Delen
           </button>
         </div>
+
+        <!-- Toegankelijkheidsinformatie als 2-koloms raster -->
+        <div class="toegankelijkheid">
+          <h3>Toegankelijkheid</h3>
+          <ul class="toegankelijkheid-grid">
+            {gesorteerdeItems.map(i => (
+              <li class={
+                i.value === "Ja" ? "item-ja" :
+                i.value === "Nee" ? "item-nee" :
+                "item-onbekend"
+              }>
+                {i.icon ? ( // haalt het icon op als er een icon veld is, anders toont het een standaard Ja/Nee/Onbekend icoon
+                  <img 
+                    src={i.icon} 
+                    width="20" 
+                    height="20"
+                  />
+                ) : ( // Standaard iconen voor Ja, Nee en Onbekend
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {i.value === "Ja" && ( // een groen vinkje voor ja
+                      <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    )}
+                    {i.value === "Nee" && ( // een kruisje voor nee
+                      <>
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      </>
+                    )}
+                    {i.value === "Onbekend" && ( // een vraagteken icoon voor onbekend
+                      <>
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                      </>
+                    )}
+                  </svg>
+                )} 
+                <span><strong>{i.label}</strong></span> 
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Print & Deel knoppen -->
+        <div class="actie">
+          <button class="actie-knop" id="print-knop">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 9V2H18V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 18H4C3.46957 18 2.96086 17.7893 2.58579 17.4142C2.21071 17.0391 2 16.5304 2 16V11C2 10.4696 2.21071 9.96086 2.58579 9.58579C2.96086 9.21071 3.46957 9 4 9H20C20.5304 9 21.0391 9.21071 21.4142 9.58579C21.7893 9.96086 22 10.4696 22 11V16C22 16.5304 21.7893 17.0391 21.4142 17.4142C21.0391 17.7893 20.5304 18 20 18H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 14H6V22H18V14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Printen
+          </button>
+        </div>
       </div>
 
       <!-- De kaart -->
       <div class="map-panel">
         <div id="map"></div>
+      </div>
       </div>
     </div>
 
@@ -142,9 +219,7 @@ const lng = feature.geometry.coordinates[0];
       });
 
       L.marker([lat, lng], { icon: rodePin }).addTo(map).bindPopup(naam).openPopup();
-    </script>
 
-    <script>      
       // Printknop
       document.getElementById("print-knop")?.addEventListener("click", () => {
         window.print();
@@ -186,6 +261,9 @@ const lng = feature.geometry.coordinates[0];
     overflow: hidden;
   }
 
+  a {
+    text-decoration: none;
+  }
   .split-view {
     display: flex;
     flex-direction: column;
@@ -207,7 +285,6 @@ const lng = feature.geometry.coordinates[0];
     gap: 6px;
     font-size: var(--ams-font-size-body-small);
     color: var(--ams-color-grey-5);
-    text-decoration: none;
     padding: 16px 16px 8px;
   }
 
@@ -221,12 +298,12 @@ const lng = feature.geometry.coordinates[0];
     gap: 4px;
     margin: 8px 16px 16px;
     padding-left: 12px;
-    border-left: 3px solid var(--ams-color-red);
+    border-left: 3px solid var(--ams-color-primair-red);
   }
 
   p.category {
     font-size: var(--ams-font-size-body-small);
-    color: var(--ams-color-red);
+    color: var(--ams-color-primair-red);
     text-transform: uppercase;
     font-weight: bold;
     margin: 0;
@@ -273,15 +350,44 @@ const lng = feature.geometry.coordinates[0];
   }
 
   .toegankelijkheid-grid li {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    align-items: center;
+    gap: 10px;
     padding: 12px;
-    border: 0.5px solid var(--ams-color-grey-3);
+    height: 100%;
+    border: 0.5px solid;
     font-size: var(--ams-font-size-body-small);
     border-radius: 4px;
     line-height: 1.4;
   }
 
+  .item-ja {
+    color: var(--ams-color-green-dark);
+    background-color: #edf7f1;
+    border-color: var(--ams-color-green-dark);
+  }
+
+  .item-nee {
+    color: var(--ams-color-primair-red-dark);
+    background-color: #fbeaea;
+    border-color: var(--ams-color-primair-red-dark);
+  }
+
+  .item-onbekend {
+    color: var(--ams-color-grey-3);
+    background-color: var(--ams-color-grey-1);
+    border-color: var(--ams-color-grey-2);
+  }
+
   /* ── Printen / delen ── */
   .acties {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .actie {
     display: flex;
     gap: 10px;
     padding: 16px;
@@ -308,6 +414,30 @@ const lng = feature.geometry.coordinates[0];
   .actie-knop:hover {
     background-color: var(--ams-color-grey-1);
   }
+
+  .actie-knop-rood {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--ams-color-primair-red);
+    background: var(--ams-color-primair-red);
+    color: var(--ams-color-white);
+    font-family: var(--ams-font-family);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .actie-knop-rood:hover{
+    background-color: var(--ams-color-primair-red-dark);
+  }
+
+  
 
   /* ── Kaart paneel ── */
   .map-panel {
