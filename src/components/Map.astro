@@ -100,19 +100,22 @@
     }
   };
 
-  window.filterMarkers = function (query) {
-    window._markers.forEach(function (marker) {
-      var match =
-        !query ||
-        marker._locatieNaam.includes(query) ||
-        marker._locatieAdres.includes(query);
-      if (match) {
-        if (!window._kaart.hasLayer(marker)) marker.addTo(window._kaart);
+  window.filterMarkers = function() {
+    const shownMarkers = new Set(
+      [...document.querySelectorAll('.location-list li')]
+      .filter(li => li.style.display !== 'none')
+      .map(li => li.dataset.name)
+    )
+
+    window._markers.forEach(function(marker) {
+      const name = marker._locatieNaam
+      if(shownMarkers.has(name)) {
+          if (!window._kaart.hasLayer(marker)) marker.addTo(window._kaart);
       } else {
         if (window._kaart.hasLayer(marker)) window._kaart.removeLayer(marker);
       }
-    });
-  };
+    })
+  }
 
   var zoekMarker = null;
 
