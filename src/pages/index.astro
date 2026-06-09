@@ -4,7 +4,7 @@ import { filterGroups } from "../../scripts/filtergroups.js";
 import { countFilter } from "../../scripts/filtering.js";
 
 import Header from "../components/Header.astro";
-import Filter from "../components/Filter.astro";
+// Filter component verplaatst naar profielpopup
 import LocationFilter from "../components/LocationFilter.astro";
 import Display from "../components/Display.astro";
 import LocationCard from "../components/LocationCard.astro";
@@ -41,7 +41,6 @@ const locations = data.features.map((feature) => ({
       <Header />
       <div class="content-area">
         <div class="content-left">
-          <Filter />
           <LocationFilter />
           <Display />
           <div id="list-view">
