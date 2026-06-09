@@ -127,7 +127,6 @@ const locations = data.features.map((feature) => ({
         const checkbox = document.querySelector(
           `input[name="filter"][value="${waarde}"]`,
         );
-        console.log("checkbox:", checkbox);
         if (checkbox) {
           checkbox.checked = true;
           // Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
@@ -171,6 +170,8 @@ const locations = data.features.map((feature) => ({
         const matches = name.includes(query) || address.includes(query);
         card.style.display = matches ? "" : "none";
         if (matches) visibleCount++;
+
+          window.filterMarkers?.()
 
         // Highlight in naam
         const h2 = card.querySelector("h2");
@@ -226,6 +227,7 @@ const locations = data.features.map((feature) => ({
       });
 
       updateCount();
+      window.filterMarkers?.()
     }
 
     hoofdfilterSelect.addEventListener("change", filterCards);
