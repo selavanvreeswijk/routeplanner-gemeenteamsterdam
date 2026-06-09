@@ -431,12 +431,14 @@ function getActiveCategories(counts) {
 				delete huidigProfiel[categ.value];
 			}
 			localStorage.setItem("profiel", JSON.stringify(huidigProfiel));
-			console.log("profiel:", JSON.parse(localStorage.getItem("profiel")));
-			
+
 			const chosenFilter = [...checkboxes].filter(categ => categ.checked)
 			const chosen = chosenFilter.map(categ => categ.value)
 			
 			chosenCateg(chosen)
+      var locaties = window._locaties || [];
+
+      
 		});
 	});
 </script>
