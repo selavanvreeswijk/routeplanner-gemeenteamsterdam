@@ -4,7 +4,7 @@ import { filterGroups } from "../../scripts/filtergroups.js";
 import { countFilter } from "../../scripts/filtering.js";
 
 import Header from "../components/Header.astro";
-import Filter from "../components/Filter.astro";
+// Filter component verplaatst naar profielpopup
 import LocationFilter from "../components/LocationFilter.astro";
 import Display from "../components/Display.astro";
 import LocationCard from "../components/LocationCard.astro";
@@ -31,13 +31,18 @@ const locations = data.features.map((feature) => ({
     <meta name="generator" content={Astro.generator} />
 
     <title>TAVI</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
   </head>
   <body>
     <div class="app-wrapper">
       <Header />
       <div class="content-area">
         <div class="content-left">
-          <Filter />
           <LocationFilter />
           <Display />
           <div id="list-view">
