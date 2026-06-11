@@ -437,30 +437,37 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" is:inline
       ></script>
       <script define:vars={{ lat, lng, naam: p.Naam_locatie }} is:inline>
-        var map = L.map("map").setView([lat, lng], 15);
-        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(map);
+        // Kaart initialiseren na volledig laden van de layout
+        // Zelfde aanpak als Map.astro: wacht op window load zodat container de juiste afmetingen heeft
+        // Bron invalidateSize: https://leafletjs.com/reference.html#map-invalidatesize
+        window.addEventListener("load", function () {
+          var map = L.map("map").setView([lat, lng], 15);
+          L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          }).addTo(map);
 
-        // Rode SVG pin drop in Amsterdam-huisstijlkleur
-        // Bron L.divIcon: https://leafletjs.com/reference.html#divicon
-        var rodePin = L.divIcon({
-          html: `<svg width="28" height="40" viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg">
-          <path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 26 14 26S28 23.333 28 14C28 6.268 21.732 0 14 0z"
-            fill="#EC0000" stroke="white" stroke-width="1.5"/>
-          <circle cx="14" cy="14" r="5" fill="white"/>
-        </svg>`,
-          iconSize: [28, 40],
-          iconAnchor: [14, 40] /* punt van de pin zit exact op de coördinaat */,
-          popupAnchor: [0, -40],
-          className: "",
+          // Rode SVG pin drop in Amsterdam-huisstijlkleur
+          // Bron L.divIcon: https://leafletjs.com/reference.html#divicon
+          var rodePin = L.divIcon({
+            html: `<svg width="28" height="40" viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 26 14 26S28 23.333 28 14C28 6.268 21.732 0 14 0z"
+              fill="#EC0000" stroke="white" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="5" fill="white"/>
+          </svg>`,
+            iconSize: [28, 40],
+            iconAnchor: [14, 40],
+            popupAnchor: [0, -40],
+            className: "",
+          });
+
+          L.marker([lat, lng], { icon: rodePin })
+            .addTo(map)
+            .bindPopup(naam)
+            .openPopup();
+
+          map.invalidateSize();
         });
-
-        L.marker([lat, lng], { icon: rodePin })
-          .addTo(map)
-          .bindPopup(naam)
-          .openPopup();
 
         // Printknop
         document.getElementById("print-knop")?.addEventListener("click", () => {
