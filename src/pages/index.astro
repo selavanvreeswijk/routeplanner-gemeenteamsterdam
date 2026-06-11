@@ -5,6 +5,7 @@ import { countFilter } from "../../scripts/filtering.js";
 
 import Header from "../components/Header.astro";
 // Filter component verplaatst naar profielpopup
+import ChosenCateg from "../components/ChosenCateg.astro";
 import LocationFilter from "../components/LocationFilter.astro";
 import Display from "../components/Display.astro";
 import LocationCard from "../components/LocationCard.astro";
@@ -43,6 +44,7 @@ const locations = data.features.map((feature) => ({
       <Header />
       <div class="content-area">
         <div class="content-left">
+          <ChosenCateg />
           <LocationFilter />
           <Display />
           <div id="list-view">
@@ -127,7 +129,6 @@ const locations = data.features.map((feature) => ({
         const checkbox = document.querySelector(
           `input[name="filter"][value="${waarde}"]`,
         );
-        console.log("checkbox:", checkbox);
         if (checkbox) {
           checkbox.checked = true;
           // Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
@@ -172,6 +173,8 @@ const locations = data.features.map((feature) => ({
         card.style.display = matches ? "" : "none";
         if (matches) visibleCount++;
 
+          window.filterMarkers?.()
+
         // Highlight in naam
         const h2 = card.querySelector("h2");
         if (h2) {
@@ -203,8 +206,12 @@ const locations = data.features.map((feature) => ({
     }
 
     input.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "Enter" && zoekKnop && zoekKnop.style.display !== "none") {
-        (window as any).zoekOpKaart?.(input.value.trim());
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const isKaart = mapView && mapView.style.display !== "none";
+        if (isKaart) {
+          (window as any).zoekOpKaart?.(input.value.trim());
+        }
       }
     });
 
@@ -226,6 +233,7 @@ const locations = data.features.map((feature) => ({
       });
 
       updateCount();
+      window.filterMarkers?.()
     }
 
     hoofdfilterSelect.addEventListener("change", filterCards);

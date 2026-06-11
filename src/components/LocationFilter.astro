@@ -4,14 +4,15 @@
 import data from "../cbadataset.json" with { type: "json" };
 
 const hoofdfilters = [
-  ...new Set(data.features.map((f) => f.properties.Hoofdfilter.trim())),
+  ...new Set(data.features.map((f) => f.properties.Hoofdfilter.trim())), // verwijdert duplicaten, en zet om naar een gewone array
 ].sort();
 const subfilters = [
   ...new Set(data.features.map((f) => f.properties.Subfilter.trim())),
-].sort();
+].sort(); // sorteert alfabetisch
 
 // Maak een map van hoofdfilter -> subfilters
 const subfiltersByHoofd = {};
+
 data.features.forEach((f) => {
   const hoofd = f.properties.Hoofdfilter.trim();
   const sub = f.properties.Subfilter.trim();
@@ -21,7 +22,7 @@ data.features.forEach((f) => {
 
 // Zet Sets om naar gesorteerde arrays
 Object.keys(subfiltersByHoofd).forEach((k) => {
-  subfiltersByHoofd[k] = [...subfiltersByHoofd[k]].sort();
+  subfiltersByHoofd[k] = [...subfiltersByHoofd[k]].sort(); // pakt de sets en zet ze om naar arrays 
 });
 ---
 
@@ -46,9 +47,9 @@ Object.keys(subfiltersByHoofd).forEach((k) => {
   function updateSubfilters() {
     // Kijkt welke hoofdfilter gekozen is en zoekt de bijbehorende subfilters op uit de map.
     const gekozen = hoofdSelect.value;
-    const subs = gekozen ? (subfiltersByHoofd[gekozen] ?? []) : [];
+    const subs = gekozen ? (subfiltersByHoofd[gekozen] ?? []) : []; //als er niks gevonden wordt, gebruik een lege array (fallback)
 
-    subSelect.innerHTML = '<option value="">Alle subcategorieën</option>';
+    subSelect.innerHTML = '<option value="">Alle subcategorieën</option>'; // laat zien dat alle subfilters 
     // Maakt voor elke subfilter een nieuwe <option> aan en voegt die toe.
     subs.forEach((sub) => {
       const opt = document.createElement("option");
@@ -73,8 +74,6 @@ Object.keys(subfiltersByHoofd).forEach((k) => {
   }
 
   select {
-    appearance: none;
-    -webkit-appearance: none;
     padding: 10px 40px 10px 16px;
     border: 0.5px solid var(--ams-color-grey-3);
     font-family: var(--ams-font-family);
@@ -82,15 +81,11 @@ Object.keys(subfiltersByHoofd).forEach((k) => {
     cursor: pointer;
     border-radius: 6px;
     flex: 1;
-    background-color: white;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
   }
 
   select:focus {
     outline: none;
-    border-color: #cc0000;
+    border-color: var(--ams-color-primair-red-dark);
   }
 
   select:disabled {
