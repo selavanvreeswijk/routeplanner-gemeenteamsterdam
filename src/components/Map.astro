@@ -41,9 +41,13 @@
       //CSS.escape: https://developer.mozilla.org/en-US/docs/Web/API/CSS/escape_static -> om ervoor te zorgen dat alle data-names geselecteerd kunnen worden
       const locName = document.querySelector('[data-name="' + CSS.escape(loc.name.toLowerCase()) + '"]');
       if (locName && locName.style.display==='none') return;
+      var slug = loc.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
       var marker = L.marker([loc.lat, loc.lng], { icon: rodePin })
         .addTo(kaart)
-        .bindPopup("<strong>" + loc.name + "</strong><br>" + loc.address);
+        .bindPopup(
+          "<strong>" + loc.name + "</strong><br>" + loc.address +
+          "<br><a href='/locaties/" + slug + "' style='display:inline-block;margin-top:8px;color:#EC0000;font-weight:600;text-decoration:none;'>Bekijk locatie →</a>"
+        );
       marker._locatieNaam = loc.name.toLowerCase();
       marker._locatieAdres = loc.address.toLowerCase();
       marker._naam = loc.name;
