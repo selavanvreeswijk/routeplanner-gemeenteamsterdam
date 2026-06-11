@@ -242,6 +242,7 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
           </div>
 
           <!-- De kaart -->
+           <!-- ALS HET KAN DEZE WEG GRAAG (VOOR ACCESSIBILITY, ZO NIET MIJ FF BERICHTEN (LUNA)) -->
           <div class="map-panel">
             <div id="map"></div>
           </div>
@@ -492,6 +493,11 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
               }
             }
           });
+
+          document.querySelectorAll('[class*="leaflet"]').forEach(el => {el.setAttribute("tabindex", "-1")})
+          document.querySelectorAll('[class*="leaflet"] a').forEach(el => {el.setAttribute("tabindex", "-1")})
+
+
       </script>
     </div>
   </body>
