@@ -24,7 +24,7 @@ const locations = data.features.map((feature) => ({
 }));
 ---
 
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
@@ -42,7 +42,7 @@ const locations = data.features.map((feature) => ({
   <body>
     <div class="app-wrapper">
       <Header />
-      <div class="content-area">
+      <main class="content-area">
         <div class="content-left">
           <ChosenCateg />
           <LocationFilter />
@@ -55,7 +55,7 @@ const locations = data.features.map((feature) => ({
           window._locaties = locations;
         </script>
         <Map />
-      </div>
+      </main>
     </div>
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

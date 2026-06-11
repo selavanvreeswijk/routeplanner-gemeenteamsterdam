@@ -16,14 +16,14 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <h1>TAVI</h1>
 
     <!-- Gebruikersprofiel -->
-    <div class="gebruiker-rechts" id="profiel-knop">
+    <button class="gebruiker-rechts" id="profiel-knop" aria-label="Open profielmenu" aria-haspopup="dialog" aria-expanded="false">
       <span id="header-gebruiker-naam" class="gebruiker-naam"></span>
       <svg
+        aria-hidden="true"
         width="20"
         height="20"
         viewBox="0 0 20 20"
         fill="none"
-
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -45,7 +45,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
           stroke-linecap="round"
           stroke-linejoin="round"></path>
       </svg>
-    </div>
+    </button>
   </div>
 
   {showSearch && <Searchfield />}
@@ -55,7 +55,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 <div id="profiel-overlay"></div>
 
 <!-- Profiel popup paneel (schuift in van rechts) -->
-<div id="profiel-popup">
+<div id="profiel-popup" role="dialog" aria-modal="true" aria-labelledby="popup-gebruiker-naam">
   <div class="profiel-top">
     <!-- Terugknop linksboven, zelfde stijl als a.back op de detailpagina -->
     <button id="popup-sluit" class="popup-terug">← Terug</button>
@@ -73,6 +73,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
         <input type="checkbox" name="profiel-popup" value="rolstoel" />
         <span class="profile-icon">
           <svg
+            aria-hidden="true"
             width="40"
             height="40"
             viewBox="0 0 20 20"
@@ -108,6 +109,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
         <input type="checkbox" name="profiel-popup" value="slechtterbeen" />
         <span class="profile-icon">
           <svg
+            aria-hidden="true"
             width="40"
             height="40"
             viewBox="0 0 20 20"
@@ -138,6 +140,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
         <input type="checkbox" name="profiel-popup" value="slechtziend" />
         <span class="profile-icon">
           <svg
+            aria-hidden="true"
             width="40"
             height="40"
             viewBox="0 0 20 20"
@@ -164,6 +167,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
         <input type="checkbox" name="profiel-popup" value="slechthorend" />
         <span class="profile-icon">
           <svg
+            aria-hidden="true"
             width="40"
             height="40"
             viewBox="0 0 20 20"
@@ -186,6 +190,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
         <span class="profile-icon">
           <!-- Zonnebloem icoon — zelfde als Filter.astro / sunflower.svg -->
           <svg
+            aria-hidden="true"
             width="40"
             height="40"
             viewBox="0 0 20 20"
@@ -214,6 +219,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
         <span class="profile-icon">
           <!-- Hersenen icoon — zelfde als Filter.astro / brains.svg -->
           <svg
+            aria-hidden="true"
             width="40"
             height="40"
             viewBox="0 0 20 20"
@@ -253,7 +259,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <!-- Contrast + dark mode knoppen -->
     <div class="popup-acties">
       <button class="popup-knop" id="popup-contrast-toggle">
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M4.4 10C4.4 6.9123 6.9123 4.4 10 4.4V15.6C6.9123 15.6 4.4 13.0877 4.4 10ZM10 3C6.1339 3 3 6.1339 3 10C3 13.8661 6.1339 17 10 17C13.8661 17 17 13.8661 17 10C17 6.1339 13.8661 3 10 3Z" fill="currentcolor"/>
         </svg>
         Hoog contrast
@@ -261,6 +267,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
       <button class="popup-knop" id="popup-dark-toggle">
         <svg
+          aria-hidden="true"
           width="18"
           height="18"
           viewBox="0 0 24 24"
@@ -356,15 +363,20 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
   // Profiel popup openen/sluiten --------------------------------
   // Bron addEventListener: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+  const profielKnop = document.getElementById("profiel-knop");
+
   function openProfielPopup() {
     laadProfiel();
     document.getElementById("profiel-overlay").classList.add("actief");
     document.getElementById("profiel-popup").classList.add("actief");
+    profielKnop.setAttribute("aria-expanded", "true");
   }
 
   function sluitProfielPopup() {
     document.getElementById("profiel-overlay").classList.remove("actief");
     document.getElementById("profiel-popup").classList.remove("actief");
+    profielKnop.setAttribute("aria-expanded", "false");
+    profielKnop.focus();
   }
 
   document
@@ -454,11 +466,17 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     background-color: rgba(255, 255, 255, 0.12);
     transition: background-color 0.15s ease;
     color: white;
+    font-family: var(--ams-font-family);
+    cursor: pointer;
   }
 
   .gebruiker-rechts:hover {
-    cursor: pointer;
     background-color: rgba(255, 255, 255, 0.28);
+  }
+
+  .gebruiker-rechts:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
   }
 
   .gebruiker-naam {
