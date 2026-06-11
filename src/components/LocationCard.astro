@@ -23,7 +23,7 @@ function getActiveCategories(counts) {
 }
 ---
 
-<section class="location-list">
+<section class="location-list" aria-label="Locaties">
 	<ul> 
 		{ locations.map((location) => (
 				<li
@@ -41,6 +41,7 @@ function getActiveCategories(counts) {
 							<h2>{location.name}</h2>
 							<p>
 								<svg
+									aria-hidden="true"
 									width="11"
 									height="11"
 									viewBox="0 0 11 11"
@@ -67,7 +68,7 @@ function getActiveCategories(counts) {
               <div class="access-icons">
                 {getActiveCategories(location.counts).map(cat => (
                   <div class={`access-icon access-icon--${cat}`}>
-                    {cat === "rolstoel" && <svg width="30"
+                    {cat === "rolstoel" && <svg aria-hidden="true" width="30"
                     height="30"
                     viewBox="0 0 20 20"
                     fill="none"
@@ -95,7 +96,7 @@ function getActiveCategories(counts) {
                       stroke-linecap="round"></path>
                   </svg>}
 
-                    {cat === "slechtterbeen" && <svg width="30"
+                    {cat === "slechtterbeen" && <svg aria-hidden="true" width="30"
                         height="30"
                         viewBox="0 0 20 20"
                         fill="none"
@@ -118,7 +119,7 @@ function getActiveCategories(counts) {
                           fill="currentColor"></path>
                       </svg>}
 
-                    {cat === "slechtziend" && <svg width="30"
+                    {cat === "slechtziend" && <svg aria-hidden="true" width="30"
                       height="30"
                       viewBox="0 0 20 20"
                       fill="none"
@@ -137,7 +138,7 @@ function getActiveCategories(counts) {
                         stroke-linejoin="round"></path>
                   </svg>
                   }
-                    {cat === "slechthorend" && <svg width="30"
+                    {cat === "slechthorend" && <svg aria-hidden="true" width="30"
                     height="30"
                     viewBox="0 0 20 20"
                     fill="none"
@@ -151,7 +152,7 @@ function getActiveCategories(counts) {
                       fill="currentColor"></path>
                   </svg>}
 
-                    {cat === "hiddendisability" && <svg width="30"
+                    {cat === "hiddendisability" && <svg aria-hidden="true" width="30"
                     height="30"
                     viewBox="0 0 20 20"
                     fill="none"
@@ -171,7 +172,7 @@ function getActiveCategories(counts) {
                       fill="currentColor"></path>
                   </svg>}
 
-                    {cat === "prikkels" && <svg width="30"
+                    {cat === "prikkels" && <svg aria-hidden="true" width="30"
                       height="30"
                       viewBox="0 0 20 20"
                       fill="none"
