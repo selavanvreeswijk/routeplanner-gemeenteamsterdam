@@ -18,8 +18,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <!-- Gebruikersprofiel -->
     <div class="gebruiker-rechts" id="profiel-knop">
       <span id="header-gebruiker-naam" class="gebruiker-naam"></span>
-      <img src="/profile-icon.png" alt="Icoon voor een profiel">
-
+      <img src="/profile-icon.png" alt="Icoon voor een profiel" />
     </div>
   </div>
 
@@ -194,7 +193,9 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     document.body.classList.toggle("dark-mode", aan);
     localStorage.setItem("darkmode", aan ? "aan" : "uit");
     popupDarkKnop.classList.toggle("actief-knop", aan);
-    popupDarkKnop.querySelector(".dark-knop-tekst").textContent = aan ? "Light mode" : "Dark mode";
+    popupDarkKnop.querySelector(".dark-knop-tekst").textContent = aan
+      ? "Light mode"
+      : "Dark mode";
   }
 
   if (localStorage.getItem("darkmode") === "aan") {
@@ -209,8 +210,10 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   // Naam tonen -----------------------------------------------
   const naam = localStorage.getItem("naam");
   const naamElement = document.getElementById("header-gebruiker-naam");
-  if (naam && naamElement) {
-    naamElement.textContent = `Hi, ${naam}`;
+  const popupNaamElement = document.getElementById("popup-gebruiker-naam");
+  if (naam) {
+    if (naamElement) naamElement.textContent = `Hi, ${naam}`;
+    if (popupNaamElement) popupNaamElement.textContent = `Hi, ${naam}`;
   }
 
   // Profielkaarten: inladen + opslaan in localStorage --------
@@ -224,9 +227,11 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
   function slaProfielOp() {
     const profiel = {};
-    document.querySelectorAll('input[name="profiel-popup"]:checked').forEach((cb) => {
-      profiel[cb.value] = true;
-    });
+    document
+      .querySelectorAll('input[name="profiel-popup"]:checked')
+      .forEach((cb) => {
+        profiel[cb.value] = true;
+      });
     localStorage.setItem("profiel", JSON.stringify(profiel));
   }
 
@@ -249,15 +254,22 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     document.getElementById("profiel-popup").classList.remove("actief");
   }
 
-  document.getElementById("profiel-knop").addEventListener("click", openProfielPopup);
-  document.getElementById("profiel-overlay").addEventListener("click", sluitProfielPopup);
-  document.getElementById("popup-sluit").addEventListener("click", sluitProfielPopup);
+  document
+    .getElementById("profiel-knop")
+    .addEventListener("click", openProfielPopup);
+  document
+    .getElementById("profiel-overlay")
+    .addEventListener("click", sluitProfielPopup);
+  document
+    .getElementById("popup-sluit")
+    .addEventListener("click", sluitProfielPopup);
 </script>
 
 <style>
   header {
     background-color: var(--ams-color-primair-red);
-    padding: clamp(14px, 4vw, 24px) clamp(12px, 4vw, 20px) clamp(18px, 5vw, 28px);
+    padding: clamp(14px, 4vw, 24px) clamp(12px, 4vw, 20px)
+      clamp(18px, 5vw, 28px);
     gap: clamp(10px, 3vw, 16px);
     display: flex;
     flex-direction: column;
@@ -282,8 +294,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   }
 
   .gebruiker-rechts img {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
   }
 
   h1 {
@@ -298,10 +310,23 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   }
 
   @media (min-width: 1024px) {
-    .header-top { position: static; }
-    .header-links { flex-direction: column; align-items: flex-start; gap: 4px; }
-    h1 { position: static; transform: none; font-size: clamp(1.5rem, 2.5vw, 2rem); pointer-events: auto; }
-    :global(.search-wrapper) { width: clamp(340px, 38%, 500px); }
+    .header-top {
+      position: static;
+    }
+    .header-links {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    h1 {
+      position: static;
+      transform: none;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      pointer-events: auto;
+    }
+    :global(.search-wrapper) {
+      width: clamp(340px, 38%, 500px);
+    }
   }
 
   .gebruiker-rechts {
@@ -310,13 +335,17 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     align-items: center;
     gap: 4px;
     flex-shrink: 0;
-    padding: 0.1em 0.5em;
-    border: 1px white;
-    border-radius: 5px;
-    border-style: dashed;
+    padding: 0.5em 0.5em;
+    border: 1px solid white;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.12);
+    transition: background-color 0.15s ease;
   }
 
-  .gebruiker-rechts:hover { cursor: pointer; }
+  .gebruiker-rechts:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.28);
+  }
 
   .gebruiker-naam {
     color: var(--ams-color-white);
@@ -331,10 +360,12 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.6);
-    z-index: 100;
+    z-index: 1000;
   }
 
-  #profiel-overlay.actief { display: block; }
+  #profiel-overlay.actief {
+    display: block;
+  }
 
   /* Popup --------------------------------------------------- */
   /* Bron transform/transition: https://developer.mozilla.org/en-US/docs/Web/CSS/transform */
@@ -352,7 +383,9 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     transition: transform 0.3s ease;
   }
 
-  #profiel-popup.actief { transform: translateX(0); }
+  #profiel-popup.actief {
+    transform: translateX(0);
+  }
 
   .profiel-top {
     display: flex;
@@ -374,7 +407,9 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     cursor: pointer;
   }
 
-  .popup-terug:hover { opacity: 0.8; }
+  .popup-terug:hover {
+    opacity: 0.8;
+  }
 
   /* Begroeting */
   .popup-gebruiker {
@@ -418,7 +453,9 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     gap: 1rem;
   }
 
-  .profile-card input[type="checkbox"] { display: none; }
+  .profile-card input[type="checkbox"] {
+    display: none;
+  }
 
   .profile-card {
     display: flex;
@@ -503,7 +540,9 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     justify-content: center;
   }
 
-  .popup-knop:hover { background-color: var(--ams-color-grey-1); }
+  .popup-knop:hover {
+    background-color: var(--ams-color-grey-1);
+  }
 
   .popup-knop.actief-knop {
     background-color: var(--ams-color-grey-2);
