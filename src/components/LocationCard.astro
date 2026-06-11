@@ -423,7 +423,7 @@ function getActiveCategories(counts) {
 	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
 	checkboxes.forEach((categ) => {
-		categ.addEventListener("click", () => {
+		categ.addEventListener("change", () => {
 			const huidigProfiel = JSON.parse(localStorage.getItem("profiel") || "{}");
 			if (categ.checked) {
 				huidigProfiel[categ.value] = true;
