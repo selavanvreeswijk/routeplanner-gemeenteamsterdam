@@ -1,5 +1,5 @@
 ---
-// leaflet CSS wordt geladen via <link> in index.astro
+
 ---
 
 <div id="map-view" style="display: none;">
@@ -11,22 +11,23 @@
   window.kaartGeinitialiseerd = false;
   window._markers = [];
 
-  // SELA: Deze functie wordt aangeroepen als de gebruiker op "kaart" klikt of de pagina op desktop laadt.
-  // We checken eerst of de kaart al bestaat — anders maken we hem twee keer aan en crasht hij.
+  // Deze functie wordt aangeroepen als de gebruiker op "kaart" klikt of de pagina op desktop laadt
+  // We checken eerst of de kaart al bestaat
   window.initialiseerKaart = function () {
     if (window.kaartGeinitialiseerd) {
-      // SELA: invalidateSize zorgt dat Leaflet de kaart opnieuw opmeet, handig als hij eerst verborgen was
+
+      // invalidateSize zorgt dat Leaflet de kaart opnieuw opmeet
       window._kaart.invalidateSize();
       return;
     }
     window.kaartGeinitialiseerd = true;
 
-    // SELA: We maken een Leaflet-kaart aan in het HTML-element met id="map"
+    // Leaflet-kaart met id="map"
     // setView([lat, lng], zoomniveau) — Amsterdam centrum als startpunt
     var kaart = L.map("map").setView([52.3676, 4.9041], 13);
     window._kaart = kaart;
 
-    // SELA: We laden de OpenStreetMap-tegels als achtergrond van de kaart
+    // OpenStreetMap-tegels als achtergrond van de kaart
     // Bron: https://leafletjs.com/reference.html#tilelayer
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -42,16 +43,17 @@
       className: "",
     });
 
-    // SELA: window._locaties is de lijst van alle locaties die vanuit index.astro is meegestuurd via een inline script
+    // window._locaties is de lijst van alle locaties die vanuit index.astro is meegestuurd via een inline script
     var locaties = window._locaties || [];
     locaties.forEach(function (loc) {
       if (!loc.lat || !loc.lng) return;
-      // SELA: We controleren of de locatiekaart in de lijst verborgen is (door een filter of zoekopdracht)
+      // We controleren of de locatiekaart in de lijst verborgen is (door een filter of zoekopdracht)
       // Als de kaart verborgen is, plaatsen we ook geen marker op de kaart
-      //CSS.escape: https://developer.mozilla.org/en-US/docs/Web/API/CSS/escape_static -> om ervoor te zorgen dat alle data-names geselecteerd kunnen worden
+      // CSS.escape: https://developer.mozilla.org/en-US/docs/Web/API/CSS/escape_static -> om ervoor te zorgen dat alle data-names geselecteerd kunnen worden
       const locName = document.querySelector('[data-name="' + CSS.escape(loc.name.toLowerCase()) + '"]');
       if (locName && locName.style.display==='none') return;
-      // SELA: We maken een URL-vriendelijke slug van de naam (spaties → streepjes, speciale tekens weg)
+
+      // We maken een URL-vriendelijke slug van de naam (spaties → streepjes, speciale tekens weg)
       // Zo kunnen we linken naar de detailpagina van die locatie
       var slug = loc.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
       var marker = L.marker([loc.lat, loc.lng], { icon: rodePin })
@@ -60,7 +62,8 @@
           "<strong>" + loc.name + "</strong><br>" + loc.address +
           "<br><a href='/locaties/" + slug + "' style='display:inline-block;margin-top:8px;color:#EC0000;font-weight:600;text-decoration:none;'>Bekijk locatie →</a>"
         );
-      // SELA: We slaan de naam en het adres op in de marker zelf,
+
+      // We slaan de naam en het adres op in de marker zelf,
       // zodat we later kunnen filteren welke markers zichtbaar moeten zijn
       marker._locatieNaam = loc.name.toLowerCase();
       marker._locatieAdres = loc.address.toLowerCase();
@@ -84,12 +87,14 @@
           var lat = positie.coords.latitude;
           var lng = positie.coords.longitude;
           kaart.setView([lat, lng], 16);
+
           // Marker
           L.marker([lat, lng], { icon: icoonLocatie })
             .addTo(kaart)
             .bindPopup("Jouw huidige locatie")
             .openPopup();
         },
+
         function (error) {
           if (!foutmelding) return;
           switch (error.code) {
@@ -111,6 +116,7 @@
           }
         },
       );
+
     } else {
       if (foutmelding)
         foutmelding.textContent =
@@ -118,10 +124,10 @@
     }
   };
 
-  // SELA: Deze functie synchroniseert de kaartmarkers met de zichtbare kaarten in de lijst.
+  // Deze functie synchroniseert de kaartmarkers met de zichtbare kaarten in de lijst.
   // Als een locatie gefilterd/gezocht is uit de lijst, verdwijnt de marker ook van de kaart.
   window.filterMarkers = function() {
-    // SELA: We maken een Set van alle namen van locaties die nu zichtbaar zijn in de lijst
+    // We maken een Set van alle namen van locaties die nu zichtbaar zijn in de lijst
     // Een Set is sneller om in te zoeken dan een array
     const shownMarkers = new Set(
       [...document.querySelectorAll('.location-list li')]
@@ -129,8 +135,7 @@
       .map(li => li.dataset.name)
     )
 
-    // SELA: Voor elke marker op de kaart checken we of de bijbehorende locatie zichtbaar is
-    // Zo niet, verwijderen we de marker van de kaart. Zo wel, voegen we hem toe (als hij er nog niet op staat)
+    // Checken of elke marker op de kaart zichtbaar is
     window._markers.forEach(function(marker) {
       const name = marker._locatieNaam
       if(shownMarkers.has(name)) {
@@ -143,12 +148,10 @@
 
   var zoekMarker = null;
 
-  // SELA: Deze functie zoekt een adres op via de Nominatim-API (gratis geocoding van OpenStreetMap)
-  // en beweegt de kaart naar die locatie. Wordt aangeroepen als de gebruiker op Enter drukt of op de zoekknop klikt in kaartmodus.
+  // Adres opzoeken via Nominatim-API 
   window.zoekOpKaart = async function (zoekterm) {
     if (!zoekterm || !window._kaart) return;
 
-    // SELA: We sturen een verzoek naar Nominatim met de zoekterm, beperkt tot Nederland (countrycodes=nl)
     // encodeURIComponent zorgt dat spaties en speciale tekens veilig in de URL staan
     var response = await fetch(
       "https://nominatim.openstreetmap.org/search?q=" +
@@ -162,9 +165,9 @@
     var lng = parseFloat(data[0].lon);
     var naam = data[0].display_name;
 
-    // SELA: Als er al een zoekmarker op de kaart staat, verwijderen we die eerst
+    // Als er al een zoekmarker op de kaart staat, verwijderen we die eerst
     if (zoekMarker) window._kaart.removeLayer(zoekMarker);
-    // SELA: We zetten de kaartweergave naar de gevonden locatie, ingezoomd op niveau 15
+    //  We zetten de kaartweergave naar de gevonden locatie, ingezoomd op niveau 15
     window._kaart.setView([lat, lng], 15);
 
     var zoekPin = L.divIcon({

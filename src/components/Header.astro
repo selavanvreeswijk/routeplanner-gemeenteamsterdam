@@ -51,21 +51,18 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   {showSearch && <Searchfield />}
 </header>
 
-<!-- Donkere overlay achter de popup -->
 <div id="profiel-overlay"></div>
 
-<!-- Profiel popup paneel (schuift in van rechts) -->
+<!-- Profiel popup -->
 <div id="profiel-popup" role="dialog" aria-modal="true" aria-labelledby="popup-gebruiker-naam">
   <div class="profiel-top">
-    <!-- Terugknop linksboven, zelfde stijl als a.back op de detailpagina -->
     <button id="popup-sluit" class="popup-terug">← Terug</button>
 
-    <!-- Begroeting -->
     <p class="popup-naam" id="popup-gebruiker-naam">Hi</p>
     <p class="popup-subtitel">Wat wil je vandaag doen?</p>
   </div>
 
-  <!-- Profielkaarten — exacte HTML + CSS overgenomen uit onboarding.astro -->
+  <!-- Profielkaarten -->
   <div class="profiel-onder">
     <p class="popup-sectie-label">Jouw profiel</p>
     <div class="profile-grid">
@@ -188,7 +185,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       <label class="profile-card">
         <input type="checkbox" name="profiel-popup" value="hiddendisability" />
         <span class="profile-icon">
-          <!-- Zonnebloem icoon — zelfde als Filter.astro / sunflower.svg -->
           <svg
             aria-hidden="true"
             width="40"
@@ -217,7 +213,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       <label class="profile-card">
         <input type="checkbox" name="profiel-popup" value="prikkels" />
         <span class="profile-icon">
-          <!-- Hersenen icoon — zelfde als Filter.astro / brains.svg -->
           <svg
             aria-hidden="true"
             width="40"
@@ -285,7 +280,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 </div>
 
 <script is:inline>
-  // Hoog contrast toggle (alleen in light mode) ---------------
+  // Hoog contrast knop ---------------
   const popupContrastKnop = document.getElementById("popup-contrast-toggle");
 
   function stelContrastIn(aan) {
@@ -294,7 +289,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     popupContrastKnop.classList.toggle("actief-knop", aan);
   }
 
-  // Dark mode toggle -----------------------------------------
+  // Dark mode knop -----------------------------------------
   const popupDarkKnop = document.getElementById("popup-dark-toggle");
 
   function stelDarkModeIn(aan) {
@@ -304,8 +299,8 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     popupDarkKnop.querySelector(".dark-knop-tekst").textContent = aan
       ? "Light mode"
       : "Dark mode";
-    // dark mode aan = contrast uit
-    if (aan) stelContrastIn(false);
+
+     if (aan) stelContrastIn(false);
   }
 
   if (localStorage.getItem("darkmode") === "aan") {
@@ -337,7 +332,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   }
 
   // Profielkaarten: inladen + opslaan in localStorage --------
-  // Bron querySelectorAll + forEach: https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
   function laadProfiel() {
     const opgeslagen = JSON.parse(localStorage.getItem("profiel") || "{}");
     document.querySelectorAll('input[name="profiel-popup"]').forEach((cb) => {
@@ -362,7 +356,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   });
 
   // Profiel popup openen/sluiten --------------------------------
-  // Bron addEventListener: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
   const profielKnop = document.getElementById("profiel-knop");
 
   function openProfielPopup() {
@@ -392,24 +385,27 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
 <style>
   header {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 3vw, 16px);
+
     background-color: var(--ams-color-primair-red);
     padding: clamp(14px, 4vw, 24px) clamp(12px, 4vw, 20px)
       clamp(18px, 5vw, 28px);
-    gap: clamp(10px, 3vw, 16px);
-    display: flex;
-    flex-direction: column;
   }
 
   .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     position: relative;
   }
 
   .header-links {
     display: flex;
     align-items: center;
+
     flex-shrink: 0;
   }
 
@@ -427,6 +423,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+
     color: var(--ams-color-white);
     font-size: clamp(1.25rem, 5vw, 1.75rem);
     line-height: 1.2;
@@ -438,17 +435,20 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     .header-top {
       position: static;
     }
+
     .header-links {
       flex-direction: column;
       align-items: flex-start;
       gap: 4px;
     }
+
     h1 {
       position: static;
       transform: none;
       font-size: clamp(1.5rem, 2.5vw, 2rem);
       pointer-events: auto;
     }
+    
     :global(.search-wrapper) {
       width: clamp(340px, 38%, 500px);
     }
@@ -460,14 +460,17 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     align-items: center;
     gap: 4px;
     flex-shrink: 0;
+
     padding: 0.5em 0.5em;
+
     border: 1px solid white;
     border-radius: 6px;
     background-color: rgba(255, 255, 255, 0.12);
-    transition: background-color 0.15s ease;
     color: white;
     font-family: var(--ams-font-family);
     cursor: pointer;
+
+    transition: background-color 0.15s ease;
   }
 
   .gebruiker-rechts:hover {
@@ -500,7 +503,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   }
 
   /* Popup --------------------------------------------------- */
-  /* Bron transform/transition: https://developer.mozilla.org/en-US/docs/Web/CSS/transform */
   #profiel-popup {
     position: fixed;
     top: 0;
@@ -526,7 +528,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     background-color: var(--ams-color-primair-red);
     padding: 2rem;
   }
-  /* Terugknop — zelfde patroon als a.back op de detailpagina, maar wit */
+
   .popup-terug {
     display: inline-flex;
     align-items: center;
@@ -543,7 +545,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     opacity: 0.8;
   }
 
-  /* Begroeting */
   .popup-gebruiker {
     display: flex;
     flex-direction: column;
@@ -568,6 +569,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     gap: 1.5rem;
     padding: 2rem;
   }
+
   /* Sectielabel boven de kaarten */
   .popup-sectie-label {
     color: var(--ams-color-grey-5);
@@ -577,8 +579,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     letter-spacing: 0.05em;
   }
 
-  /* Profielkaarten — exacte stijl overgenomen uit onboarding.astro */
-  /* Bron: src/pages/onboarding.astro */
   .profile-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -658,13 +658,17 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     display: flex;
     align-items: center;
     gap: 6px;
+
     padding: 10px 16px;
+
     border: 1.5px solid var(--ams-color-grey-3);
     background: var(--ams-color-white);
+
     color: var(--ams-color-grey-5);
     font-family: var(--ams-font-family);
     font-size: var(--ams-font-size-body-small);
     font-weight: var(--ams-font-weight-semibold);
+    
     cursor: pointer;
     border-radius: 6px;
     transition: background-color 0.15s ease;
@@ -690,8 +694,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     font-weight: var(--ams-font-weight-semibold);
   }
 
-  /* Mobiel: popup neemt het volledige scherm in */
-  /* Bron: https://developer.mozilla.org/en-US/docs/Web/CSS/@media */
+  /* Op mobiel neemt de popup het volledige scherm in */
   @media (max-width: 767px) {
     #profiel-popup {
       width: 100%;
