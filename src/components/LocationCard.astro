@@ -397,7 +397,9 @@ function getActiveCategories(counts) {
 <script>
 	//@ts-nocheck
   // Locatiekaarten sorteren op basis van het gekozen profiel
-  // Locaties die het meest toegankelijk zijn voor de gekozen categorieën komen bovenaan.
+  // Bron: Claude,
+  // Prompt: "Ik heb een lijst van locaties met een data-counts attribuut. Daarin staat per categorie hoeveel keer Ja, Nee en Onbekend voorkomt. 
+  // Ik wil de locaties sorteren zodat degene die het beste scoort voor de gekozen categorieën bovenaan staat. Hoe doe ik dat met sort() in JavaScript?"
 	function chosenCateg(chosen) {
     const list = document.querySelector('.location-list ul')
     const cards = [...document.querySelectorAll('.location-list li')]

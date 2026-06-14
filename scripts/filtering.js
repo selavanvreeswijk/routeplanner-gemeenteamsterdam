@@ -1,5 +1,9 @@
 // Telt per filtergroep hoeveel kenmerken van een locatie "Ja", "Nee" of "Onbekend" zijn
 // Later gaat de app berekenen hoe toegankelijk de locatie is voor een bepaalde categorie
+
+// Bron: Claude
+// Prompt: "Ik heb een JSON-bestand van de gemeente Amsterdam met toegankelijkheidsvelden zoals 'Rolstoelvriendelijk_toilet: Ja'. 
+// Ik wil een functie die per filtergroep (rolstoel, slechtziend, enz.) telt hoeveel velden Ja, Nee of Onbekend zijn voor een locatie. Hoe schrijf ik die functie?"
 export function countFilter(feature, filterGroups) {
   const properties = feature.properties;
   const count = {};
