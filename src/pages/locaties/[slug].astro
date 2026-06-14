@@ -1,19 +1,20 @@
 ---
 import cbaData from "../../cbadataset.json";
 import Header from "../../components/Header.astro";
-// leaflet CSS wordt geladen via <link> in de <head>
 import "../../styles/global.css";
 
+// getStaticPaths() genereert voor elke locatie in de JSON een aparte pagina
 export async function getStaticPaths() {
-  // maakt paginas aan voor astro build, op basis van de locaties in de JSON
+
   return cbaData.features.map((feature) => ({
-    // Loopt door elke locatie in de JSON en maak voor elke locatie een pagina aan
+
     params: {
+      // We maken een "slug" van de naam: kleine letters, spaties worden streepjes, speciale tekens vallen weg
       slug: feature.properties.Naam_locatie.toLowerCase()
         .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, ""), // Maakt een slug, vervangt streepjes en speciale tekens
+        .replace(/[^a-z0-9-]/g, ""), 
     },
-    props: { feature }, // Stuurt de data van die locatie mee naar de pagina
+    props: { feature },
   }));
 }
 
@@ -22,9 +23,10 @@ const p = feature.properties;
 const lat = feature.geometry.coordinates[1];
 const lng = feature.geometry.coordinates[0];
 
-// Toegankelijkheidsinformatie verzamelen en sorteren
+// Lijst van alle toegankelijkheidskenmerken die we willen tonen op de detailpagina
+// Elk item heeft een label (leesbare naam), een waarde uit de JSON (Ja/Nee/Onbekend) en optioneel een SVG-icoon.
+// De SVG-iconen komen van de Gemeente Amsterdam huisstijl.
 const toegankelijkheidItems = [
-  // Maakt een lijst van toegankelijkheidskenmerken met label en waarde + een icon van de gemeente amsterdam, filtert lege waarden eruit
   { label: "Gehandicapten parkeerplaatsen", value: p.Gehandicaptenparkeerplaatsen_binnen_100_m_, },
   { label: "Voorrijden toegestaan", value: p.Voorrijden_toegestaan },
 
@@ -126,10 +128,13 @@ const toegankelijkheidItems = [
 
 ].filter((i) => i.value !== undefined && i.value !== null); // Filtert kenmerken zonder waarde eruit
 
-const volgorde = (v: string) => (v === "Ja" ? 0 : v === "Nee" ? 1 : 2); // Zorgt dat "Ja" bovenaan komt, "Nee" daaronder en "Onbekend" onderaan
+// We sorteren de toegankelijkheidsinformatie zodat "Ja" bovenaan staat, dan "Nee", dan "Onbekend"
+// De volgorde-functie geeft een getal terug (0, 1 of 2) dat sort() gebruikt om te vergelijken
+const volgorde = (v: string) => (v === "Ja" ? 0 : v === "Nee" ? 1 : 2); 
+
 const gesorteerdeItems = toegankelijkheidItems.sort(
   (a, b) => volgorde(a.value) - volgorde(b.value),
-); // Sorteert de items op basis van die volgorde
+); 
 ---
 
 <html lang="nl">
@@ -240,7 +245,6 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
               Delen
             </button>
           </div>
-
 
           <!-- Toegankelijkheidsinformatie als 2-koloms raster -->
            <div class="toegankelijkheid">
@@ -436,7 +440,6 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
       ></script>
       <script define:vars={{ lat, lng, naam: p.Naam_locatie }} is:inline>
         // Kaart initialiseren na volledig laden van de layout
-        // Zelfde aanpak als Map.astro: wacht op window load zodat container de juiste afmetingen heeft
         // Bron invalidateSize: https://leafletjs.com/reference.html#map-invalidatesize
         window.addEventListener("load", function () {
           var map = L.map("map").setView([lat, lng], 15);
@@ -501,7 +504,6 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
 
           document.querySelectorAll('[class*="leaflet"]').forEach(el => {el.setAttribute("tabindex", "-1")})
           document.querySelectorAll('[class*="leaflet"] a').forEach(el => {el.setAttribute("tabindex", "-1")})
-
 
       </script>
     </div>
@@ -629,12 +631,12 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
     }
 
     .item-onbekend {
-      color: #6e6e6e; /* andere kleuren voor het contrast */
+      color: #6e6e6e; 
       background-color: var(--ams-color-grey-1);
-      border-color: #6e6e6e; /* andere kleuren voor het contrast */
+      border-color: #6e6e6e; 
     }
 
-    /* ── Printen / delen ── */
+    /* ── Printen & Delen ── */
     .acties {
       display: flex;
       gap: 10px;

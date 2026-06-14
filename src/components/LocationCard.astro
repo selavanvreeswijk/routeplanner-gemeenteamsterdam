@@ -15,10 +15,12 @@ const labelMap = { // geeft namen aan de span classes in de LocationCard, zodat 
   hiddendisability: "Hidden disability",
 }
 
-// Functie die de actieve categorieën teruggeeft op basis van de counts van een locatie.
+// Deze functie geeft terug welke toegankelijkheidscategorieën een locatie "actief" heeft
+// (dus waarvoor de locatie minstens één "Ja" heeft in de JSON-data)
+// Hierna worden de badges op locatiekaarten getoond
 function getActiveCategories(counts) {
-  return Object.keys(counts).filter(group => // filtert de groepen op basis van de counts, alleen groepen die niet "algemeen" zijn en een count groter dan 0 hebben worden teruggegeven.
-    group !== "algemeen" && counts[group]?.Ja > 0 // checkt of er een count is en of ie die count groter is dan 0
+  return Object.keys(counts).filter(group => 
+    group !== "algemeen" && counts[group]?.Ja > 0
   );
 }
 ---
@@ -353,7 +355,7 @@ function getActiveCategories(counts) {
     border: 0.5px solid var(--ams-color-blue);
     color: var(--ams-color-blue);
   }
-  /* anderen kleuren voor het contrast */
+
   .access-icon--slechtziend   { 
     background-color: #ffeaf3;
     border: 0.5px solid #d10077; 
@@ -394,19 +396,26 @@ function getActiveCategories(counts) {
 
 <script>
 	//@ts-nocheck
+  // Locatiekaarten sorteren op basis van het gekozen profiel
+  // Bron: Claude,
+  // Prompt: "Ik heb een lijst van locaties met een data-counts attribuut. Daarin staat per categorie hoeveel keer Ja, Nee en Onbekend voorkomt. 
+  // Ik wil de locaties sorteren zodat degene die het beste scoort voor de gekozen categorieën bovenaan staat. Hoe doe ik dat met sort() in JavaScript?"
 	function chosenCateg(chosen) {
     const list = document.querySelector('.location-list ul')
     const cards = [...document.querySelectorAll('.location-list li')]
 
+    // Kaarten sorteren op basis van wat het belangrijkst is in de toegankelijkheid
     cards.sort((a, b) => {
-      //doe ik binnen sort
       const countA = JSON.parse(a.dataset.counts)
-      const countB = JSON.parse(b.dataset.counts) 
-      
+      const countB = JSON.parse(b.dataset.counts)
+
       let percentageA = 0
       let percentageB = 0
-      
-      //we tellen 'percentages' van alle categorieen bij elkaar op om een gelijke berekening te maken
+
+      // Voor elke gekozen categorie (bijv. rolstoel, slechtziend) berekenen hoe "goed" de locatie scoort:
+      // aantal Ja's gedeeld door het totaal = een getal tussen 0 en 1
+      // We tellen dit op voor alle categorieën zodat locaties die op meerdere categorieën goed scoren hoger komen
+      // We tellen 'percentages' van alle categorieen bij elkaar op om een gelijke berekening te maken
       for (const cat of chosen) {
         if(countA[cat]) {
           percentageA += Math.round(countA[cat].Ja / (countA[cat].Ja + countA[cat].Nee + countA[cat].Onbekend))
@@ -415,9 +424,12 @@ function getActiveCategories(counts) {
           percentageB += Math.round(countB[cat].Ja / (countB[cat].Ja + countB[cat].Nee + countB[cat].Onbekend))
         }
       }
+
+      // Negatief getal → b staat hoger (hogere score = hoger in de lijst)
       return percentageB - percentageA
     })
 
+    // We zetten de gesorteerde kaarten terug in de lijst in de nieuwe volgorde
     cards.forEach(card => list.appendChild(card))
   }
 
@@ -438,7 +450,6 @@ function getActiveCategories(counts) {
 			
 			chosenCateg(chosen)
       var locaties = window._locaties || [];
-
       
 		});
 	});
