@@ -4,11 +4,16 @@ import Header from "../../components/Header.astro";
 // leaflet CSS wordt geladen via <link> in de <head>
 import "../../styles/global.css";
 
+// SELA: getStaticPaths() is een Astro-functie die bij het bouwen van de site wordt aangeroepen.
+// Hij genereert voor elke locatie in de JSON automatisch een aparte pagina.
+// Zo hoef je niet voor elke locatie een eigen bestand te maken — Astro doet dat automatisch.
 export async function getStaticPaths() {
   // maakt paginas aan voor astro build, op basis van de locaties in de JSON
   return cbaData.features.map((feature) => ({
     // Loopt door elke locatie in de JSON en maak voor elke locatie een pagina aan
     params: {
+      // SELA: We maken een "slug" van de naam: kleine letters, spaties worden streepjes, speciale tekens vallen weg
+      // Bijv. "Artis (Zoo)" wordt "artis-zoo"
       slug: feature.properties.Naam_locatie.toLowerCase()
         .replace(/\s+/g, "-")
         .replace(/[^a-z0-9-]/g, ""), // Maakt een slug, vervangt streepjes en speciale tekens
@@ -22,7 +27,9 @@ const p = feature.properties;
 const lat = feature.geometry.coordinates[1];
 const lng = feature.geometry.coordinates[0];
 
-// Toegankelijkheidsinformatie verzamelen en sorteren
+// SELA: Hier maken we een lijst van alle toegankelijkheidskenmerken die we willen tonen op de detailpagina.
+// Elk item heeft een label (leesbare naam), een waarde uit de JSON (Ja/Nee/Onbekend) en optioneel een SVG-icoon.
+// De SVG-iconen komen van de Gemeente Amsterdam huisstijl.
 const toegankelijkheidItems = [
   // Maakt een lijst van toegankelijkheidskenmerken met label en waarde + een icon van de gemeente amsterdam, filtert lege waarden eruit
   { label: "Gehandicapten parkeerplaatsen", value: p.Gehandicaptenparkeerplaatsen_binnen_100_m_, },
@@ -126,6 +133,8 @@ const toegankelijkheidItems = [
 
 ].filter((i) => i.value !== undefined && i.value !== null); // Filtert kenmerken zonder waarde eruit
 
+// SELA: We sorteren de toegankelijkheidsinformatie zodat "Ja" bovenaan staat, dan "Nee", dan "Onbekend"
+// De volgorde-functie geeft een getal terug (0, 1 of 2) dat sort() gebruikt om te vergelijken
 const volgorde = (v: string) => (v === "Ja" ? 0 : v === "Nee" ? 1 : 2); // Zorgt dat "Ja" bovenaan komt, "Nee" daaronder en "Onbekend" onderaan
 const gesorteerdeItems = toegankelijkheidItems.sort(
   (a, b) => volgorde(a.value) - volgorde(b.value),

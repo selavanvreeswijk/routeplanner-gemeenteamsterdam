@@ -115,14 +115,18 @@ const locations = data.features.map((feature) => ({
 
     // Onboarding ------------------------------------------------------
 
+    // SELA: We lezen het opgeslagen profiel en naam op uit localStorage (browsergeheugen dat blijft bestaan)
     const opgeslagenProfiel = localStorage.getItem("profiel");
     const opgeslagenNaam = localStorage.getItem("naam");
 
     const isOnboarding = window.location.pathname.includes("onboarding");
+    // SELA: Als er geen profiel of naam is opgeslagen, sturen we de gebruiker naar de onboarding-pagina
     if (!opgeslagenProfiel || (!opgeslagenNaam && !isOnboarding)) {
       window.location.href = import.meta.env.BASE_URL + "onboarding";
     } else {
       // Tweede bezoek: zet het opgeslagen profiel alvast aan in de filterknop
+      // SELA: We lezen de opgeslagen categorieën uit het profiel en activeren automatisch de bijbehorende checkboxes
+      // Zo hoeft de gebruiker niet elke keer opnieuw zijn filters in te stellen
       const profielObject = Object.keys(JSON.parse(opgeslagenProfiel));
 
       profielObject.forEach((waarde) => {
@@ -131,6 +135,8 @@ const locations = data.features.map((feature) => ({
         );
         if (checkbox) {
           checkbox.checked = true;
+          // SELA: We sturen handmatig een "change"-event op de checkbox
+          // zodat alle luisteraars (zoals de sorteerfunctie) ook worden getriggerd
           // Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
           checkbox.dispatchEvent(new Event("change", { bubbles: true }));
         }
@@ -141,20 +147,25 @@ const locations = data.features.map((feature) => ({
     const cards = document.querySelectorAll(".location-list li");
     const countEl = document.getElementById("location-count");
 
+    // SELA: Telt hoeveel locatiekaarten er zichtbaar zijn en toont dat als tekst ("12 locaties gevonden")
     function updateCount() {
       const visible = Array.from(cards).filter(
         (c) => c.style.display !== "none",
       ).length;
       if (countEl)
+        // SELA: Als er maar 1 locatie is, schrijven we "locatie" (enkelvoud), anders "locaties" (meervoud)
         countEl.textContent = `${visible} locatie${visible === 1 ? "" : "s"} gevonden`;
     }
 
     updateCount();
 
+    // SELA: Deze functie markeert de zoekterm in de tekst met een <mark>-element (gele highlight)
+    // We gebruiken een regex zodat het hoofdletterongevoelig werkt ("amsterdam" vindt ook "Amsterdam")
     // Bron <mark>: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/mark
     // Bron regex replace: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace
     function highlight(text: string, query: string): string {
       if (!query) return text;
+      // SELA: We escapen speciale regex-tekens in de zoekterm zodat bijv. een punt niet alles matcht
       const regex = new RegExp(
         `(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
         "gi",
@@ -162,6 +173,7 @@ const locations = data.features.map((feature) => ({
       return text.replace(regex, `<mark>$1</mark>`);
     }
 
+    // SELA: Elke keer als de gebruiker iets typt in het zoekveld, filteren we de kaarten
     input.addEventListener("input", () => {
       const query = input.value.toLowerCase().trim();
       let visibleCount = 0;
@@ -169,15 +181,18 @@ const locations = data.features.map((feature) => ({
       cards.forEach((card) => {
         const name = card.dataset.name ?? "";
         const address = card.dataset.address ?? "";
+        // SELA: We tonen alleen kaarten waarvan de naam of het adres de zoekterm bevat
         const matches = name.includes(query) || address.includes(query);
         card.style.display = matches ? "" : "none";
         if (matches) visibleCount++;
 
+          // SELA: We synchroniseren ook de kaartmarkers met de gefilterde lijst
           window.filterMarkers?.()
 
         // Highlight in naam
         const h2 = card.querySelector("h2");
         if (h2) {
+          // SELA: We bewaren de originele naam zodat we die altijd terug kunnen zetten als de zoekterm leeg wordt
           const originalName = h2.dataset.original ?? h2.textContent ?? "";
           h2.dataset.original = originalName;
           h2.innerHTML = query ? highlight(originalName, query) : originalName;
@@ -189,6 +204,7 @@ const locations = data.features.map((feature) => ({
     });
 
     // toggle tussen lijst en kaartweergave
+    // SELA: We selecteren de radiobuttons en de twee weergavecontainers (lijst en kaart)
     const radioLijst = document.getElementById("radio-1");
     const radioMap = document.getElementById("radio-2");
     const listView = document.getElementById("list-view");
@@ -197,14 +213,17 @@ const locations = data.features.map((feature) => ({
       "search-input-btn",
     ) as HTMLButtonElement;
 
+    // SELA: De zoekknop (die een adres op de kaart zoekt) verbergen we standaard in lijstmodus
     if (zoekKnop) zoekKnop.style.display = "none";
 
     if (zoekKnop) {
+      // SELA: Als de gebruiker op de zoekknop klikt, zoeken we het adres op de kaart op via Nominatim
       zoekKnop.addEventListener("click", () => {
         (window as any).zoekOpKaart?.(input.value.trim());
       });
     }
 
+    // SELA: Als de gebruiker op Enter drukt terwijl de kaart actief is, zoeken we ook het adres op
     input.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -220,6 +239,8 @@ const locations = data.features.map((feature) => ({
     const hoofdfilterSelect = document.getElementById("hoofdfilter-select");
     const subfilterSelect = document.getElementById("subfilter-select");
 
+    // SELA: Deze functie filtert de locatiekaarten op basis van de gekozen hoofd- en subcategorie
+    // (bijv. hoofdfilter = "Sport", subfilter = "Zwembad")
     function filterCards() {
       const hoofdfilter = hoofdfilterSelect.value.trim().toLowerCase();
       const subfilter = subfilterSelect.value.trim().toLowerCase();
@@ -227,18 +248,24 @@ const locations = data.features.map((feature) => ({
       cards.forEach((card) => {
         const cardHoofd = card.dataset.hoofdfilter ?? "";
         const cardSub = card.dataset.subfilter ?? "";
+        // SELA: Als er geen filter geselecteerd is (!hoofdfilter), tonen we altijd die kaart
+        // Beide filters moeten matchen voor een kaart om zichtbaar te zijn
         const matchHoofd = !hoofdfilter || cardHoofd === hoofdfilter;
         const matchSub = !subfilter || cardSub === subfilter;
         card.style.display = matchHoofd && matchSub ? "" : "none";
       });
 
       updateCount();
+      // SELA: Ook de kaartmarkers updaten zodat lijst en kaart altijd synchroon lopen
       window.filterMarkers?.()
     }
 
     hoofdfilterSelect.addEventListener("change", filterCards);
     subfilterSelect.addEventListener("change", filterCards);
 
+    // SELA: Als de gebruiker naar kaartweergave schakelt, verbergen we de lijst en tonen we de kaart
+    // setTimeout geeft de browser even tijd om de kaart zichtbaar te maken vóór we hem initialiseren
+    // (Leaflet kan geen kaart tekenen in een verborgen element)
     radioMap.addEventListener("change", () => {
       listView!.style.display = "none";
       mapView!.style.display = "block";
@@ -256,7 +283,8 @@ const locations = data.features.map((feature) => ({
       if (zoekKnop) zoekKnop.style.display = "none";
     });
 
-    // Op desktop (≥1024px) kaart automatisch initialiseren naast de lijst
+    // SELA: Op desktop (brede schermen) staan lijst en kaart naast elkaar
+    // Dan initialiseren we de kaart meteen bij het laden van de pagina zonder dat de gebruiker erop hoeft te klikken
     if (window.innerWidth >= 1024) {
       setTimeout(() => {
         if (window.initialiseerKaart) {

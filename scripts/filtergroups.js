@@ -1,4 +1,7 @@
-export const filterGroups = { 
+// SELA: Hier definiëren we welke JSON-velden bij welke toegankelijkheidscategorie horen.
+// Dit bestand is de "vertaalsleutel" tussen de ruwe JSON-data en de filterknoppen in de app.
+// Elke categorie heeft een lijst van veldnamen uit de CBA-dataset van de gemeente Amsterdam.
+export const filterGroups = {
 	algemeen: [
 		"Toegankelijk_gebouw",
 		"Persoonlijke_assistent",
