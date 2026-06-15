@@ -78,9 +78,16 @@ Object.keys(subfiltersByHoofd).forEach((k) => {
     border: 0.5px solid var(--ams-color-grey-3);
     font-family: var(--ams-font-family);
     font-weight: var(--ams-font-weight-semibold);
+    color: var(--ams-color-grey-5);
     cursor: pointer;
     border-radius: 6px;
     flex: 1;
+  }
+
+  body.dark-mode select {
+    border: 0.5px solid var(--ams-color-grey-3);
+    background-color: var(--ams-color-grey-1);
+    color: var(--ams-color-grey-5);
   }
 
   select:focus {
