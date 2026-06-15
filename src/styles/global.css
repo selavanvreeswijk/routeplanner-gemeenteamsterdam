@@ -5,11 +5,6 @@
        KLEUREN MARK: Variables
        ================================ */
 
-  /* Rood (primaire merkkleur) */
-  --ams-color-primair-red: #ec0000;
-  --ams-color-primair-red-dark: #c20000;
-  --ams-color-primair-red-light: #fffbfb;
-
   /* Zwart & Grijs */
   --ams-color-black: #111111;
   --ams-color-grey-5: #202020;
@@ -20,26 +15,38 @@
   --ams-color-white: #ffffff;
   --ams-bg: #ffffff;
 
+  /* Rood (primaire merkkleur) */
+  --ams-color-primair-red: #ec0000;
+  --ams-color-primair-red-dark: #c20000;
+  --ams-color-primair-red-light: #fffbfb;
+
+  /* ================================
+      KLEUREN: Acces icons profiel
+      ================================ */
+  
   /* Blauw */
   --ams-color-blue: #004699;
-  --ams-color-blue-dark: #003677;
-  --ams-color-blue-light: #cce0f5;
+  --ams-color-blue-light: #dff2fc;
 
   /* Groen */
-  --ams-color-green: #009900;
   --ams-color-green-dark: #007700;
-  --ams-color-green-light: #ccf0cc;
+  --ams-color-green-light: #ecfcdf;
 
-  /* Oranje (medium severity) */
-  --ams-color-orange: #ff9100;
-  --ams-color-orange-dark: #7e4802;
-  --ams-color-orange-light: #ffe5b2;
+  /* Oranje */
+  --ams-color-orange-dark: #a15c00;
+  --ams-color-orange-light: #fcf7df;
 
-  /* red  */
-  --ams-color-red: #ff0000;
-  --ams-color-red-dark: #670000;
-  --ams-color-red-light: #ffd3d3;
+  /* Paars */
+  --ams-color-purple-dark: #752082;
+  --ams-color-purple-light: #efe2f2;
 
+  /* Roze */
+  --ams-color-pink-dark: #d10077;
+  --ams-color-pink-light: #ffeaf3;
+
+  /* Licht blauw */
+  --ams-color-light-blue-dark: #006e9c;
+  --ams-color-light-blue-light: #e5f7fd;
   /* ================================
        TYPOGRAFIE MARK: Typografie
        ================================ */
