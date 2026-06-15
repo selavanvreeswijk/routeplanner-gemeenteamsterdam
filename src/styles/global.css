@@ -187,13 +187,13 @@ body.dark-mode .actie-knop-rood {
   color: white !important;
 }
 
-body.dark-mode .profile-card {
+/* body.dark-mode .profile-card {
   background: #1e1e1e !important;
   border-color: #3a3a3a !important;
   color: #f0f0f0 !important;
-}
+} */
 
-body.dark-mode .profile-card:has(input:checked),
+/* body.dark-mode .profile-card:has(input:checked), */
 body.dark-mode .filter-btn:has(input:checked) {
   background-color: var(--ams-color-primair-red-light) !important;
   border-color: var(--ams-color-primair-red) !important;
