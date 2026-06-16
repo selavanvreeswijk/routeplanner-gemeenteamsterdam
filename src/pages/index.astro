@@ -234,21 +234,34 @@ const locations = data.features.map((feature) => ({
 
     // Deze functie filtert de locatiekaarten op basis van de gekozen hoofd- en subcategorie
     function filterCards() {
+
+      // Animatie overgang voor het filteren
+      if(!document.startViewTransition){
+        renderNewCards()
+        return;
+      }
+
+      document.startViewTransition(
+          renderNewCards
+      )
+    }
+
+    function renderNewCards(){
       const hoofdfilter = hoofdfilterSelect.value.trim().toLowerCase();
       const subfilter = subfilterSelect.value.trim().toLowerCase();
 
       cards.forEach((card) => {
-        const cardHoofd = card.dataset.hoofdfilter ?? "";
-        const cardSub = card.dataset.subfilter ?? "";
-        // Als er geen filter geselecteerd is (!hoofdfilter), tonen we altijd die kaart
-        // Beide filters moeten matchen voor een kaart om zichtbaar te zijn
-        const matchHoofd = !hoofdfilter || cardHoofd === hoofdfilter;
-        const matchSub = !subfilter || cardSub === subfilter;
-        card.style.display = matchHoofd && matchSub ? "" : "none";
-      });
+            const cardHoofd = card.dataset.hoofdfilter ?? "";
+            const cardSub = card.dataset.subfilter ?? "";
+            // Als er geen filter geselecteerd is (!hoofdfilter), tonen we altijd die kaart
+            // Beide filters moeten matchen voor een kaart om zichtbaar te zijn
+            const matchHoofd = !hoofdfilter || cardHoofd === hoofdfilter;
+            const matchSub = !subfilter || cardSub === subfilter;
+            card.style.display = matchHoofd && matchSub ? "" : "none";
+          });
 
-      updateCount();
-      window.filterMarkers?.()
+          updateCount();
+          window.filterMarkers?.()
     }
 
     hoofdfilterSelect.addEventListener("change", filterCards);

@@ -158,6 +158,14 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
           <!-- Naam & adres, met rode linkerbalk -->
           <div class="location-information">
             <p class="category">{p.Subfilter?.trim()}</p>
+            <div class="viewtransition" style={
+               {
+                viewTransitionName: `adres-${p.Naam_locatie.toLowerCase()
+                .replace(/\s+/g, "-")
+                .replace(/[^a-z0-9-]/g, "")}`
+              }
+            }>
+        
             <h2>{p.Naam_locatie}</h2>
             <p class="adres">
               <svg
@@ -186,6 +194,7 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
               {p.Huisnummer}
               {p.Postcode}
             </p>
+                </div>
           </div>
 
           <div class="acties">
@@ -474,6 +483,10 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
       font-size: clamp(1.1rem, 3vw, 1.5rem);
       margin: 4px 0;
       line-height: 1.2;
+    }
+
+    .viewtransition {
+      view-transition-name: adres;
     }
 
     p.adres {
