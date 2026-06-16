@@ -20,6 +20,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <!-- Show search = false gedaan omdat je niet kan zoeken op de onboarding page -->
     <div class="app-wrapper">
       <main>
+        <form action="">
         <section class="name-input">
           <h2>Hoe mogen we je noemen?</h2>
           <label for="name-input" class="sr-only">Jouw naam</label>
@@ -32,7 +33,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
         </section>
 
         <!-- Profielkeuze -->
-        <section class="profile-choice">
+        <fieldset class="profile-choice">
           <div class="profile-text">
             <h2>Kies jouw profiel</h2>
             <p>Op basis van deze keuze kunnen we jouw profiel weergeven. Deze informatie wordt niet opgeslagen.</p>
@@ -229,12 +230,13 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
               <span class="profile-name">Prikkels</span>
             </label>
           </div>
-        </section>
+        </fieldset>
 
         <!-- Foutmelding als iets ontbreekt -->
         <p id="error-message" role="alert"></p>
 
         <button id="start-button">Aan de slag</button>
+        </form>
       </main>
     </div>
   </body>
@@ -328,17 +330,22 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 
 <style>
   /* Bron sr-only patroon: https://www.w3.org/WAI/tutorials/forms/labels/ */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
+  .profile-card input[type="checkbox"], .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.profile-card:has(input:focus-visible) {
+  outline: 3px solid var(--ams-color-primair-red);
+  outline-offset: 2px;
+}
 
   @keyframes fadeInUp {
     from {
@@ -411,7 +418,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     overflow: hidden;
   }
 
-  main {
+  form {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -420,6 +427,14 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 48px);
     overflow: hidden;
     height: 100%;
+  }
+
+  main {
+    height: 100%;
+  }
+
+  fieldset {
+    border: none
   }
 
   .name-input {
@@ -471,10 +486,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: clamp(6px, 1.2vh, 10px);
-  }
-
-  .profile-card input[type="checkbox"] {
-    display: none;
   }
 
   .profile-card {
@@ -636,7 +647,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       height: auto;
     }
 
-    main {
+    form {
       height: auto;
       overflow: visible;
       justify-content: flex-start;
