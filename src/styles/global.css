@@ -70,13 +70,21 @@
 body.hoog-contrast {
   --ams-color-primair-red: #ffff00;
   --ams-color-black: #ffff00;
-  --ams-color-grey-5: #ffff00;
-  --ams-color-grey-4: #cccccc;
-  --ams-color-grey-3: #555555;
+  --ams-color-grey-5: #111111;
+  --ams-color-grey-4: #fff;
+  --ams-color-grey-3: #fff;
   --ams-color-grey-2: #222222;
   --ams-color-grey-1: #1a1a1a;
   --ams-color-white: #111111;
   --ams-bg: #111111;
+
+  --ams-color-blue: #003575;
+  --ams-color-light-blue-dark: #00405C;
+  --ams-color-green-dark: #004700;
+  --ams-color-pink-dark: #750042;
+  --ams-color-orange-dark: #5C3400;
+  --ams-color-purple-dark: #54175E;
+  --ams-color-primair-red-dark: #750000;
   background-color: #111111;
   color: #ffff00;
 }
@@ -96,11 +104,16 @@ body.hoog-contrast #profiel-knop {
   color: #000000 !important;
 }
 
+body.hoog-contrast .actie-knop, 
+body.hoog-contrast .back {color: #fff !important}
+
 body.hoog-contrast header h1,
 body.hoog-contrast header span,
-body.hoog-contrast header button { color: #000000; }
+body.hoog-contrast header button,
+body.hoog-contrast .search-input::placeholder { color: #000000; }
 
 body.hoog-contrast #start-button { color: #000000 !important; }
+ body.hoog-contrast .item-onbekend {color: #C7C7C7}
 
 body.hoog-contrast .filter-btn:has(input:checked),
 body.hoog-contrast .profile-card:has(input:checked) {
@@ -114,6 +127,11 @@ body.hoog-contrast .location-list li:hover {
   box-shadow: none;
   border-color: #ffff00;
   color: #000000;
+}
+
+body.hoog-contrast .header-links img {
+  background-color: #000000;
+  padding: .5rem;
 }
 
 body.hoog-contrast .location-list li:hover h2,
