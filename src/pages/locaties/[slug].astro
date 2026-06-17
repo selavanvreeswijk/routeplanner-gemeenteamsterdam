@@ -579,7 +579,7 @@ const counts = Object.fromEntries(
   .acties {
     display: flex;
     gap: 10px;
-    padding: 16px 16px 0;
+    padding: 1rem;
   }
 
   .actie {
@@ -653,11 +653,31 @@ const counts = Object.fromEntries(
       height: 100%;
     }
 
-    a.back                { grid-column: 1; grid-row: 1; }
-    .location-information { grid-column: 1; grid-row: 2; }
-    .acties               { grid-column: 1; grid-row: 3; }
-    .toegankelijkheid     { grid-column: 1; grid-row: 4; overflow-y: auto; }
-    .actie                { grid-column: 1; grid-row: 5; }
+    a.back { 
+      grid-column: 1; 
+      grid-row: 1; 
+    }
+
+    .location-information { 
+      grid-column: 1; 
+      grid-row: 2; 
+    }
+
+    .acties { 
+      grid-column: 1; 
+      grid-row: 3; 
+    }
+
+    .toegankelijkheid { 
+      grid-column: 1; 
+      grid-row: 4; 
+      overflow-y: auto; 
+    }
+
+    .actie { 
+      grid-column: 1; 
+      grid-row: 5; 
+    }
 
     .map-panel {
       grid-column: 2;
