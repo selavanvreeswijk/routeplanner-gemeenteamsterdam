@@ -1,8 +1,9 @@
 ---
 //@ts-nocheck
-// Haalt de data op uit de JSON
+
 import data from "../cbadataset.json" with { type: "json" };
 
+// FILTEREN OP LOCATIE
 const hoofdfilters = [
   ...new Set(data.features.map((f) => f.properties.Hoofdfilter.trim())), // verwijdert duplicaten, en zet om naar een gewone array
 ].sort();
@@ -13,17 +14,19 @@ const subfilters = [
 // Maak een map van hoofdfilter -> subfilters
 const subfiltersByHoofd = {};
 
-data.features.forEach((f) => {
+data.features.forEach((f) => { // loopt over elke locatie in je GeoJSON dataset.
   const hoofd = f.properties.Hoofdfilter.trim();
   const sub = f.properties.Subfilter.trim();
-  if (!subfiltersByHoofd[hoofd]) subfiltersByHoofd[hoofd] = new Set();
+  if (!subfiltersByHoofd[hoofd]) subfiltersByHoofd[hoofd] = new Set(); // duplicaten automatisch worden genegeerd 
   subfiltersByHoofd[hoofd].add(sub);
 });
+// Bron: Claude om de duplicaten te negeren 
 
 // Zet Sets om naar gesorteerde arrays
 Object.keys(subfiltersByHoofd).forEach((k) => {
   subfiltersByHoofd[k] = [...subfiltersByHoofd[k]].sort(); // pakt de sets en zet ze om naar arrays 
 });
+// Bron: Tijdens de workshop met Jad
 ---
 
 <div class="filters">
@@ -69,8 +72,9 @@ Object.keys(subfiltersByHoofd).forEach((k) => {
   .filters {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     gap: 1rem;
-    padding: 1rem;
+    padding: 0rem 1rem;
   }
 
   select {
@@ -78,9 +82,16 @@ Object.keys(subfiltersByHoofd).forEach((k) => {
     border: 0.5px solid var(--ams-color-grey-3);
     font-family: var(--ams-font-family);
     font-weight: var(--ams-font-weight-semibold);
+    color: var(--ams-color-grey-5);
     cursor: pointer;
     border-radius: 6px;
     flex: 1;
+  }
+
+  body.dark-mode select {
+    border: 0.5px solid var(--ams-color-grey-3);
+    background-color: var(--ams-color-grey-1);
+    color: var(--ams-color-grey-5);
   }
 
   select:focus {
@@ -89,8 +100,9 @@ Object.keys(subfiltersByHoofd).forEach((k) => {
   }
 
   select:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+    /* opacity: 0.4;
+    cursor: not-allowed; */
+    display: none;
   }
 
   @media (min-width: 550px) {

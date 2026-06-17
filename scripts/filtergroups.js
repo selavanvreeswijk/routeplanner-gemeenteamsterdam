@@ -1,4 +1,6 @@
-export const filterGroups = { 
+// Filteren welke JSON-velden bij welke toegankelijkheidscategorie horen
+// Voor de filerknoppen in de app
+export const filterGroups = {
 	algemeen: [
 		"Toegankelijk_gebouw",
 		"Persoonlijke_assistent",

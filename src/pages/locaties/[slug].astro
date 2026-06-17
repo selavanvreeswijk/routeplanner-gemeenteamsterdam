@@ -1,19 +1,23 @@
 ---
+// @ts-nocheck
 import cbaData from "../../cbadataset.json";
 import Header from "../../components/Header.astro";
-// leaflet CSS wordt geladen via <link> in de <head>
 import "../../styles/global.css";
+import AccessIcons from "../../components/AccessIcons.astro";
+import { filterGroups } from "../../../scripts/filtergroups.js";
 
+// getStaticPaths() genereert voor elke locatie in de JSON een aparte pagina
 export async function getStaticPaths() {
-  // maakt paginas aan voor astro build, op basis van de locaties in de JSON
+
   return cbaData.features.map((feature) => ({
-    // Loopt door elke locatie in de JSON en maak voor elke locatie een pagina aan
+
     params: {
+      // We maken een "slug" van de naam: kleine letters, spaties worden streepjes, speciale tekens vallen weg
       slug: feature.properties.Naam_locatie.toLowerCase()
         .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, ""), // Maakt een slug, vervangt streepjes en speciale tekens
+        .replace(/[^a-z0-9-]/g, ""), 
     },
-    props: { feature }, // Stuurt de data van die locatie mee naar de pagina
+    props: { feature },
   }));
 }
 
@@ -22,9 +26,10 @@ const p = feature.properties;
 const lat = feature.geometry.coordinates[1];
 const lng = feature.geometry.coordinates[0];
 
-// Toegankelijkheidsinformatie verzamelen en sorteren
+// Lijst van alle toegankelijkheidskenmerken die we willen tonen op de detailpagina
+// Elk item heeft een label (leesbare naam), een waarde uit de JSON (Ja/Nee/Onbekend) en optioneel een SVG-icoon.
+// De SVG-iconen komen van de Gemeente Amsterdam huisstijl.
 const toegankelijkheidItems = [
-  // Maakt een lijst van toegankelijkheidskenmerken met label en waarde + een icon van de gemeente amsterdam, filtert lege waarden eruit
   { label: "Gehandicapten parkeerplaatsen", value: p.Gehandicaptenparkeerplaatsen_binnen_100_m_, },
   { label: "Voorrijden toegestaan", value: p.Voorrijden_toegestaan },
 
@@ -126,13 +131,24 @@ const toegankelijkheidItems = [
 
 ].filter((i) => i.value !== undefined && i.value !== null); // Filtert kenmerken zonder waarde eruit
 
-const volgorde = (v: string) => (v === "Ja" ? 0 : v === "Nee" ? 1 : 2); // Zorgt dat "Ja" bovenaan komt, "Nee" daaronder en "Onbekend" onderaan
+// We sorteren de toegankelijkheidsinformatie zodat "Ja" bovenaan staat, dan "Nee", dan "Onbekend"
+// De volgorde-functie geeft een getal terug (0, 1 of 2) dat sort() gebruikt om te vergelijken
+const volgorde = (v: string) => (v === "Ja" ? 0 : v === "Nee" ? 1 : 2); 
+
 const gesorteerdeItems = toegankelijkheidItems.sort(
   (a, b) => volgorde(a.value) - volgorde(b.value),
-); // Sorteert de items op basis van die volgorde
+); 
+
+// Bouw counts op vanuit raw properties, zelfde structuur als in cbadataset.json
+const counts = Object.fromEntries(
+  Object.entries(filterGroups).map(([cat, velden]) => {
+    const ja = velden.filter((v) => p[v] === "Ja").length;
+    return [cat, { Ja: ja }];
+  })
+);
 ---
 
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
@@ -147,12 +163,19 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
       <Header showSearch={false} />
 
       <div class="split-view">
-        <div class="info-panel">
-          <a class="back" href="/">← Terug</a>
+          <a class="back" href="/" aria-label="terug naar overzicht">← Terug</a>
 
           <!-- Naam & adres, met rode linkerbalk -->
           <div class="location-information">
             <p class="category">{p.Subfilter?.trim()}</p>
+            <div class="viewtransition" style={
+               {
+                viewTransitionName: `adres-${p.Naam_locatie.toLowerCase()
+                .replace(/\s+/g, "-")
+                .replace(/[^a-z0-9-]/g, "")}`
+              }
+            }>
+        
             <h2>{p.Naam_locatie}</h2>
             <p class="adres">
               <svg
@@ -181,8 +204,14 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
               {p.Huisnummer}
               {p.Postcode}
             </p>
+                </div>
+            <AccessIcons counts={counts} />
           </div>
 
+          <div class="map-panel">
+            <div id="map"></div>
+          </div>
+          
           <div class="acties">
             <a href={`tel:${p.Telefoonnummer}`} class="actie-knop-rood">
               <svg
@@ -241,35 +270,21 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
             </button>
           </div>
 
-          <!-- De kaart -->
-           <!-- ALS HET KAN DEZE WEG GRAAG (VOOR ACCESSIBILITY, ZO NIET MIJ FF BERICHTEN (LUNA)) -->
-          <div class="map-panel">
-            <div id="map"></div>
-          </div>
-
-          <!-- Toegankelijkheidsinformatie als 2-koloms raster -->
-           <div class="toegankelijkheid">
-            <h3>Toegankelijkheid</h3>
+          <!-- Toegankelijkheidsinformatie -->
+          <div class="toegankelijkheid">
+            <h3>Beschikbaar</h3>
             <ul class="toegankelijkheid-grid">
               {gesorteerdeItems
-                .filter((i) => i.value !== "Onbekend")
+                .filter((i) => i.value === "Ja")
                 .map((i) => (
-                  <li class={i.value === "Ja" ? "item-ja" : "item-nee"}>
+                  <li class="item-ja">
                     {i.svg ? (
-                        <svg width="20" height="20" viewBox="0 0 27 27" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                          <Fragment set:html={i.svg} />
-                        </svg>
-                      ) : (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        {i.value === "Ja" && (
-                          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        )}
-                        {i.value === "Nee" && (
-                          <>
-                            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                          </>
-                        )}
+                      <svg width="20" height="20" viewBox="0 0 27 27" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                        <Fragment set:html={i.svg} />
+                      </svg>
+                    ) : (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                     )}
                     <span><strong>{i.label}</strong></span>
@@ -277,6 +292,32 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
                 ))
               }
             </ul>
+
+            {gesorteerdeItems.filter((i) => i.value === "Nee").length > 0 && (
+              <>
+                <h3>Niet beschikbaar</h3>
+                <ul class="toegankelijkheid-grid">
+                  {gesorteerdeItems
+                    .filter((i) => i.value === "Nee")
+                    .map((i) => (
+                      <li class="item-nee">
+                        {i.svg ? (
+                          <svg width="20" height="20" viewBox="0 0 27 27" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                            <Fragment set:html={i.svg} />
+                          </svg>
+                        ) : (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                          </svg>
+                        )}
+                        <span><strong>{i.label}</strong></span>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </>
+            )}
 
             {gesorteerdeItems.filter((i) => i.value === "Onbekend").length > 0 && (
               <>
@@ -287,11 +328,11 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
                     .map((i) => (
                       <li class="item-onbekend">
                         {i.svg ? (
-                          <svg width="20" height="20" viewBox="0 0 27 27" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <svg width="20" height="20" viewBox="0 0 27 27" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                             <Fragment set:html={i.svg} />
                           </svg>
                         ) : (
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                             <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                           </svg>
@@ -304,120 +345,6 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
               </>
             )}
           </div>
-          <!-- <div class="toegankelijkheid">
-            <h3>Toegankelijkheid</h3>
-            <ul class="toegankelijkheid-grid">
-              {
-                gesorteerdeItems
-                  .filter((i) => i.value !== "Onbekend")
-                  .map((i) => (
-                    <li class={i.value === "Ja" ? "item-ja" : "item-nee"}>
-                      {i.icon ? (
-                        <svg
-                          width="40"
-                          height="40"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <Fragment set:html={i.icon} />
-                        </svg>
-                      ) : (
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          {i.value === "Ja" && (
-                            <path
-                              d="M20 6L9 17L4 12"
-                              stroke="currentColor"
-                              stroke-width="2.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          )}
-                          {i.value === "Nee" && (
-                            <>
-                              <path
-                                d="M18 6L6 18"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                              />
-                              <path
-                                d="M6 6L18 18"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                              />
-                            </>
-                          )}
-                        </svg>
-                      )}
-                      <span>
-                        <strong>{i.label}</strong>
-                      </span>
-                    </li>
-                  ))
-              }
-            </ul>
-
-            {
-              gesorteerdeItems.filter((i) => i.value === "Onbekend").length >
-                0 && (
-                <>
-                  <h3>Informatie onbekend</h3>
-                  <ul class="toegankelijkheid-grid">
-                    {gesorteerdeItems
-                      .filter((i) => i.value === "Onbekend")
-                      .map((i) => (
-                        <li class="item-onbekend">
-                          {i.icon ? (
-                            <svg
-                              width="40"
-                              height="40"
-                              viewBox="0 0 20 20"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <Fragment set:html={i.icon} />
-                            </svg>
-                          ) : (
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <circle
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                stroke-width="2"
-                              />
-                              <path
-                                d="M12 8v4M12 16h.01"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                              />
-                            </svg>
-                          )}
-                          <span>
-                            <strong>{i.label}</strong>
-                          </span>
-                        </li>
-                      ))}
-                  </ul>
-                </>
-              )
-            }
-          </div> -->
 
         <!-- Print & Deel knoppen -->
           <div class="actie">
@@ -431,14 +358,13 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
             </button>
           </div>
         </div>
-        </div>
-      </div>
+
+    </div>
 
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" is:inline
       ></script>
       <script define:vars={{ lat, lng, naam: p.Naam_locatie }} is:inline>
         // Kaart initialiseren na volledig laden van de layout
-        // Zelfde aanpak als Map.astro: wacht op window load zodat container de juiste afmetingen heeft
         // Bron invalidateSize: https://leafletjs.com/reference.html#map-invalidatesize
         window.addEventListener("load", function () {
           var map = L.map("map").setView([lat, lng], 15);
@@ -504,243 +430,278 @@ const gesorteerdeItems = toegankelijkheidItems.sort(
           document.querySelectorAll('[class*="leaflet"]').forEach(el => {el.setAttribute("tabindex", "-1")})
           document.querySelectorAll('[class*="leaflet"] a').forEach(el => {el.setAttribute("tabindex", "-1")})
 
-
       </script>
     </div>
   </body>
 
   <style>
     body {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-    }
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-    a {
-      text-decoration: none;
-    }
-    .split-view {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      overflow: hidden;
-    }
+  a {
+    text-decoration: none;
+  }
 
-    .info-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      overflow-y: auto;
-      padding-bottom: 1rem;
-    }
+  .split-view {
+    display: grid;
+    grid-template-columns: 1fr;
+    flex: 1;
+    overflow-y: auto;
+  }
 
-    a.back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: var(--ams-font-size-body-small);
-      color: var(--ams-color-grey-5);
-      padding: 16px 16px 8px;
-    }
+  a.back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--ams-font-size-body-small);
+    color: var(--ams-color-grey-5);
+    padding: 16px 16px 8px;
+  }
 
-    a.back:hover {
-      color: var(--ams-color-primair-red);
-    }
+  a.back:hover {
+    color: var(--ams-color-primair-red);
+  }
 
-    .location-information {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin: 8px 16px 16px;
-      padding-left: 12px;
-      border-left: 3px solid var(--ams-color-primair-red);
-    }
+  .location-information {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 8px 16px 16px;
+    padding-left: 12px;
+    border-left: 3px solid var(--ams-color-primair-red);
+  }
 
-    p.category {
-      font-size: var(--ams-font-size-body-small);
-      color: var(--ams-color-primair-red);
-      text-transform: uppercase;
-      font-weight: bold;
-      margin: 0;
-    }
+  p.category {
+    font-size: var(--ams-font-size-body-small);
+    color: var(--ams-color-primair-red);
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0;
+  }
 
-    h2 {
-      font-size: clamp(1.1rem, 3vw, 1.5rem);
-      margin: 4px 0;
-      line-height: 1.2;
-    }
+  h2 {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    margin: 4px 0;
+    line-height: 1.2;
+  }
 
-    p.adres {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: var(--ams-font-size-body);
-      color: var(--ams-color-grey-4);
-      margin: 0;
-    }
+  .viewtransition {
+    view-transition-name: adres;
+  }
 
-    .toegankelijkheid {
-      padding: 0 16px;
-    }
+  p.adres {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--ams-font-size-body);
+    color: var(--ams-color-grey-4);
+    margin: 0;
+  }
 
-    h3 {
-      font-size: 1rem;
-      font-weight: var(--ams-font-weight-semibold);
-      padding: 16px 0;
-    }
+  .toegankelijkheid {
+    padding: 0 16px;
+  }
 
+  h3 {
+    font-size: 1rem;
+    font-weight: var(--ams-font-weight-semibold);
+    padding: 16px 0;
+  }
+
+  .toegankelijkheid-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  @media (min-width: 480px) {
     .toegankelijkheid-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      list-style: none;
-      padding: 0;
-      margin: 0;
+      grid-template-columns: 1fr 1fr;
     }
+  }
 
-    @media (min-width: 480px) {
-      .toegankelijkheid-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
+  .toegankelijkheid-grid li {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    height: 100%;
+    border: 0.5px solid;
+    font-size: var(--ams-font-size-body-small);
+    border-radius: 4px;
+    line-height: 1.4;
+  }
 
-    .toegankelijkheid-grid li {
-      display: grid;
-      grid-template-columns: 16px 1fr;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      height: 100%;
-      border: 0.5px solid;
-      font-size: var(--ams-font-size-body-small);
-      border-radius: 4px;
-      line-height: 1.4;
-    }
+  .item-ja {
+    color: var(--ams-color-green-dark);
+    background-color: #edf7f1;
+    border-color: var(--ams-color-green-dark);
+  }
 
-    .item-ja {
-      color: var(--ams-color-green-dark);
-      background-color: #edf7f1;
-      border-color: var(--ams-color-green-dark);
-    }
+  .item-nee {
+    color: var(--ams-color-primair-red-dark);
+    background-color: #fbeaea;
+    border-color: var(--ams-color-primair-red-dark);
+  }
 
-    .item-nee {
-      color: var(--ams-color-primair-red-dark);
-      background-color: #fbeaea;
-      border-color: var(--ams-color-primair-red-dark);
-    }
+  .item-onbekend {
+    color: #6e6e6e;
+    background-color: var(--ams-color-grey-1);
+    border-color: #6e6e6e;
+  }
 
-    .item-onbekend {
-      color: #6e6e6e; /* andere kleuren voor het contrast */
-      background-color: var(--ams-color-grey-1);
-      border-color: #6e6e6e; /* andere kleuren voor het contrast */
-    }
+  /* darkmode */
+  body.dark-mode .item-ja {
+    color: #edf7f1;
+    background-color: var(--ams-color-green-dark);
+    border-color: var(--ams-color-green-dark);
+  }
 
-    /* ── Printen / delen ── */
-    .acties {
-      display: flex;
-      gap: 10px;
-      padding: 16px 16px 0;
-    }
+  body.dark-mode .item-nee {
+    color: #fbeaea;
+    background-color: var(--ams-color-primair-red-dark);
+    border-color: var(--ams-color-primair-red-dark);
+  }
 
-    .actie {
-      display: flex;
-      gap: 10px;
-      padding: 16px;
-    }
+  body.dark-mode .item-onbekend {
+    color: #a9a9a9;
+  }
 
-    .actie-knop {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 16px;
-      border: 1.5px solid var(--ams-color-grey-3);
-      background: var(--ams-color-white);
-      color: var(--ams-color-grey-5);
-      font-family: var(--ams-font-family);
-      font-size: var(--ams-font-size-body-small);
-      font-weight: var(--ams-font-weight-semibold);
-      cursor: pointer;
-      border-radius: 6px;
-      transition: background-color 0.15s ease;
-      flex: 1;
-      justify-content: center;
-    }
+  /* ── Printen & Delen ── */
+  .acties {
+    display: flex;
+    gap: 10px;
+    padding: 1rem;
+  }
 
-    .actie-knop:hover {
-      background-color: var(--ams-color-grey-1);
-    }
+  .actie {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+  }
 
-    .actie-knop-rood {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 16px;
-      border: 1.5px solid var(--ams-color-primair-red);
-      background: var(--ams-color-primair-red);
-      color: var(--ams-color-white);
-      font-family: var(--ams-font-family);
-      font-size: var(--ams-font-size-body-small);
-      font-weight: var(--ams-font-weight-semibold);
-      cursor: pointer;
-      border-radius: 6px;
-      transition: background-color 0.15s ease;
-      flex: 1;
-      justify-content: center;
-    }
+  .actie-knop {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--ams-color-grey-3);
+    background: var(--ams-color-white);
+    color: var(--ams-color-grey-5);
+    font-family: var(--ams-font-family);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    flex: 1;
+    justify-content: center;
+  }
 
-    .actie-knop-rood:hover {
-      background-color: var(--ams-color-primair-red-dark);
-    }
+  .actie-knop:hover {
+    background-color: var(--ams-color-grey-1);
+  }
 
-    /* ── Kaart paneel ── */
-    .map-panel {
-      flex-shrink: 0;
-      height: 220px;
-      margin: 12px 16px 16px;
-      border-radius: 12px;
+  .actie-knop-rood {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--ams-color-primair-red);
+    background: var(--ams-color-primair-red);
+    color: var(--ams-color-white);
+    font-family: var(--ams-font-family);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .actie-knop-rood:hover {
+    background-color: var(--ams-color-primair-red-dark);
+  }
+
+  /* ── Kaart paneel ── */
+  .map-panel {
+    height: 220px;
+    overflow: hidden;
+    margin: 0 16px 16px;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Desktop ── */
+  @media (min-width: 768px) {
+    .split-view {
+      grid-template-columns: clamp(300px, 45%, 480px) 1fr;
+      grid-template-rows: auto auto auto 1fr auto;
       overflow: hidden;
+      height: 100%;
+    }
+
+    a.back { 
+      grid-column: 1; 
+      grid-row: 1; 
+    }
+
+    .location-information { 
+      grid-column: 1; 
+      grid-row: 2; 
+    }
+
+    .acties { 
+      grid-column: 1; 
+      grid-row: 3; 
+    }
+
+    .toegankelijkheid { 
+      grid-column: 1; 
+      grid-row: 4; 
+      overflow-y: auto; 
+    }
+
+    .actie { 
+      grid-column: 1; 
+      grid-row: 5; 
+    }
+
+    .map-panel {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      height: auto;
+      margin: 0;
+      border-left: 1px solid var(--ams-color-grey-2);
     }
 
     #map {
-      width: 100%;
       height: 100%;
     }
+  }
 
-    /* ── Desktop ── */
-    @media (min-width: 768px) {
-      .split-view {
-        flex-direction: row;
-        overflow: hidden;
-      }
-
-      .info-panel {
-        width: clamp(300px, 45%, 480px);
-        flex-shrink: 0;
-        border-right: 1px solid var(--ams-color-grey-2);
-        overflow-y: auto;
-      }
-
-      .map-panel {
-        flex: 1;
-        height: auto;
-      }
-
-      #map {
-        height: 100%;
-      }
+  @media print {
+    .acties,
+    header,
+    a.back {
+      display: none;
     }
 
-    @media print {
-      .acties,
-      header,
-      a.back {
-        display: none;
-      }
-
-      .map-panel {
-        height: 50vh;
-      }
+    .map-panel {
+      height: 50vh;
     }
+  }
   </style>
 </html>

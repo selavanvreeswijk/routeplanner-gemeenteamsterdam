@@ -1,10 +1,7 @@
----
-//@ts-nocheck
----
-
 <div class="chosencateg">
 	<h3>Jouw gekozen filters:</h3>
-  <p>Pas aan bij je profiel</p>
+  	<p>Pas aan bij je profiel</p>
+	
 	<div class="access-icons">
 		<div class="access-icon access-icon--rolstoel">
 			<svg
@@ -192,51 +189,82 @@
 		color: var(--ams-color-white);
 	}
 
-	.access-icon--rolstoel {
+	.access-icon--rolstoel { 
 		display: none;
-		background-color: #ecfcdf;
-		border: 0.5px solid var(--ams-color-green);
-		color: var(--ams-color-green);
+		background-color: var(--ams-color-green-light);
+		border: 0.5px solid var(--ams-color-green-dark);
+		color: var(--ams-color-green-dark);
 	}
 
-	.access-icon--slechtterbeen {
+	.access-icon--slechtterbeen { 
 		display: none;
-		background-color: #dff2fc;
+		background-color: var(--ams-color-blue-light);
 		border: 0.5px solid var(--ams-color-blue);
 		color: var(--ams-color-blue);
 	}
 
-	.access-icon--slechtziend {
+	.access-icon--slechtziend { 
 		display: none;
-		background-color: #ffe0ee;
-		border: 0.5px solid #e50082;
-		color: #e50082;
+		background-color:  var( --ams-color-pink-light);
+		border: 0.5px solid var( --ams-color-pink-dark); 
+		color: var( --ams-color-pink-dark); 
 	}
 
-	.access-icon--slechthorend {
+	.access-icon--slechthorend { 
 		display: none;
-		background-color: #fcf7df;
-		border: 0.5px solid #a15c00;
-		color: #a15c00;
+		background-color: var(--ams-color-orange-light);
+		border: 0.5px solid var(--ams-color-orange-dark);
+		color: var(--ams-color-orange-dark);
 	}
 
 	.access-icon--hiddendisability {
-		display: none;
-		background-color: #e5f7fd;
-		border: 0.5px solid #006e9c;
-		color: #006e9c;
+		display: none; 
+		background-color: var(--ams-color-light-blue-light);
+		border: 0.5px solid var(--ams-color-light-blue-dark);
+		color: var(--ams-color-light-blue-dark); 
 	}
 
-	.access-icon--prikkels {
-		display: none;
-		background-color: #efe2f2;
-		border: 0.5px solid #752082;
-		color: #752082;
+	.access-icon--prikkels      { 
+		background-color: var(--ams-color-purple-light);
+		border: 0.5px solid var(--ams-color-purple-dark);
+		color: var(--ams-color-purple-dark); 
 	}
 
 	.access-icon span {
 		font-size: var(--ams-font-size-body-small);
 		font-weight: 600;
+	}
+
+	/* Darkmode */
+
+	body.dark-mode .access-icon--rolstoel { 
+		background-color: var(--ams-color-green-dark);
+		color: var(--ams-color-green-light);
+	}
+
+	body.dark-mode .access-icon--slechtterbeen { 
+		background-color: var(--ams-color-blue);
+		color: var(--ams-color-blue-light);
+	}
+
+	body.dark-mode .access-icon--slechtziend { 
+		background-color:  var( --ams-color-pink-dark);
+		color: var( --ams-color-pink-light); 
+	}
+
+	body.dark-mode .access-icon--slechthorend { 
+		background-color: var(--ams-color-orange-dark);
+		color: var(--ams-color-orange-light);
+	}
+
+	body.dark-mode .access-icon--hiddendisability { 
+		background-color: var(--ams-color-light-blue-dark);
+		color: var(--ams-color-light-blue-light); 
+	}
+
+	body.dark-mode .access-icon--prikkels {
+		background-color: var(--ams-color-purple-dark);
+		color: var(--ams-color-purple-light); 
 	}
 </style>
 

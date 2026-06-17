@@ -5,7 +5,7 @@ const baseUrl = import.meta.env.BASE_URL;
 const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 ---
 
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
@@ -20,8 +20,10 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     <!-- Show search = false gedaan omdat je niet kan zoeken op de onboarding page -->
     <div class="app-wrapper">
       <main>
+        <form action="">
         <section class="name-input">
           <h2>Hoe mogen we je noemen?</h2>
+          <label for="name-input" class="sr-only">Jouw naam</label>
           <input
             id="name-input"
             type="text"
@@ -31,7 +33,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
         </section>
 
         <!-- Profielkeuze -->
-        <section class="profile-choice">
+        <fieldset class="profile-choice">
           <div class="profile-text">
             <h2>Kies jouw profiel</h2>
             <p>Op basis van deze keuze kunnen we jouw profiel weergeven. Deze informatie wordt niet opgeslagen.</p>
@@ -41,6 +43,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
               <input type="checkbox" name="profiel" value="rolstoel" />
               <span class="profile-icon">
                 <svg
+                  aria-hidden="true"
                   width="50"
                   height="50"
                   viewBox="0 0 20 20"
@@ -77,6 +80,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
               <input type="checkbox" name="profiel" value="slechtterbeen" />
               <span class="profile-icon">
                 <svg
+                  aria-hidden="true"
                   width="50"
                   height="50"
                   viewBox="0 0 20 20"
@@ -108,6 +112,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
               <input type="checkbox" name="profiel" value="slechtziend" />
               <span class="profile-icon">
                 <svg
+                  aria-hidden="true"
                   width="50"
                   height="50"
                   viewBox="0 0 20 20"
@@ -136,6 +141,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
               <input type="checkbox" name="profiel" value="slechthorend" />
               <span class="profile-icon">
                 <svg
+                  aria-hidden="true"
                   width="50"
                   height="50"
                   viewBox="0 0 20 20"
@@ -158,6 +164,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
               <input type="checkbox" name="profiel" value="hiddendisability" />
               <span class="profile-icon">
                 <svg
+                  aria-hidden="true"
                   width="50"
                   height="50"
                   viewBox="0 0 20 20"
@@ -186,6 +193,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
               <input type="checkbox" name="profiel" value="prikkels" />
               <span class="profile-icon">
                 <svg
+                  aria-hidden="true"
                   width="50"
                   height="50"
                   viewBox="0 0 20 20"
@@ -222,12 +230,13 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
               <span class="profile-name">Prikkels</span>
             </label>
           </div>
-        </section>
+        </fieldset>
 
         <!-- Foutmelding als iets ontbreekt -->
         <p id="error-message" role="alert"></p>
 
         <button id="start-button">Aan de slag</button>
+        </form>
       </main>
     </div>
   </body>
@@ -320,6 +329,24 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
 </script>
 
 <style>
+  /* Bron sr-only patroon: https://www.w3.org/WAI/tutorials/forms/labels/ */
+  .profile-card input[type="checkbox"], .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.profile-card:has(input:focus-visible) {
+  outline: 3px solid var(--ams-color-primair-red);
+  outline-offset: 2px;
+}
+
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -391,7 +418,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     overflow: hidden;
   }
 
-  main {
+  form {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -400,6 +427,14 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 48px);
     overflow: hidden;
     height: 100%;
+  }
+
+  main {
+    height: 100%;
+  }
+
+  fieldset {
+    border: none
   }
 
   .name-input {
@@ -430,6 +465,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
   }
 
   #name-input {
+    view-transition-name: gebruiker-naam;
     width: 100%;
     padding: 10px 14px;
     border: 1.5px solid var(--ams-color-grey-3);
@@ -451,10 +487,6 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: clamp(6px, 1.2vh, 10px);
-  }
-
-  .profile-card input[type="checkbox"] {
-    display: none;
   }
 
   .profile-card {
@@ -492,38 +524,72 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
     animation-delay: 0.5s;
   }
 
-  .profile-card:nth-child(1):has(input:checked)  {
-    background-color: #ecfcdf;
-    border: 0.5px solid var(--ams-color-green-dark);
-    color: var(--ams-color-green-dark);
+  .profile-card:nth-child(1):has(input:checked) {
+    background-color: var(--ams-color-green-light);
+		border: 0.5px solid var(--ams-color-green-dark);
+		color: var(--ams-color-green-dark);
   }
 
   .profile-card:nth-child(2):has(input:checked) {
-
-    background-color: #dff2fc;
-    border: 0.5px solid var(--ams-color-blue);
-    color: var(--ams-color-blue);
+    background-color: var(--ams-color-blue-light);
+		border: 0.5px solid var(--ams-color-blue);
+		color: var(--ams-color-blue);
   }
+  
   .profile-card:nth-child(3):has(input:checked) {
-    background-color: #ffeaf3;
-    border: 0.5px solid #d10077; 
-    color: #d10077; 
+    background-color:  var( --ams-color-pink-light);
+		border: 0.5px solid var( --ams-color-pink-dark); 
+		color: var( --ams-color-pink-dark); 
   }
+
   .profile-card:nth-child(4):has(input:checked) {
-    background-color: #fcf7df;
-    border: 0.5px solid #a15c00;
-    color: #a15c00;
+    background-color: var(--ams-color-orange-light);
+		border: 0.5px solid var(--ams-color-orange-dark);
+		color: var(--ams-color-orange-dark);
   }
+
   .profile-card:nth-child(5):has(input:checked) {
-    background-color: #e5f7fd;
-    border: 0.5px solid #006e9c;
-    color: #006e9c; 
+    background-color: var(--ams-color-light-blue-light);
+		border: 0.5px solid var(--ams-color-light-blue-dark);
+		color: var(--ams-color-light-blue-dark); 
   }
+
   .profile-card:nth-child(6):has(input:checked) {
-    background-color: #efe2f2;
-    border: 0.5px solid #752082;
-    color: #752082; 
+    background-color: var(--ams-color-purple-light);
+		border: 0.5px solid var(--ams-color-purple-dark);
+		color: var(--ams-color-purple-dark); 
   }
+
+  /* Darkmode */
+  body.dark-mode .profile-card:nth-child(1):has(input:checked) {
+    background-color: var(--ams-color-green-dark);
+		color: var(--ams-color-green-light);
+  }
+
+	body.dark-mode .profile-card:nth-child(2):has(input:checked) { 
+		background-color: var(--ams-color-blue);
+		color: var(--ams-color-blue-light);
+	}
+
+	body.dark-mode .profile-card:nth-child(3):has(input:checked) { 
+		background-color:  var( --ams-color-pink-dark);
+		color: var( --ams-color-pink-light); 
+	}
+
+	body.dark-mode .profile-card:nth-child(4):has(input:checked) { 
+		background-color: var(--ams-color-orange-dark);
+		color: var(--ams-color-orange-light);
+	}
+
+	body.dark-mode .profile-card:nth-child(5):has(input:checked) { 
+		background-color: var(--ams-color-light-blue-dark);
+		color: var(--ams-color-light-blue-light); 
+	}
+
+	body.dark-mode .profile-card:nth-child(6):has(input:checked) {
+		background-color: var(--ams-color-purple-dark);
+		color: var(--ams-color-purple-light); 
+	}
 
   .profile-icon {
     line-height: 1;
@@ -582,7 +648,7 @@ const logoUrl = `${baseUrl}assets/logo-gemeente-amsterdam.png`;
       height: auto;
     }
 
-    main {
+    form {
       height: auto;
       overflow: visible;
       justify-content: flex-start;

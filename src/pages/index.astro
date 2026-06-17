@@ -4,13 +4,11 @@ import { filterGroups } from "../../scripts/filtergroups.js";
 import { countFilter } from "../../scripts/filtering.js";
 
 import Header from "../components/Header.astro";
-// Filter component verplaatst naar profielpopup
 import ChosenCateg from "../components/ChosenCateg.astro";
 import LocationFilter from "../components/LocationFilter.astro";
 import Display from "../components/Display.astro";
 import LocationCard from "../components/LocationCard.astro";
 import Map from "../components/Map.astro";
-// import "leaflet/dist/leaflet.css";
 import "../styles/global.css";
 
 const locations = data.features.map((feature) => ({
@@ -24,7 +22,7 @@ const locations = data.features.map((feature) => ({
 }));
 ---
 
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
@@ -42,7 +40,7 @@ const locations = data.features.map((feature) => ({
   <body>
     <div class="app-wrapper">
       <Header />
-      <div class="content-area">
+      <main class="content-area">
         <div class="content-left">
           <ChosenCateg />
           <LocationFilter />
@@ -55,7 +53,7 @@ const locations = data.features.map((feature) => ({
           window._locaties = locations;
         </script>
         <Map />
-      </div>
+      </main>
     </div>
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -115,14 +113,17 @@ const locations = data.features.map((feature) => ({
 
     // Onboarding ------------------------------------------------------
 
+    // We lezen het opgeslagen profiel en naam op uit localStorage
     const opgeslagenProfiel = localStorage.getItem("profiel");
     const opgeslagenNaam = localStorage.getItem("naam");
 
     const isOnboarding = window.location.pathname.includes("onboarding");
+    // Als er geen profiel of naam is opgeslagen, sturen we de gebruiker naar de onboarding-pagina
     if (!opgeslagenProfiel || (!opgeslagenNaam && !isOnboarding)) {
       window.location.href = import.meta.env.BASE_URL + "onboarding";
     } else {
       // Tweede bezoek: zet het opgeslagen profiel alvast aan in de filterknop
+      // We lezen de opgeslagen categorieën uit het profiel en activeren automatisch de bijbehorende checkboxes
       const profielObject = Object.keys(JSON.parse(opgeslagenProfiel));
 
       profielObject.forEach((waarde) => {
@@ -131,6 +132,8 @@ const locations = data.features.map((feature) => ({
         );
         if (checkbox) {
           checkbox.checked = true;
+          // We sturen handmatig een "change"-event op de checkbox
+          // zodat alle luisteraars (zoals de sorteerfunctie) ook worden getriggerd
           // Bron events: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
           checkbox.dispatchEvent(new Event("change", { bubbles: true }));
         }
@@ -141,6 +144,7 @@ const locations = data.features.map((feature) => ({
     const cards = document.querySelectorAll(".location-list li");
     const countEl = document.getElementById("location-count");
 
+    // Hoeveel locatiekaarten er beschikbaar zijn
     function updateCount() {
       const visible = Array.from(cards).filter(
         (c) => c.style.display !== "none",
@@ -151,10 +155,13 @@ const locations = data.features.map((feature) => ({
 
     updateCount();
 
+    // De zoekterm in de tekst markeren 
+    // Regex voor hoofdlettergevoeligheid 
     // Bron <mark>: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/mark
     // Bron regex replace: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace
     function highlight(text: string, query: string): string {
       if (!query) return text;
+
       const regex = new RegExp(
         `(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
         "gi",
@@ -162,30 +169,33 @@ const locations = data.features.map((feature) => ({
       return text.replace(regex, `<mark>$1</mark>`);
     }
 
+    // Elke keer als de gebruiker iets typt in het zoekveld, filteren we de kaarten
     input.addEventListener("input", () => {
       const query = input.value.toLowerCase().trim();
-      let visibleCount = 0;
 
-      cards.forEach((card) => {
-        const name = card.dataset.name ?? "";
-        const address = card.dataset.address ?? "";
-        const matches = name.includes(query) || address.includes(query);
-        card.style.display = matches ? "" : "none";
-        if (matches) visibleCount++;
+      const zoekUpdate = () => {
+        cards.forEach((card) => {
+          const name = card.dataset.name ?? "";
+          const address = card.dataset.address ?? "";
+          // We tonen alleen kaarten waarvan de naam of het adres de zoekterm bevat
+          const matches = name.includes(query) || address.includes(query);
+          card.style.display = matches ? "" : "none";
 
-          window.filterMarkers?.()
+          // Highlight in naam
+          const h2 = card.querySelector("h2");
+          if (h2) {
+            // We bewaren de originele naam zodat we die altijd terug kunnen zetten als de zoekterm leeg wordt
+            const originalName = h2.dataset.original ?? h2.textContent ?? "";
+            h2.dataset.original = originalName;
+            h2.innerHTML = query ? highlight(originalName, query) : originalName;
+          }
+        });
 
-        // Highlight in naam
-        const h2 = card.querySelector("h2");
-        if (h2) {
-          const originalName = h2.dataset.original ?? h2.textContent ?? "";
-          h2.dataset.original = originalName;
-          h2.innerHTML = query ? highlight(originalName, query) : originalName;
-        }
-      });
+        updateCount();
+        window.filterMarkers?.();
+      };
 
-      updateCount();
-      (window as any).filterMarkers?.(query);
+      document.startViewTransition ? document.startViewTransition(zoekUpdate) : zoekUpdate();
     });
 
     // toggle tussen lijst en kaartweergave
@@ -205,6 +215,7 @@ const locations = data.features.map((feature) => ({
       });
     }
 
+    // Enter in zoekbalk
     input.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -220,43 +231,62 @@ const locations = data.features.map((feature) => ({
     const hoofdfilterSelect = document.getElementById("hoofdfilter-select");
     const subfilterSelect = document.getElementById("subfilter-select");
 
+    // Deze functie filtert de locatiekaarten op basis van de gekozen hoofd- en subcategorie
     function filterCards() {
+
+      // Animatie overgang voor het filteren
+      if(!document.startViewTransition){
+        renderNewCards()
+        return;
+      }
+
+      document.startViewTransition(
+          renderNewCards
+      )
+    }
+
+    function renderNewCards(){
       const hoofdfilter = hoofdfilterSelect.value.trim().toLowerCase();
       const subfilter = subfilterSelect.value.trim().toLowerCase();
 
       cards.forEach((card) => {
-        const cardHoofd = card.dataset.hoofdfilter ?? "";
-        const cardSub = card.dataset.subfilter ?? "";
-        const matchHoofd = !hoofdfilter || cardHoofd === hoofdfilter;
-        const matchSub = !subfilter || cardSub === subfilter;
-        card.style.display = matchHoofd && matchSub ? "" : "none";
-      });
+            const cardHoofd = card.dataset.hoofdfilter ?? "";
+            const cardSub = card.dataset.subfilter ?? "";
+            // Als er geen filter geselecteerd is (!hoofdfilter), tonen we altijd die kaart
+            // Beide filters moeten matchen voor een kaart om zichtbaar te zijn
+            const matchHoofd = !hoofdfilter || cardHoofd === hoofdfilter;
+            const matchSub = !subfilter || cardSub === subfilter;
+            card.style.display = matchHoofd && matchSub ? "" : "none";
+          });
 
-      updateCount();
-      window.filterMarkers?.()
+          updateCount();
+          window.filterMarkers?.()
     }
 
     hoofdfilterSelect.addEventListener("change", filterCards);
     subfilterSelect.addEventListener("change", filterCards);
 
+    // Als de gebruiker naar kaartweergave schakelt, verbergen we de lijst en tonen we de kaart
     radioMap.addEventListener("change", () => {
-      listView!.style.display = "none";
-      mapView!.style.display = "block";
-      if (zoekKnop) zoekKnop.style.display = "";
-      setTimeout(() => {
-        if (window.initialiseerKaart) {
-          window.initialiseerKaart();
-        }
-      }, 50);
+      const wissel = () => {
+        listView!.style.display = "none";
+        mapView!.style.display = "block";
+        if (zoekKnop) zoekKnop.style.display = "";
+        setTimeout(() => { if (window.initialiseerKaart) window.initialiseerKaart(); }, 50);
+      };
+      document.startViewTransition ? document.startViewTransition(wissel) : wissel();
     });
 
     radioLijst.addEventListener("change", () => {
-      listView!.style.display = "block";
-      mapView!.style.display = "none";
-      if (zoekKnop) zoekKnop.style.display = "none";
+      const wissel = () => {
+        listView!.style.display = "block";
+        mapView!.style.display = "none";
+        if (zoekKnop) zoekKnop.style.display = "none";
+      };
+      document.startViewTransition ? document.startViewTransition(wissel) : wissel();
     });
 
-    // Op desktop (≥1024px) kaart automatisch initialiseren naast de lijst
+    // Desktop: kaart wordt direct getoond
     if (window.innerWidth >= 1024) {
       setTimeout(() => {
         if (window.initialiseerKaart) {
