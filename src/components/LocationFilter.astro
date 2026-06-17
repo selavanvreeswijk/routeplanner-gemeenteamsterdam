@@ -3,6 +3,7 @@
 
 import data from "../cbadataset.json" with { type: "json" };
 
+// FILTEREN OP LOCATIE
 const hoofdfilters = [
   ...new Set(data.features.map((f) => f.properties.Hoofdfilter.trim())), // verwijdert duplicaten, en zet om naar een gewone array
 ].sort();
