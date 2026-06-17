@@ -8,13 +8,15 @@ Gemaakt door: **Sela, Luna Jay, Louise en Xavannah** — jaar 3 Web Development.
 
 ## De opdracht
 
-De Gemeente Amsterdam wil Amsterdam toegankelijker maken voor mensen met een lichamelijke beperking. Veel mensen ondervinden dagelijks problemen bij het navigeren door de stad: obstakels, ontbrekende oprijplaten, ongelijkmatige bestrating of drempels maken routes onbruikbaar.
+De Gemeente Amsterdam wil Amsterdam toegankelijker maken voor mensen met een lichamelijke beperking. Veel mensen weten niet of een locatie geschikt is voor hen voordat ze er naartoe gaan — denk aan ontbrekende oprijplaten, drempels of te weinig zitgelegenheid.
 
-De gemeente heeft een grote dataset beschikbaar over de fysieke toegankelijkheid van locaties in de stad (de CBA-dataset). Het doel was om deze data te vertalen naar een bruikbare tool waarmee mensen zelf kunnen zien welke locaties bij hen passen.
+De gemeente heeft een grote dataset beschikbaar over de fysieke toegankelijkheid van locaties in de stad (de CBA-dataset). Het doel was om deze data te vertalen naar een overzichtelijke tool waarmee mensen per locatie kunnen zien of die bij hun situatie past.
+
+> **Let op:** het project is begonnen als routeplanner, maar de scope is veranderd. TAVI is geen routeplanner meer — het is een toegankelijkheidsviewer waarmee gebruikers locaties in Amsterdam kunnen bekijken en filteren op basis van hun persoonlijke profiel.
 
 ### Doelstelling
 
-Een online platform waar gebruikers een persoonlijk toegankelijkheidsprofiel instellen en daarna direct kunnen zien welke locaties in Amsterdam goed toegankelijk voor hen zijn — in een lijst én op een kaart.
+Een online platform waar gebruikers een persoonlijk toegankelijkheidsprofiel instellen en daarna per locatie kunnen zien hoe toegankelijk die voor hen is — in een lijst én op een kaart.
 
 **Subdoelen:**
 - Gemeentelijke toegankelijkheidsdata bruikbaar maken voor eindgebruikers
