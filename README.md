@@ -14,7 +14,7 @@ De gemeente heeft een grote dataset beschikbaar over de fysieke toegankelijkheid
 
 ### Doelstelling
 
-Een online platform waar gebruikers een persoonlijk toegankelijkheidsprofiel instellen en daarna direct kunnen zien welke locaties in Amsterdam goed toegankelijk voor hen zijn — in een lijst én op een kaart.
+Een online platform waar gebruikers een persoonlijk toegankelijkheidsprofiel instellen en daarna direct kunnen zien welke locaties in Amsterdam goed toegankelijk voor hen zijn, in een lijst én op een kaart.
 
 **Subdoelen:**
 - Gemeentelijke toegankelijkheidsdata bruikbaar maken voor eindgebruikers
