@@ -168,7 +168,7 @@
     // Als er al een zoekmarker op de kaart staat, verwijderen we die eerst
     if (zoekMarker) window._kaart.removeLayer(zoekMarker);
     //  We zetten de kaartweergave naar de gevonden locatie, ingezoomd op niveau 15
-    window._kaart.setView([lat, lng], 15);
+    window._kaart.flyTo([lat, lng], 15);
 
     var zoekPin = L.divIcon({
       html: '<svg width="22" height="32" viewBox="0 0 28 40" xmlns="http://www.w3.org/2000/svg"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 26 14 26S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="#EC0000" stroke="white" stroke-width="1.5"/><circle cx="14" cy="14" r="5" fill="white"/></svg>',

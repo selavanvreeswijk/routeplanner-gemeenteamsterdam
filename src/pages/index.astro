@@ -172,31 +172,30 @@ const locations = data.features.map((feature) => ({
     // Elke keer als de gebruiker iets typt in het zoekveld, filteren we de kaarten
     input.addEventListener("input", () => {
       const query = input.value.toLowerCase().trim();
-      let visibleCount = 0;
 
-      cards.forEach((card) => {
-        const name = card.dataset.name ?? "";
-        const address = card.dataset.address ?? "";
-        // We tonen alleen kaarten waarvan de naam of het adres de zoekterm bevat
-        const matches = name.includes(query) || address.includes(query);
-        card.style.display = matches ? "" : "none";
-        if (matches) visibleCount++;
+      const zoekUpdate = () => {
+        cards.forEach((card) => {
+          const name = card.dataset.name ?? "";
+          const address = card.dataset.address ?? "";
+          // We tonen alleen kaarten waarvan de naam of het adres de zoekterm bevat
+          const matches = name.includes(query) || address.includes(query);
+          card.style.display = matches ? "" : "none";
 
-          // We synchroniseren ook de kaartmarkers met de gefilterde lijst
-          window.filterMarkers?.()
+          // Highlight in naam
+          const h2 = card.querySelector("h2");
+          if (h2) {
+            // We bewaren de originele naam zodat we die altijd terug kunnen zetten als de zoekterm leeg wordt
+            const originalName = h2.dataset.original ?? h2.textContent ?? "";
+            h2.dataset.original = originalName;
+            h2.innerHTML = query ? highlight(originalName, query) : originalName;
+          }
+        });
 
-        // Highlight in naam
-        const h2 = card.querySelector("h2");
-        if (h2) {
-          // We bewaren de originele naam zodat we die altijd terug kunnen zetten als de zoekterm leeg wordt
-          const originalName = h2.dataset.original ?? h2.textContent ?? "";
-          h2.dataset.original = originalName;
-          h2.innerHTML = query ? highlight(originalName, query) : originalName;
-        }
-      });
+        updateCount();
+        window.filterMarkers?.();
+      };
 
-      updateCount();
-      (window as any).filterMarkers?.(query);
+      document.startViewTransition ? document.startViewTransition(zoekUpdate) : zoekUpdate();
     });
 
     // toggle tussen lijst en kaartweergave
@@ -269,20 +268,22 @@ const locations = data.features.map((feature) => ({
 
     // Als de gebruiker naar kaartweergave schakelt, verbergen we de lijst en tonen we de kaart
     radioMap.addEventListener("change", () => {
-      listView!.style.display = "none";
-      mapView!.style.display = "block";
-      if (zoekKnop) zoekKnop.style.display = "";
-      setTimeout(() => {
-        if (window.initialiseerKaart) {
-          window.initialiseerKaart();
-        }
-      }, 50);
+      const wissel = () => {
+        listView!.style.display = "none";
+        mapView!.style.display = "block";
+        if (zoekKnop) zoekKnop.style.display = "";
+        setTimeout(() => { if (window.initialiseerKaart) window.initialiseerKaart(); }, 50);
+      };
+      document.startViewTransition ? document.startViewTransition(wissel) : wissel();
     });
 
     radioLijst.addEventListener("change", () => {
-      listView!.style.display = "block";
-      mapView!.style.display = "none";
-      if (zoekKnop) zoekKnop.style.display = "none";
+      const wissel = () => {
+        listView!.style.display = "block";
+        mapView!.style.display = "none";
+        if (zoekKnop) zoekKnop.style.display = "none";
+      };
+      document.startViewTransition ? document.startViewTransition(wissel) : wissel();
     });
 
     // Desktop: kaart wordt direct getoond
