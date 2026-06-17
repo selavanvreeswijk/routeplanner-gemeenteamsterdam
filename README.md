@@ -126,9 +126,9 @@ npm run preview
 
 | Naam | Rol |
 |------|-----|
-| Louise | Version Control Engineer |
+| Louise | Frontend Developer |
 | Luna Jay | Backend Developer |
-| Sela | Scrum Master |
+| Sela | Backend Developer |
 | Xavannah | UI/UX Designer |
 
 ---
