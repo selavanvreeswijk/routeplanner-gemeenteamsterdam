@@ -1,6 +1,6 @@
 # TAVI — Toegankelijkheidsviewer Amsterdam
 
-**TAVI** is een webapplicatie gebouwd voor de Gemeente Amsterdam. De app laat mensen met een lichamelijke beperking zien welke locaties in Amsterdam toegankelijk zijn voor hen, gebaseerd op hun persoonlijke profiel.
+**TAVI** (Toegankelijk Amsterdam voor Iedereen) is een webapplicatie gebouwd voor de Gemeente Amsterdam. De app laat mensen met een lichamelijke beperking zien welke locaties in Amsterdam toegankelijk zijn voor hen, gebaseerd op hun persoonlijke profiel.
 
 Gemaakt door: **Sela, Luna Jay, Louise en Xavannah** — jaar 3 Web Development.
 
@@ -16,7 +16,7 @@ De gemeente heeft een grote dataset beschikbaar over de fysieke toegankelijkheid
 
 ### Doelstelling
 
-Een online platform waar gebruikers een persoonlijk toegankelijkheidsprofiel instellen en daarna per locatie kunnen zien hoe toegankelijk die voor hen is — in een lijst én op een kaart.
+Een online platform waar gebruikers een persoonlijk toegankelijkheidsprofiel instellen en daarna direct kunnen zien welke locaties in Amsterdam goed toegankelijk voor hen zijn, in een lijst én op een kaart.
 
 **Subdoelen:**
 - Gemeentelijke toegankelijkheidsdata bruikbaar maken voor eindgebruikers
