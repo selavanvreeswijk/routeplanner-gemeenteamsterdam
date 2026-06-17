@@ -1,60 +1,148 @@
-# Gemeente Amsterdam Routeplanner
+# TAVI — Toegankelijkheidsviewer Amsterdam
 
-Wij ( Sela, Luna Jay, Louise en Xavannah) gaan aan de slag met het maken van een toegankelijke routeplanner voor de mensen met een lichamelijke beperking.  
+**TAVI** is een webapplicatie gebouwd voor de Gemeente Amsterdam. De app laat mensen met een lichamelijke beperking zien welke locaties in Amsterdam toegankelijk zijn voor hen, gebaseerd op hun persoonlijke profiel.
+
+Gemaakt door: **Sela, Luna Jay, Louise en Xavannah** — jaar 3 Web Development.
+
+---
+
 ## De opdracht
 
-### Inleiding
+De Gemeente Amsterdam wil Amsterdam toegankelijker maken voor mensen met een lichamelijke beperking. Veel mensen ondervinden dagelijks problemen bij het navigeren door de stad: obstakels, ontbrekende oprijplaten, ongelijkmatige bestrating of drempels maken routes onbruikbaar.
 
-De Gemeente Amsterdam wil Amsterdam toegankelijker maken voor mensen met een lichamelijke beperking. Veel inwoners met een fysieke beperking ondervinden dagelijks problemen bij het navigeren door de stad: obstakels, ontbrekende oprijplaten, ongelijkmatige bestrating of drempels maken routes onbruikbaar.
-
-De gemeente beschikt over een grote hoeveelheid data over de fysieke toegankelijkheid van de stad en wil deze data inzetten om inwoners te ondersteunen. Het doel is een online routeplanningsplatform te ontwikkelen waarmee gebruikers zelfstandig een toegankelijke route kunnen plannen, afgestemd op hun specifieke behoeften.
+De gemeente heeft een grote dataset beschikbaar over de fysieke toegankelijkheid van locaties in de stad (de CBA-dataset). Het doel was om deze data te vertalen naar een bruikbare tool waarmee mensen zelf kunnen zien welke locaties bij hen passen.
 
 ### Doelstelling
 
-Het eindproduct is een online tool waarmee gebruikers live een route kunnen plannen op basis van hun persoonlijke toegankelijkheidsbehoeften. Het platform helpt mensen met een fysieke beperking om zich zelfstandig en veilig door Amsterdam te navigeren.
+Een online platform waar gebruikers een persoonlijk toegankelijkheidsprofiel instellen en daarna direct kunnen zien welke locaties in Amsterdam goed toegankelijk voor hen zijn — in een lijst én op een kaart.
 
 **Subdoelen:**
+- Gemeentelijke toegankelijkheidsdata bruikbaar maken voor eindgebruikers
+- Gebruikers in staat stellen een persoonlijk profiel in te stellen (eenmalig, via onboarding)
+- Voldoen aan WCAG 2.1 niveau AA
+- De huisstijl van Gemeente Amsterdam volgen
 
-* Gemeentelijke toegankelijkheidsdata bruikbaar maken voor eindgebruikers
-* Gebruikers in staat stellen persoonlijke behoeften in te stellen
-* Een onderhoudbaar platform bouwen dat data kan delen met externe partijen (bijv. Google)
-* Voldoen aan WCAG 2.1 niveau AA
+---
 
-### Functionaliteiten
+## Functionaliteiten
 
 | # | Functionaliteit | Beschrijving |
 |---|-----------------|--------------|
-| 1 | Navigatieplanner | Route plannen van A naar B op basis van toegankelijkheidsbehoeften |
-| 2 | Zoekfunctie | Zoeken op adres of locatienaam als vertrek- en aankomstpunt |
-| 3 | Toegankelijkheidsprofielen | Instellen van persoonlijke behoeften (rolstoel, rollator, visueel) |
-| 4 | Betrouwbare data | De opgehaalde data is correct, actueel en bruikbaar |
-| 5 | Huisstijl gemeente | Volgt de visuele identiteit en kernwaarden van Gemeente Amsterdam |
+| 1 | Onboarding | Nieuwe gebruikers stellen hun naam en toegankelijkheidsprofiel in |
+| 2 | Locatielijst | Alle locaties uit de CBA-dataset worden getoond als kaarten |
+| 3 | Profiel-sortering | Locaties worden automatisch gesorteerd op hoe goed ze passen bij het ingestelde profiel |
+| 4 | Zoekfunctie | Zoeken op naam of adres, met markering van de zoekterm in de resultaten |
+| 5 | Filteren | Filteren op hoofdcategorie en subcategorie (bijv. sport, cultuur) |
+| 6 | Kaartweergave | Interactieve kaart met markers voor alle locaties via Leaflet.js |
+| 7 | Adres zoeken op kaart | Adres intypen en de kaart beweegt naar die locatie via de Nominatim API |
+| 8 | Huidige locatie | De kaart toont automatisch de huidige locatie van de gebruiker |
+| 9 | Detailpagina | Elke locatie heeft een eigen pagina met alle toegankelijkheidskenmerken |
+| 10 | Profiel opslaan | Het profiel wordt opgeslagen in localStorage zodat het bewaard blijft |
 
+---
 
-## Week 1 
+## Technische opbouw
 
-### Gesprek met coach  
+### Tech stack
 
-Tijdens de meeting hebben we het oorspronkelijke doel van het project. Verder is besproken welke rollen de teamleden op zich zullen nemen en hoe de komende weken eruit zien qua planning. Tot slot is afgesproken om in Git per feature te werken.
+| Technologie | Gebruik |
+|-------------|---------|
+| [Astro](https://astro.build) | Framework voor de statische paginageneratie |
+| [Leaflet.js](https://leafletjs.com) | Interactieve kaart |
+| [OpenStreetMap](https://www.openstreetmap.org) | Kaartachtergrond (tilelaag) |
+| [Nominatim API](https://nominatim.openstreetmap.org) | Geocoding (adres → coördinaten) |
+| CBA-dataset Gemeente Amsterdam | Toegankelijkheidsdata van locaties in Amsterdam |
+| localStorage | Profiel en naam van de gebruiker bewaren |
 
-**Rolverdeling:**
+### Bestandsstructuur
+
+```
+src/
+├── pages/
+│   ├── index.astro           # Hoofdpagina met lijst, kaart en filters
+│   ├── onboarding.astro      # Profielinstelling voor nieuwe gebruikers
+│   └── locaties/
+│       └── [slug].astro      # Dynamische detailpagina per locatie
+├── components/
+│   ├── Header.astro          # Navigatie en zoekbalk
+│   ├── Map.astro             # Leaflet-kaart met markers en zoekfunctie
+│   ├── LocationCard.astro    # Locatiekaarten met sortering op profiel
+│   ├── LocationFilter.astro  # Hoofd- en subfilter dropdowns
+│   ├── ChosenCateg.astro     # Geselecteerde categorieën tonen
+│   ├── Display.astro         # Toggle lijst/kaartweergave
+│   ├── Filter.astro          # Filtercheckboxes per toegankelijkheidscategorie
+│   ├── StatusBadge.astro     # Badge voor toegankelijkheidsstatus
+│   ├── DistanceDot.astro     # Visuele indicator
+│   └── Searchfield.astro     # Zoekveldinput
+scripts/
+├── filtering.js              # Telt Ja/Nee/Onbekend per filtergroep per locatie
+├── filtergroups.js           # Koppelt JSON-veldnamen aan toegankelijkheidscategorieën
+├── locations.js              # Locatie-hulpfuncties
+└── script.js                 # Overige scripts
+```
+
+### Toegankelijkheidscategorieën
+
+De CBA-dataset bevat informatie over de volgende categorieën, die ook als filterprofiel gebruikt worden:
+
+- Rolstoel
+- Rollator
+- Slechtziend
+- Slechthorend
+- Prikkelgevoelig
+- Neurodiversiteit
+
+---
+
+## Installatie & gebruik
+
+### Vereisten
+- Node.js (versie 18 of hoger)
+- npm
+
+### Starten
+
+```bash
+# Installeer dependencies
+npm install
+
+# Start de ontwikkelserver
+npm run dev
+```
+
+De app is dan bereikbaar op `http://localhost:4321`.
+
+```bash
+# Bouwen voor productie
+npm run build
+
+# Preview van de gebouwde versie
+npm run preview
+```
+
+---
+
+## Rolverdeling
 
 | Naam | Rol |
 |------|-----|
-| Louise | Version Control Engineer |
-| Luna Jay | Backend Developer|
-| Sela | Scrum Master |
+| Louise | Frontend Developer |
+| Luna Jay | Backend Developer |
+| Sela | Backend Developer |
 | Xavannah | UI/UX Designer |
 
-**Voorbereiden voor volgende gesprekken:**
+---
 
-- Wat hebben we gemaakt?
-- Hoe is het verlopen?
-- Hoe werken we samen?
--
+## Bronnen
 
-## Bronnen 
-
-* Briefing Gemeente Amsterdam — Toegankelijke Routeplanner
-* Web Content Accessibility Guidelines (WCAG) 2.1 - https://www.w3.org/TR/WCAG21/
-* Huisstijl Gemeente Amsterdam - https://www.amsterdam.nl/stijlweb/?vkurl=huisstijl
+| Bron | Gebruik |
+|------|---------|
+| [Astro documentatie](https://docs.astro.build) | Framework, `getStaticPaths`, component-stijlen |
+| [Leaflet.js documentatie](https://leafletjs.com/reference.html) | Kaart, markers, `L.divIcon`, `L.tileLayer` |
+| [OpenStreetMap](https://www.openstreetmap.org/copyright) | Kaartachtergrond |
+| [Nominatim API](https://nominatim.openstreetmap.org) | Geocoding voor het zoeken van adressen |
+| CBA-dataset Gemeente Amsterdam | Toegankelijkheidsdata |
+| [MDN Web Docs](https://developer.mozilla.org) | JavaScript API's (`localStorage`, `dispatchEvent`, `Set`, `RegExp`, `CSS.escape`) |
+| [WCAG 2.1](https://www.w3.org/TR/WCAG21/) | Toegankelijkheidsrichtlijnen |
+| [Huisstijl Gemeente Amsterdam](https://www.amsterdam.nl/stijlweb/) | Kleuren, typografie, visuele identiteit |
+| Claude (Anthropic) | Hulp bij complexe JavaScript-functies (zie annotaties in broncode) |
