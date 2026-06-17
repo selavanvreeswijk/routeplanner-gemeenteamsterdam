@@ -11,7 +11,7 @@ De gemeente beschikt over een grote hoeveelheid data over de fysieke toegankelij
 
 ### Doelstelling
 
-Het eindproduct is een online tool waarmee gebruikers live een route kunnen plannen op basis van hun persoonlijke toegankelijkheidsbehoeften. Het platform helpt mensen met een fysieke beperking om zich zelfstandig en veilig door Amsterdam te navigeren.
+Het eindproduct is een online tool waarmee gebruikers live de toeganeklijkheidsopties van locaties op basis van hun persoonlijke toegankelijkheidsbehoeften. Het platform helpt mensen met een fysieke beperking om zich zelfstandig en veilig door Amsterdam te navigeren.
 
 **Subdoelen:**
 
