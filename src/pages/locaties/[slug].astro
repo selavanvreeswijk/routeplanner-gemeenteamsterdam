@@ -204,7 +204,10 @@ const counts = Object.fromEntries(
               {p.Huisnummer}
               {p.Postcode}
             </p>
-                </div>
+            <a href={`//${p.Website}`} class="website-link" target="_blank">
+              {p.Website}
+            </a>
+           </div>
             <AccessIcons counts={counts} />
           </div>
 
@@ -435,11 +438,10 @@ const counts = Object.fromEntries(
   </body>
 
   <style>
-    body {
+  body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    overflow: hidden;
   }
 
   a {
@@ -450,7 +452,6 @@ const counts = Object.fromEntries(
     display: grid;
     grid-template-columns: 1fr;
     flex: 1;
-    overflow-y: auto;
   }
 
   a.back {
@@ -466,6 +467,7 @@ const counts = Object.fromEntries(
     color: var(--ams-color-primair-red);
   }
 
+  /* ── Location Informatie ── */
   .location-information {
     display: flex;
     flex-direction: column;
@@ -502,6 +504,81 @@ const counts = Object.fromEntries(
     margin: 0;
   }
 
+  a.website-link {
+    color: var(--ams-color-primair-red-dark);
+    font-style: italic;
+    font-weight: 5pa00;
+  }
+  /* ── Kaart paneel ── */
+  .map-panel {
+    height: 220px;
+    overflow: hidden;
+    margin: 0 16px 16px;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Bellen & Delen knoppen ── */
+  .acties {
+    display: flex;
+    gap: 10px;
+    padding: 0rem 1rem 1rem 1rem;
+  }
+
+  .actie {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .actie-knop {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--ams-color-grey-3);
+    background: var(--ams-color-white);
+    color: var(--ams-color-grey-5);
+    font-family: var(--ams-font-family);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .actie-knop:hover {
+    background-color: var(--ams-color-grey-1);
+  }
+
+  .actie-knop-rood {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--ams-color-primair-red);
+    background: var(--ams-color-primair-red);
+    color: var(--ams-color-white);
+    font-family: var(--ams-font-family);
+    font-size: var(--ams-font-size-body-small);
+    font-weight: var(--ams-font-weight-semibold);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .actie-knop-rood:hover {
+    background-color: var(--ams-color-primair-red-dark);
+  }
+
+  /* Togankelijkheidsgrid */
   .toegankelijkheid {
     padding: 0 16px;
   }
@@ -521,7 +598,7 @@ const counts = Object.fromEntries(
     margin: 0;
   }
 
-  @media (min-width: 480px) {
+  @media (min-width: 450px) {
     .toegankelijkheid-grid {
       grid-template-columns: 1fr 1fr;
     }
@@ -575,75 +652,6 @@ const counts = Object.fromEntries(
     color: #a9a9a9;
   }
 
-  /* ── Printen & Delen ── */
-  .acties {
-    display: flex;
-    gap: 10px;
-    padding: 1rem;
-  }
-
-  .actie {
-    display: flex;
-    gap: 10px;
-    padding: 16px;
-  }
-
-  .actie-knop {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px;
-    border: 1.5px solid var(--ams-color-grey-3);
-    background: var(--ams-color-white);
-    color: var(--ams-color-grey-5);
-    font-family: var(--ams-font-family);
-    font-size: var(--ams-font-size-body-small);
-    font-weight: var(--ams-font-weight-semibold);
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.15s ease;
-    flex: 1;
-    justify-content: center;
-  }
-
-  .actie-knop:hover {
-    background-color: var(--ams-color-grey-1);
-  }
-
-  .actie-knop-rood {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px;
-    border: 1.5px solid var(--ams-color-primair-red);
-    background: var(--ams-color-primair-red);
-    color: var(--ams-color-white);
-    font-family: var(--ams-font-family);
-    font-size: var(--ams-font-size-body-small);
-    font-weight: var(--ams-font-weight-semibold);
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.15s ease;
-    flex: 1;
-    justify-content: center;
-  }
-
-  .actie-knop-rood:hover {
-    background-color: var(--ams-color-primair-red-dark);
-  }
-
-  /* ── Kaart paneel ── */
-  .map-panel {
-    height: 220px;
-    overflow: hidden;
-    margin: 0 16px 16px;
-  }
-
-  #map {
-    width: 100%;
-    height: 100%;
-  }
-
   /* ── Desktop ── */
   @media (min-width: 768px) {
     .split-view {
@@ -691,17 +699,6 @@ const counts = Object.fromEntries(
       height: 100%;
     }
   }
-
-  @media print {
-    .acties,
-    header,
-    a.back {
-      display: none;
-    }
-
-    .map-panel {
-      height: 50vh;
-    }
-  }
+  
   </style>
 </html>

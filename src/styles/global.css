@@ -1,8 +1,10 @@
+@import url("animations.css");
+
 @view-transition {
   navigation: auto;
 }
 
-@import url("animations.css");
+
 
 :root {
   /* ================================
