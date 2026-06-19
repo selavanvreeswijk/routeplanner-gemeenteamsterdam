@@ -177,8 +177,10 @@ const locations = data.features.map((feature) => ({
         cards.forEach((card) => {
           const name = card.dataset.name ?? "";
           const address = card.dataset.address ?? "";
-          // We tonen alleen kaarten waarvan de naam of het adres de zoekterm bevat
-          const matches = name.includes(query) || address.includes(query);
+          const hoofdfilter = card.dataset.hoofdfilter ?? "";
+          const subfilter = card.dataset.subfilter ?? "";
+          // We tonen alleen kaarten waarvan de naam, het adres of de categorie de zoekterm bevat
+          const matches = name.includes(query) || address.includes(query) || hoofdfilter.includes(query) || subfilter.includes(query);
           card.style.display = matches ? "" : "none";
 
           // Highlight in naam
@@ -221,7 +223,32 @@ const locations = data.features.map((feature) => ({
         e.preventDefault();
         const isKaart = mapView && mapView.style.display !== "none";
         if (isKaart) {
-          (window as any).zoekOpKaart?.(input.value.trim());
+          (window as any).filterMarkers?.();
+          // Zoom naar de zichtbare markers
+          const zichtbaar = ((window as any)._markers || []).filter((m: any) => (window as any)._kaart?.hasLayer(m));
+          if (zichtbaar.length > 0 && (window as any)._kaart) {
+            const groep = (window as any).L.featureGroup(zichtbaar);
+            (window as any)._kaart.fitBounds(groep.getBounds().pad(0.3));
+          }
+        } else {
+          // Schakel naar kaartweergave zodat de gefilterde pinnetjes zichtbaar worden
+          const wissel = () => {
+            listView!.style.display = "none";
+            mapView!.style.display = "block";
+            if (zoekKnop) zoekKnop.style.display = "";
+            if (radioMap) (radioMap as HTMLInputElement).checked = true;
+            setTimeout(() => {
+              if ((window as any).initialiseerKaart) (window as any).initialiseerKaart();
+              (window as any).filterMarkers?.();
+              // Zoom naar de zichtbare markers
+              const zichtbaar = ((window as any)._markers || []).filter((m: any) => (window as any)._kaart?.hasLayer(m));
+              if (zichtbaar.length > 0 && (window as any)._kaart) {
+                const groep = (window as any).L.featureGroup(zichtbaar);
+                (window as any)._kaart.fitBounds(groep.getBounds().pad(0.3));
+              }
+            }, 100);
+          };
+          document.startViewTransition ? document.startViewTransition(wissel) : wissel();
         }
       }
     });
