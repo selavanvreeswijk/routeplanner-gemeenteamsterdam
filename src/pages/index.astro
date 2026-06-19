@@ -197,7 +197,7 @@ const locations = data.features.map((feature) => ({
         window.filterMarkers?.();
       };
 
-      document.startViewTransition ? document.startViewTransition(zoekUpdate) : zoekUpdate();
+      zoekUpdate();
     });
 
     // toggle tussen lijst en kaartweergave
@@ -248,7 +248,7 @@ const locations = data.features.map((feature) => ({
               }
             }, 100);
           };
-          document.startViewTransition ? document.startViewTransition(wissel) : wissel();
+          wissel();
         }
       }
     });
